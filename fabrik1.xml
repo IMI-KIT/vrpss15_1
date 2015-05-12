@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-5.17378 1.203 5.28784" at="4.01791 1.203 -2.11379" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-5.44003 3.46862 -1.40954" at="-2.37366 0 7.17876" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -11,6 +11,54 @@
   </Objects>
   <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
   <Scripts>
+    <Script name_suffix="0" base_name="anzeigetafeln" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#die Nb: x - Anzeigen kommen noch weg.
+	
+	r = VR.getRoot().find('Headlight')
+	# Füllstand Lager
+	if not hasattr(VR, 'lagerlabel'):
+		r = VR.getRoot().find('Headlight')
+		VR.lagerlabel = VR.Sprite('lager-label')
+		mat1 = VR.Material('mymat1')
+		VR.lagerlabel.setMaterial(mat1)
+		r.addChild(VR.lagerlabel)
+	
+	VR.lagerlabel.setFrom(7.5,2,1)
+	VR.lagerlabel.setDir(1,0,0)
+	VR.lagerlabel.setText('Voll')
+	VR.lagerlabel.setSize(0.4,0.2)
+	
+	# Füllstand erste Box
+	if not hasattr(VR, 'container1_label'):
+		VR.container1_label= VR.Sprite('fuellstand1')
+		mat2 = VR.Material('mymat2') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
+		VR.container1_label.setMaterial(mat2)
+		r.addChild(VR.container1_label)
+	
+	VR.container1_label.setFrom(-4.5,2,1)
+	VR.container1_label.setDir(1,0,0)
+	
+	# Angekommen zur Weiterverarbeitung
+	if not hasattr(VR, 'weiterverarbeitung_label'):
+		VR.fertiglabel = VR.Sprite('fertig')
+		mat3 = VR.Material('mymat3')
+		VR.fertiglabel.setMaterial(mat3)
+		r.addChild(VR.fertiglabel)
+		
+	VR.fertiglabel.setFrom(7.5,2,7)
+	VR.fertiglabel.setDir(1,0,0)
+	
+	
+	
+	
+	
+	
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="0" base_name="trigger" name_space="__global__"/>
+    </Script>
     <Script name_suffix="0" base_name="initLogistics" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
@@ -34,9 +82,8 @@
 	p2_startx = -4.0
 	p2_endx = 8.0
 
-	if not hasattr(VR, 'ptool'): #Alisa ist sich nicht sicher, was in dieser Schleife passiert. Ist aus logistic.xml übernommen.
-		VR.ptool = VR.Pathtool()
-	
+	if not hasattr(VR, 'ptool'): 
+		VR.ptool = VR.Pathtool()	
 		VR.paths = [p0_length,p1_length,p2_length] # min 2
 		for i,N in enumerate(VR.paths):
 			VR.paths[i] = VR.ptool.newPath(None, r)
@@ -44,7 +91,7 @@
 				VR.ptool.extrude(None, VR.paths[i])
 			
 	# Pfad vom Lager zur ersten Kiste
-	if len(VR.paths) &gt;= 1:
+	if len(VR.paths) &gt;= 1: #TODO (Alisa): Die Überprüfung kann raus.
 		handles = VR.ptool.getHandles(VR.paths[0])
 		p0_geolength = p0_endx - p0_startx
 		for x in range (0,p0_length):		# Verteile gleichmäßig Stationen auf dem Fließband. Falls die unregelmäßig sind kommt der Fluss ins Stocken, und im schlimmsten Fall kommen die Produkte gar nicht erst am Ende an.
@@ -67,7 +114,6 @@
 			handles[x].setFrom(p2_startx + p2_geolength*x/(p2_length-1),1,7)
 			handles[x].setDir(-1,0,0)
 	
-
 	
 	VR.ptool.update()
 	
@@ -83,13 +129,10 @@
 		r.addChild(VR.cardbox)
 		r.addChild(VR.product)
 	
-	VR.log_containers = []
-
-
 	capacity0 = 1000 # ins Lager passt viel
 	capacity1 = 10	# ist grade erstmal weniger, damit alles übersichtlich bleibt. Kann später gern mehr werden
-	capacity2 = 10
-	capacity3 = 1000
+	capacity2 = 10 # Hier steht am Ende eh keine Box, es wird alles direkt aufs Fließband gelegt. Kapazität sollte egal sein.
+	capacity3 = 1000 # Endlager
 
 	c0 = VR.log.addContainer(VR.cardbox)
 	c0.setCapacity(capacity0)
@@ -99,6 +142,8 @@
 	c2.setCapacity(capacity2)
 	c3 = VR.log.addContainer(VR.cardbox)
 	c3.setCapacity(capacity3)
+
+	VR.containers = [c0,c1,c2,c3]
 
 	speed0 = 0.8 # Geschwindigkeit erstes Fließband
 	speed1 = 0.4 # "Geschwindigkeit" durch Roboter-Fräs-Station
@@ -120,7 +165,6 @@
 		nodes.append(n)
 	nodes[0].set(c0)
 	nodes[-1].set(c1)
-	VR.log_containers.append([c0,c1])
 	VR.log.fillContainer(c0,capacity0,VR.product) #TODO (Alisa): Rausfinden, wie man regeln kann, dass nur ein bestimmter Anteil des aktuellen Füllstands losgeschickt wird.
 
 	t = VR.log.addTransporter('Product')
@@ -129,7 +173,6 @@
 
 	
 	#Pfad 1:
-
 	p1 = VR.paths[1]
 	lp = VR.log.addPath()
 	n1 = None
@@ -144,12 +187,10 @@
 		nodes.append(n)
 	nodes[0].set(c1)
 	nodes[-1].set(c2)
-	VR.log_containers.append([c2])
 
 	t = VR.log.addTransporter('Product')
 	t.setPath(lp)
 	t.setSpeed(speed1)
-
 
 
 	#Pfad 2:
@@ -157,6 +198,7 @@
 	lp = VR.log.addPath()
 	n2 = None
 	nodes = []
+	
 	for h in VR.ptool.getHandles(p2):
 		n = VR.lnet.addNodes(1,n2)
 		nodes.append(n)
@@ -166,42 +208,11 @@
 		nodes.append(n)
 	nodes[0].set(c2)
 	nodes[-1].set(c3)
-	VR.log_containers.append([c3]) # TODO (Alisa): Die Appends kann man wahrscheinlich auch alle zusammenwerfen.
 		
 	t = VR.log.addTransporter('Product')
 	t.setPath(lp)
 	t.setSpeed(speed2)
 
-	return	
-
-
-
-
-#	for p in VR.ptool.getPaths():
-	p = VR.paths[0]
-	lp = VR.log.addPath()
-	n0 = None
-	nodes = []
-	for h in VR.ptool.getHandles(p):
-		n = VR.lnet.addNodes(1, n0)
-		nodes.append(n)
-		n.setTransform(h)
-		n0 = n
-		lp.add(n)
-		nodes.append(n)
-	
-	c0 = VR.log.addContainer(VR.cardbox)
-	c0.setCapacity(capacity)
-	c1 = VR.log.addContainer(VR.cardbox)
-	c1.setCapacity(capacity)
-	nodes[0].set(c0)
-	nodes[-1].set(c1)
-	VR.log_containers.append([c0,c1])
-	VR.log.fillContainer(c0, capacity, VR.product)
-			# set transporters
-	t = VR.log.addTransporter('Product')
-	t.setPath(lp)
-	t.setSpeed(speed)
 </core>
     </Script>
     <Script name_suffix="0" base_name="initScene" name_space="__script__" type="Python" mobile="">
@@ -294,11 +305,39 @@
 	if hasattr(VR, 'log'):
 		VR.log.update()
 		
-		#for c in VR.log_containers:
-			#if c[0].isEmpty():
-			#	VR.log.fillContainer(c[0], c[0].getCapacity(), VR.product)
-			#if c[1].isFull():
-			#	c[1].clear()
+		# Aktualisiere Anzeigetafeln			
+		if hasattr(VR, 'lagerlabel'):
+			lagercount = VR.containers[0].getCount()
+			text = 'Lager: ' + str(lagercount) + " / " + str(VR.containers[0].getCapacity())
+			VR.lagerlabel.setText(text)
+			VR.lagerlabel.setSize(len(text)*0.15,0.3)
+			
+			
+		if hasattr(VR, 'container1_label'):
+			container1_count = VR.containers[1].getCount()
+			text1 = 'Füllstand: ' + str(container1_count) + " / " + str(VR.containers[1].getCapacity())
+			VR.container1_label.setText(text1)
+			VR.container1_label.setSize(len(text1)*0.1,0.2)
+			
+		if hasattr(VR, 'fertiglabel'):
+			fertig_count = VR.containers[3].getCount()
+			text2 = 'Fertig: ' + str(fertig_count)
+			VR.fertiglabel.setText(text2)
+			VR.fertiglabel.setSize(len(text2)*0.15,0.3)
+		
+
+		
+	
+	# Wir kriegen wahrsch noch für die Container Notifications immer wenn ein neues Teil reinfällt,
+	# brauchen wir für ne bessere Anzeige, wie viele Produkte fertig sind / durchgelaufen sind,
+	# ohne auf die Anzeige fürs hintere Lager angewiesen zu sein oder komisch rumrechnen zu müssen
+	# ist bestimmt auch für andere Sachen nützlich.
+	# Wird in etwa so aussehen:
+	
+	#def f(e):
+	#	print e
+	#
+	#container.addNotification(f)
 </core>
       <trig type="on_timeout" dev="" state="Pressed" param="50" key="0" name_suffix="1" base_name="trigger" name_space="__global__"/>
     </Script>
@@ -338,6 +377,52 @@
 	
 	return VR.chrome
 </core>
+    </Script>
+    <Script name_suffix="0" base_name="platzhalter_fraese" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#erzeugt einen quader, wo später die fräse steht. macht sonst nichts.
+	
+	mcarboard = VR.Material('mcarboard')
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	tg.add('Perlin', 1, [0.3,0.3,0.3], [0.5,0.5,0.5])
+	mcarboard.setTexture(tg.compose(0))
+	
+	VR.rob = VR.Geometry('Roboter Platzhalter')
+	VR.rob.setPrimitive('Box 1 3 3 1')
+	VR.rob.setMaterial(mcarboard)
+	
+	VR.rob.setFrom(-6,1,4)
+	
+	r = VR.getRoot().find('Headlight')
+	r.addChild(VR.rob)
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="3" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="platzhalter_roboter" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#erzeugt einen quader, wo später der roboter steht. macht sonst nichts.
+	
+	mcarboard = VR.Material('mcarboard')
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	tg.add('Perlin', 1, [0.7,0.3,0.1], [0.8,0.4,0.1])
+	mcarboard.setTexture(tg.compose(0))
+	
+	VR.rob = VR.Geometry('Roboter Platzhalter')
+	VR.rob.setPrimitive('Box 1 1 1 1')
+	VR.rob.setMaterial(mcarboard)
+	
+	VR.rob.setFrom(-4,1,4)
+	
+	r = VR.getRoot().find('Headlight')
+	r.addChild(VR.rob)
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
     </Script>
   </Scripts>
   <Sockets/>
