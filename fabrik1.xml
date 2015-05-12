@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene name_suffix="0" base_name="Logistics" name_space="Scene">
+  <Objects>
+    <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
+      <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-5.17378 1.203 5.28784" at="4.01791 1.203 -2.11379" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+          <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
+        </Object>
+      </Object>
+    </Object>
+  </Objects>
+  <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
+  <Scripts>
+    <Script name_suffix="0" base_name="initLogistics" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	r = VR.getRoot().find('Headlight')
+
+	# ------------ paths -----------------
+
+	#Pfade: (a,1,1) zu (b,1,1): Fließband zu erster box
+	# (b,1,1) zu (b,1,c): erste Box zu zweiter Box (kein Fließband, nur zum Produktflussmodellieren
+	# (b,1,c) zu (d,1,c): Fließband ins Lager.
+	# Ist grade am Einfachsten, die Fließbänder erstmal geradeaus parallel zur x-Achse laufen zu lassen.
+	
+	p0_length = 10 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
+	p1_length = 3 #sollte 3 bleiben, damit das neue Werkstück erst kommt, wenn der Rohling davor fertig ist.
+	p2_length = 5 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
+
+	p0_startx = 8.0
+	p0_endx = -4.0
+
+	p2_startx = -4.0
+	p2_endx = 8.0
+
+	if not hasattr(VR, 'ptool'): #Alisa ist sich nicht sicher, was in dieser Schleife passiert. Ist aus logistic.xml übernommen.
+		VR.ptool = VR.Pathtool()
+	
+		VR.paths = [p0_length,p1_length,p2_length] # min 2
+		for i,N in enumerate(VR.paths):
+			VR.paths[i] = VR.ptool.newPath(None, r)
+			for j in range(N-2):
+				VR.ptool.extrude(None, VR.paths[i])
+			
+	# Pfad vom Lager zur ersten Kiste
+	if len(VR.paths) &gt;= 1:
+		handles = VR.ptool.getHandles(VR.paths[0])
+		p0_geolength = p0_endx - p0_startx
+		for x in range (0,p0_length):		# Verteile gleichmäßig Stationen auf dem Fließband. Falls die unregelmäßig sind kommt der Fluss ins Stocken, und im schlimmsten Fall kommen die Produkte gar nicht erst am Ende an.
+			handles[x].setFrom(p0_startx + p0_geolength*x/(p0_length-1),1,1)
+			handles[x].setDir(0.1,0,0)
+
+	# "Pfad" von erster zu zweiter Kiste
+	if len(VR.paths) &gt;= 2:
+		handles = VR.ptool.getHandles(VR.paths[1])
+		handles[0].setFrom(-4, 1, 1)
+		handles[1].setFrom(-4, 1, 6.9)
+		handles[1].setDir(0,0,-1)
+		handles[2].setFrom(-4, 1, 7)
+	
+	# Pfad von zweiter Kiste ins Lager
+	if len(VR.paths) &gt;=3:
+		handles = VR.ptool.getHandles(VR.paths[2])
+		p2_geolength = p2_endx - p2_startx
+		for x in range (0,p2_length):
+			handles[x].setFrom(p2_startx + p2_geolength*x/(p2_length-1),1,7)
+			handles[x].setDir(-1,0,0)
+	
+
+	
+	VR.ptool.update()
+	
+
+	# Bis hierher werden nur die Wege mit den Haltepunkten erstellt, die Container sind noch nicht da.
+
+
+	# ------------ logistics -------------
+	
+	if not hasattr(VR, 'log'):
+		VR.log = VR.Factory.Logistics()
+		VR.lnet = VR.log.addNetwork()
+		r.addChild(VR.cardbox)
+		r.addChild(VR.product)
+	
+	VR.log_containers = []
+
+
+	capacity0 = 1000 # ins Lager passt viel
+	capacity1 = 10	# ist grade erstmal weniger, damit alles übersichtlich bleibt. Kann später gern mehr werden
+	capacity2 = 10
+	capacity3 = 1000
+
+	c0 = VR.log.addContainer(VR.cardbox)
+	c0.setCapacity(capacity0)
+	c1 = VR.log.addContainer(VR.cardbox)
+	c1.setCapacity(capacity1)
+	c2 = VR.log.addContainer(VR.cardbox)
+	c2.setCapacity(capacity2)
+	c3 = VR.log.addContainer(VR.cardbox)
+	c3.setCapacity(capacity3)
+
+	speed0 = 0.8 # Geschwindigkeit erstes Fließband
+	speed1 = 0.4 # "Geschwindigkeit" durch Roboter-Fräs-Station
+	speed2 = 0.8 # Geschwindigkeit zweites Fließband
+	
+
+	# Pfad 0:
+	p0 = VR.paths[0]
+	lp = VR.log.addPath()
+	n0 = None
+	nodes = []
+	
+	for h in VR.ptool.getHandles(p0):
+		n = VR.lnet.addNodes(1,n0)
+		nodes.append(n)
+		n.setTransform(h)
+		n0 = n
+		lp.add(n)
+		nodes.append(n)
+	nodes[0].set(c0)
+	nodes[-1].set(c1)
+	VR.log_containers.append([c0,c1])
+	VR.log.fillContainer(c0,capacity0,VR.product) #TODO (Alisa): Rausfinden, wie man regeln kann, dass nur ein bestimmter Anteil des aktuellen Füllstands losgeschickt wird.
+
+	t = VR.log.addTransporter('Product')
+	t.setPath(lp)
+	t.setSpeed(speed0)
+
+	
+	#Pfad 1:
+
+	p1 = VR.paths[1]
+	lp = VR.log.addPath()
+	n1 = None
+	nodes = []
+	
+	for h in VR.ptool.getHandles(p1):
+		n = VR.lnet.addNodes(1,n1)
+		nodes.append(n)
+		n.setTransform(h)
+		n1 = n
+		lp.add(n)
+		nodes.append(n)
+	nodes[0].set(c1)
+	nodes[-1].set(c2)
+	VR.log_containers.append([c2])
+
+	t = VR.log.addTransporter('Product')
+	t.setPath(lp)
+	t.setSpeed(speed1)
+
+
+
+	#Pfad 2:
+	p2 = VR.paths[2]
+	lp = VR.log.addPath()
+	n2 = None
+	nodes = []
+	for h in VR.ptool.getHandles(p2):
+		n = VR.lnet.addNodes(1,n2)
+		nodes.append(n)
+		n.setTransform(h)
+		n2 = n
+		lp.add(n)
+		nodes.append(n)
+	nodes[0].set(c2)
+	nodes[-1].set(c3)
+	VR.log_containers.append([c3]) # TODO (Alisa): Die Appends kann man wahrscheinlich auch alle zusammenwerfen.
+		
+	t = VR.log.addTransporter('Product')
+	t.setPath(lp)
+	t.setSpeed(speed2)
+
+	return	
+
+
+
+
+#	for p in VR.ptool.getPaths():
+	p = VR.paths[0]
+	lp = VR.log.addPath()
+	n0 = None
+	nodes = []
+	for h in VR.ptool.getHandles(p):
+		n = VR.lnet.addNodes(1, n0)
+		nodes.append(n)
+		n.setTransform(h)
+		n0 = n
+		lp.add(n)
+		nodes.append(n)
+	
+	c0 = VR.log.addContainer(VR.cardbox)
+	c0.setCapacity(capacity)
+	c1 = VR.log.addContainer(VR.cardbox)
+	c1.setCapacity(capacity)
+	nodes[0].set(c0)
+	nodes[-1].set(c1)
+	VR.log_containers.append([c0,c1])
+	VR.log.fillContainer(c0, capacity, VR.product)
+			# set transporters
+	t = VR.log.addTransporter('Product')
+	t.setPath(lp)
+	t.setSpeed(speed)
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="initScene" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	# materials
+	
+	mbricks = VR.Material('mbricks')
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	cp = 0.95
+	tg.add('Perlin', 1, [cp,cp,cp], [1,1,1])
+	tg.add('Perlin', 1.0/4, [cp,cp,cp], [1,1,1])
+	tg.add('Bricks', 1, [0.4,0.4,0.4], [1,1,1])
+	mbricks.setTexture(tg.compose(0))
+	
+	mcarboard = VR.Material('mcarboard')
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	tg.add('Perlin', 1, [0.5,0.3,0.1], [0.6,0.4,0.1])
+	tg.add('Perlin', 1.0/4, [0.5,0.3,0.1], [0.7,0.6,0.2])
+	mcarboard.setTexture(tg.compose(0))
+	
+	def setMetalic(mat, a,d,sp,sh):
+		mat.setDiffuse([d,d,d])
+		mat.setSpecular([sp,sp,sp])
+		mat.setAmbient([a,a,a])
+		mat.setShininess(128*sh)
+	mchrome = VR.Material('mchrome')
+	setMetalic(mchrome, 0.25, 0.4, 0.77, 0.6)
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	cp = 0.6
+	tg.add('Perlin', 1.0/2, [cp,cp,cp], [1,1,1])
+	tg.add('Perlin', 1.0/8, [cp,cp,cp], [1,1,1])
+	mchrome.setTexture(tg.compose(0))
+	mchrome.addPass()
+	setMetalic(mchrome, 0.25, 0.9, 1, 0.6)
+	mchrome.setTexture(tg.compose(1))
+	mchrome.setTextureType('SphereEnv')
+	mchrome.setTransparency(0.4)
+	
+	# geometries
+	
+	floor = VR.Geometry('floor')
+	floor.setPrimitive('Plane 20 20 20 20')
+	floor.setMaterial(mbricks)
+	floor.setTexCoords(floor.getPositions())
+	floor.setPose([0,0,0], [0,1,0], [1,0,0])
+	root = VR.getRoot().find('Headlight')
+	root.addChild(floor)
+	
+	VR.cardbox = VR.Geometry('cardbox')
+	VR.cardbox.setPrimitive('Box 1 1 1 1')
+	VR.cardbox.setMaterial(mcarboard)
+	VR.cardbox.hide()
+	
+	t1 = VR.Geometry('t1')
+	t2 = VR.Geometry('t2')
+	t1.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
+	t2.setPrimitive('Box 0.12 0.1 0.2 1 1 1')
+	#t2.setPrimitive('Gear 0.1 0.3 0.1 32 0.3 0')
+	t2.setFrom(0,0.05,0.02)
+	VR.product = VR.CSGGeometry('product')
+	VR.product.addChild(t1)
+	VR.product.addChild(t2)
+	VR.product.setOperation('subtract')
+	root.addChild(VR.product)
+	VR.product.setEditMode(0)
+	VR.product.setMaterial(mchrome)
+	VR.product.setTexCoords(VR.product.getPositions())
+	VR.product.hide()
+	
+	test = VR.product.duplicate()
+		
+</core>
+    </Script>
+    <Script name_suffix="1" base_name="init" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	VR.initScene()
+	VR.initLogistics()
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="7" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="logistics_update" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	if hasattr(VR, 'log'):
+		VR.log.update()
+		
+		#for c in VR.log_containers:
+			#if c[0].isEmpty():
+			#	VR.log.fillContainer(c[0], c[0].getCapacity(), VR.product)
+			#if c[1].isFull():
+			#	c[1].clear()
+</core>
+      <trig type="on_timeout" dev="" state="Pressed" param="50" key="0" name_suffix="1" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="mat_Chrome" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#if hasattr(VR, 'chrome'):
+	#	return VR.chrome
+	
+	#http://devernay.free.fr/cours/opengl/materials.html
+	
+	def setMetalic(mat, a,d,sp,sh):
+		mat.setDiffuse([d,d,d])
+		mat.setSpecular([sp,sp,sp])
+		mat.setAmbient([a,a,a])
+		mat.setShininess(128*sh)	
+	
+	VR.chrome = VR.Material('Chrome')
+	setMetalic(VR.chrome, 0.25, 0.4, 0.77, 0.6) #chrome
+	#VR.chrome.setDiffuse([d,d,d])
+	
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	cp = 0.6
+	
+	tg.add('Perlin', 1.0/2, [cp,cp,cp], [1,1,1])
+	tg.add('Perlin', 1.0/8, [cp,cp,cp], [1,1,1])
+	VR.chrome.setTexture(tg.compose(0))
+	#return VR.chrome
+	
+	VR.chrome.addPass()
+	setMetalic(VR.chrome, 0.25, 0.9, 1, 0.6)
+	VR.chrome.setTexture('metal5.jpg')
+	VR.chrome.setTextureType('SphereEnv')
+	VR.chrome.setTransparency(0.4)
+	
+	return VR.chrome
+</core>
+    </Script>
+  </Scripts>
+  <Sockets/>
+  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Navigation active="Orbit"/>
+  <Materials/>
+</Scene>
