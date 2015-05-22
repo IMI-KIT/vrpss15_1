@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-5.44003 3.46862 -1.40954" at="-2.37366 0 7.17876" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-12.6801 6.75858 -2.3877" at="-6.5 0.323499 3.10157" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -41,6 +41,18 @@
 	VR.container1_label.setFrom(-4.5,2,1)
 	VR.container1_label.setDir(1,0,0)
 	
+	
+	# Füllstand zweite Box - die sollte am ende immer ziemlich leer sein, da alles direkt weiter ins Lager läuft
+	if not hasattr(VR, 'container2_label'):
+		VR.container2_label= VR.Sprite('fuellstand2')
+		mat22 = VR.Material('mymat22') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
+		VR.container2_label.setMaterial(mat22)
+		r.addChild(VR.container2_label)
+	
+	VR.container2_label.setFrom(-4.5,2,7)
+	VR.container2_label.setDir(1,0,0)
+	
+	
 	# Angekommen zur Weiterverarbeitung
 	if not hasattr(VR, 'weiterverarbeitung_label'):
 		VR.fertiglabel = VR.Sprite('fertig')
@@ -73,7 +85,6 @@
 	# Ist grade am Einfachsten, die Fließbänder erstmal geradeaus parallel zur x-Achse laufen zu lassen.
 	
 	p0_length = 10 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
-	p1_length = 3 #sollte 3 bleiben, damit das neue Werkstück erst kommt, wenn der Rohling davor fertig ist.
 	p2_length = 5 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
 
 	p0_startx = 8.0
@@ -84,35 +95,26 @@
 
 	if not hasattr(VR, 'ptool'): 
 		VR.ptool = VR.Pathtool()	
-		VR.paths = [p0_length,p1_length,p2_length] # min 2
+		VR.paths = [p0_length,p2_length] # min 2
 		for i,N in enumerate(VR.paths):
 			VR.paths[i] = VR.ptool.newPath(None, r)
 			for j in range(N-2):
 				VR.ptool.extrude(None, VR.paths[i])
 			
 	# Pfad vom Lager zur ersten Kiste
-	if len(VR.paths) &gt;= 1: #TODO (Alisa): Die Überprüfung kann raus.
-		handles = VR.ptool.getHandles(VR.paths[0])
-		p0_geolength = p0_endx - p0_startx
-		for x in range (0,p0_length):		# Verteile gleichmäßig Stationen auf dem Fließband. Falls die unregelmäßig sind kommt der Fluss ins Stocken, und im schlimmsten Fall kommen die Produkte gar nicht erst am Ende an.
-			handles[x].setFrom(p0_startx + p0_geolength*x/(p0_length-1),1,1)
-			handles[x].setDir(0.1,0,0)
+	handles = VR.ptool.getHandles(VR.paths[0])
+	p0_geolength = p0_endx - p0_startx
+	for x in range (0,p0_length):		# Verteile gleichmäßig Stationen auf dem Fließband. Falls die unregelmäßig sind kommt der Fluss ins Stocken, und im schlimmsten Fall kommen die Produkte gar nicht erst am Ende an.
+		handles[x].setFrom(p0_startx + p0_geolength*x/(p0_length-1),1,1)
+		handles[x].setDir(0.1,0,0)
 
-	# "Pfad" von erster zu zweiter Kiste
-	if len(VR.paths) &gt;= 2:
-		handles = VR.ptool.getHandles(VR.paths[1])
-		handles[0].setFrom(-4, 1, 1)
-		handles[1].setFrom(-4, 1, 6.9)
-		handles[1].setDir(0,0,-1)
-		handles[2].setFrom(-4, 1, 7)
-	
+
 	# Pfad von zweiter Kiste ins Lager
-	if len(VR.paths) &gt;=3:
-		handles = VR.ptool.getHandles(VR.paths[2])
-		p2_geolength = p2_endx - p2_startx
-		for x in range (0,p2_length):
-			handles[x].setFrom(p2_startx + p2_geolength*x/(p2_length-1),1,7)
-			handles[x].setDir(-1,0,0)
+	handles = VR.ptool.getHandles(VR.paths[1])
+	p2_geolength = p2_endx - p2_startx
+	for x in range (0,p2_length):
+		handles[x].setFrom(p2_startx + p2_geolength*x/(p2_length-1),1,7)
+		handles[x].setDir(-1,0,0)
 	
 	
 	VR.ptool.update()
@@ -171,30 +173,9 @@
 	t.setPath(lp)
 	t.setSpeed(speed0)
 
-	
-	#Pfad 1:
-	p1 = VR.paths[1]
-	lp = VR.log.addPath()
-	n1 = None
-	nodes = []
-	
-	for h in VR.ptool.getHandles(p1):
-		n = VR.lnet.addNodes(1,n1)
-		nodes.append(n)
-		n.setTransform(h)
-		n1 = n
-		lp.add(n)
-		nodes.append(n)
-	nodes[0].set(c1)
-	nodes[-1].set(c2)
-
-	t = VR.log.addTransporter('Product')
-	t.setPath(lp)
-	t.setSpeed(speed1)
-
 
 	#Pfad 2:
-	p2 = VR.paths[2]
+	p2 = VR.paths[1]
 	lp = VR.log.addPath()
 	n2 = None
 	nodes = []
@@ -319,11 +300,19 @@
 			VR.container1_label.setText(text1)
 			VR.container1_label.setSize(len(text1)*0.1,0.2)
 			
+			
+		if hasattr(VR, 'container2_label'):
+			container2_count = VR.containers[2].getCount()
+			text2 = 'Füllstand: ' + str(container2_count) + " / " + str(VR.containers[2].getCapacity())
+			VR.container2_label.setText(text2)
+			VR.container2_label.setSize(len(text2)*0.1,0.2)
+			
+			
 		if hasattr(VR, 'fertiglabel'):
 			fertig_count = VR.containers[3].getCount()
-			text2 = 'Fertig: ' + str(fertig_count)
-			VR.fertiglabel.setText(text2)
-			VR.fertiglabel.setSize(len(text2)*0.15,0.3)
+			textLager = 'Fertig: ' + str(fertig_count)
+			VR.fertiglabel.setText(textLager)
+			VR.fertiglabel.setSize(len(textLager)*0.15,0.3)
 		
 
 		
@@ -423,6 +412,44 @@
 	r.addChild(VR.rob)
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="roboter_pickandplace" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import signal, sys
+	
+		
+	c1 = VR.containers[1]
+	c2 = VR.containers[2]
+	
+	bearbeitungszeit_sekunden = 3
+	
+	if not hasattr(VR, 'teilInBearbeitung'):
+		VR.teilInBearbeitung = False
+	
+	#Das sollten wir später ersetzen durch nen Aufruf von sonstwo
+	#wenn die Animation ("Simulation"...) fertig ist
+	# fügt das (im moment gleiche) Objekt in den 2. Container
+	# Wir müssen noch dran denken dass wir das objekt ersetzen
+	def handler(signum, frame):
+		print "Objekt empfangen. Hält Obj:" + str(VR.teilInBearbeitung)
+		VR.teilInBearbeitung = False
+		c2.add(objekt)
+	
+	
+	if not(c1.isEmpty() or VR.teilInBearbeitung):
+		objekt = c1.get()
+		#c2.add(objekt)
+		signal.signal(signal.SIGALRM, handler)
+		signal.setitimer(signal.ITIMER_REAL,bearbeitungszeit_sekunden)
+		print "Signal gesendet" + str(VR.teilInBearbeitung)
+		VR.teilInBearbeitung = True
+	elif (VR.teilInBearbeitung):
+		print "Roboter hält schon Objekt, nimm kein neues"
+		
+	
+</core>
+      <trig type="on_timeout" dev="" state="Pressed" param="500" key="0" name_suffix="4" base_name="trigger" name_space="__global__"/>
     </Script>
   </Scripts>
   <Sockets/>
