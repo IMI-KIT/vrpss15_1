@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-12.6801 6.75858 -2.3877" at="-6.5 0.323499 3.10157" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-14.4414 6.48229 0.145409" at="-6.5 0.323499 3.10157" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -11,6 +11,95 @@
   </Objects>
   <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
   <Scripts>
+    <Script name_suffix="0" base_name="FraeseControl" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	class FraeseController:
+		def __init__(self):
+			#geometrie laden?
+			print "initialisiere Fraesenklasse"
+			
+		#rohling: Ein Geometriedings oder so
+		# dateipfad zum modell oder so, wie ihr wollt.
+		def startFraese(rohling,modell):
+			print "Starte Fräsvorgang"
+			#tür zu
+			
+			#fräsen
+			
+			#tür auf
+			
+			#fertig - callback an Logistik
+			objekt = rohling # rohling bitte durch fertige felge ersetzen
+			print "Fraesevorgang done, call back Logistik"
+			VR.logisticController.fraeseDone(objekt)
+		
+		
+		
+		
+
+	VR.fraeseController = FraeseController()
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="8" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="LogistikControl" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	class LogisticController:
+		def __init__(self):
+			print "initialisiere Logistik"
+		
+		def moveDone(objekt):
+			print "moveDone called"
+		def fraeseDone(objekt):
+			print "moveDone called"
+
+		
+		
+	VR.logisticController = LogisticController()
+		
+		
+
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="5" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="RobotControl" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	class RobotController:
+	
+		def __init__(self):
+			#geometrie laden
+			print "initialisiere Roboterklasse"
+
+		#Punkte: In mm relativ zu Roboter-Ursprung Format [x,y,z]
+		#Richtung: Von da aus den Punkt anfahren
+		#Objekt: Rohling / Felge
+		def move(startpunkt,startrichtung,endpunkt,endrichtung,objekt):
+			print "move called"
+			# Bewegung
+		
+			# Felge nehmen
+		
+		# Felge ablegen
+		
+			# In neutrale Ausgangsstellung zurück
+		
+			#fertig
+			print "Move done, callback Logistik"
+			VR.logisticController.moveDone(objekt)
+		
+		
+		
+		
+		
+
+	VR.robotController = RobotController()
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="6" base_name="trigger" name_space="__global__"/>
+    </Script>
     <Script name_suffix="0" base_name="anzeigetafeln" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
@@ -365,6 +454,23 @@
 	VR.chrome.setTransparency(0.4)
 	
 	return VR.chrome
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="monitorControls" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	k = dev.getKey()
+	
+	s = ''
+	if k == 101:
+		s = 'http://www.imi.kit.edu'
+	if k == 102:
+		s = 'http://www.kit.de'
+	if k == 103:
+		s = 'http://www.google.de'
+	
+	if hasattr(VR, 'web'):
+		VR.web.open(s)
 </core>
     </Script>
     <Script name_suffix="0" base_name="platzhalter_fraese" name_space="__script__" type="Python" mobile="">
