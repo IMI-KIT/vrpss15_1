@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene name_suffix="0" base_name="tes" name_space="Scene">
+  <Objects>
+    <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
+      <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-6.46814 5.8547 0.845832" at="-0.205547 2.3146 1.45435" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+          <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
+        </Object>
+      </Object>
+    </Object>
+  </Objects>
+  <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
+  <Scripts>
+    <Script name_suffix="0" base_name="Init" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#path = VR.openFileDialog(True, 'Load', 'title', '/home/vrpraktikum', '*.*')
+	#print(path)
+	
+	#loading objects
+	#rob_root = VR.loadGeometry('/home/vrpraktikum/vr_fabrik/test_rob.dae', False)
+	rob_root = VR.loadGeometry('test_rob.dae', False)
+	light = VR.getRoot().find('Headlight')
+	light.addChild(rob_root)
+	
+	#create child tree
+	base = VR.getRoot().find('b')
+	g1 = VR.getRoot().find('g1')
+	a1 = VR.getRoot().find('a1')
+	g2 = VR.getRoot().find('g2')
+	a2 = VR.getRoot().find('a2')
+	
+	
+	
+	base.addChild(g1)
+	g1.addChild(a1)
+	a1.addChild(g2)
+	g2.addChild(a2)
+	
+	a1.translate(0,0,-1)
+	g2.translate(0,0,-2)
+	a2.translate(0,0,-3)
+	
+	
+	pass
+</core>
+      <trig type="none" dev="" state="Pressed" param="" key="0" name_suffix="4" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="1" base_name="Script" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	tor = VR.getRoot().find('b')
+	tor.translate(0,0,1)
+	pass
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="pick_torus" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	a2 = VR.getRoot().find('a2')
+	torus = VR.getRoot().find('Torus')
+	
+	a2.addChild(torus)
+	
+	pass
+</core>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="112" name_suffix="0" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="rel_torus" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	tor = VR.getRoot().find('Torus')
+	headlight = VR.getRoot().find('Headlight')
+	
+	
+	headlight.addChild(tor)
+	
+	pass
+</core>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="114" name_suffix="3" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="roate_b_8" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	base = VR.getRoot().find('b')
+	base.rotate(0,0,1,rot * Pi)
+	pass
+</core>
+      <arg type="float" value="-0.25" name_suffix="0" base_name="rot" name_space="roate_b_8"/>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="56" name_suffix="7" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="roate_b_9" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	base = VR.getRoot().find('b')
+	base.rotate(0,0,1,rot * Pi)
+	pass
+</core>
+      <arg type="float" value="0.25" name_suffix="0" base_name="rot" name_space="roate_b_9"/>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="57" name_suffix="8" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotate_g1_1" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	g1 = VR.getRoot().find('g1')
+	g1.rotate(1,0,0,rot * Pi)
+	
+
+	
+	pass
+</core>
+      <arg type="float" value="-0.25" name_suffix="0" base_name="rot" name_space="rotate_g1_1"/>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="49" name_suffix="1" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotate_g1_2" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	g1 = VR.getRoot().find('g1')
+	g1.rotate(1,0,0,rot * Pi)
+</core>
+      <arg type="float" value="0.25" name_suffix="0" base_name="rot" name_space="rotate_g1_2"/>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="50" name_suffix="5" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotate_g2_3" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	g2= VR.getRoot().find('g2')
+	g2.rotate(1,0,0, rot * Pi)
+	pass
+</core>
+      <arg type="float" value="-0.25" name_suffix="0" base_name="rot" name_space="rotate_g2_3"/>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="51" name_suffix="2" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotate_g2_4" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	g2= VR.getRoot().find('g2')
+	g2.rotate(1,0,0, rot * Pi)
+	pass
+</core>
+      <arg type="float" value="0.25" name_suffix="0" base_name="rot" name_space="rotate_g2_4"/>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="52" name_suffix="6" base_name="trigger" name_space="__global__"/>
+    </Script>
+  </Scripts>
+  <Sockets/>
+  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Navigation active="Orbit"/>
+  <Materials/>
+</Scene>
