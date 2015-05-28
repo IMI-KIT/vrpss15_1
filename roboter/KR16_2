@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene name_suffix="0" base_name="KR" name_space="Scene">
+  <Objects>
+    <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
+      <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="12.9957 0.59523 16.985" at="-0.755262 -2.49218 0.346426" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+          <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
+        </Object>
+      </Object>
+    </Object>
+  </Objects>
+  <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
+  <Scripts>
+    <Script name_suffix="0" base_name="Init" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	if hasattr(VR, 'robot'):
+		VR.robot.destroy()
+	VR.robot = VR.loadGeometry('Alle_teile.dae', True)
+	light = VR.getRoot().find('Headlight')
+	light.addChild(VR.robot)
+	
+	
+	
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="rotation_Arm1" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	Motor_unten = VR.getRoot().find('Motor_unten')
+	Motor_unten.rotate(0,0,1, r_angel * Pi)
+	pass
+</core>
+      <arg type="float" value="0.25" name_suffix="0" base_name="r_angel" name_space="rotation_Arm1"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotation_Arm2" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	Arm2 = VR.getRoot().find('Arm2')
+	Arm2.rotate(0,1,0, r_angel * Pi)
+	pass
+</core>
+      <arg type="float" value="0.25" name_suffix="0" base_name="r_angel" name_space="rotation_Arm2"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotation_Arm3" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	Motor_oben = VR.getRoot().find('Motor_oben')
+	Motor_oben.rotate(0,1,0, r_angel * Pi)
+	pass
+</core>
+      <arg type="float" value="0.25" name_suffix="0" base_name="r_angel" name_space="rotation_Arm3"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotation_Arm4" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	Arm4 = VR.getRoot().find('Arm4')
+	Arm4.rotate(1,0,0, -r_angel * Pi)
+	pass
+</core>
+      <arg type="float" value="0.25" name_suffix="0" base_name="r_angel" name_space="rotation_Arm4"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotation_Arm5" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	
+	Arm5 = VR.getRoot().find('Arm50')
+	Arm5.rotate(0,1,0, -r_angel * Pi)
+	pass
+</core>
+      <arg type="float" value="0.25" name_suffix="0" base_name="r_angel" name_space="rotation_Arm5"/>
+    </Script>
+    <Script name_suffix="0" base_name="rotation_test" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	
+	Pi = math.pi
+	#VR.rotation_Arm3(0.1)
+	
+	stand = VR.getRoot().find('Arm_links')
+	stand.rotate(0,0,1,1 * Pi)
+	
+	pass
+</core>
+    </Script>
+  </Scripts>
+  <Sockets/>
+  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Navigation active="Orbit"/>
+  <Materials/>
+</Scene>
