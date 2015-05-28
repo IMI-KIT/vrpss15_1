@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-14.4414 6.48229 0.145409" at="-6.5 0.323499 3.10157" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-4.1996 6.06072 -4.77541" at="-6.5 0.323499 3.10157" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -68,11 +68,22 @@
     <Script name_suffix="0" base_name="RobotControl" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
+	import math
 	class RobotController:
 	
 		def __init__(self):
 			#geometrie laden
+			
 			print "initialisiere Roboterklasse"
+			if hasattr(VR, 'robot'):
+				VR.robot.destroy()
+			VR.robot = VR.loadGeometry('Alle_teile.dae', True)
+			light = VR.getRoot().find('Headlight')
+			light.addChild(VR.robot)
+			VR.robot.rotate(1,0,0, -0.5 * math.pi)
+			VR.robot.translate(-4,0,4)
+			VR.robot.setScale(0.003,0.003,0.003)
+			
 
 		#Punkte: In mm relativ zu Roboter-Ursprung Format [x,y,z]
 		#Richtung: Von da aus den Punkt anfahren
@@ -99,6 +110,15 @@
 	VR.robotController = RobotController()
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="6" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="Script" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	Pi = math.pi
+	VR.robot.setScale(0.003,0.003,0.003)
+	pass
+</core>
     </Script>
     <Script name_suffix="0" base_name="anzeigetafeln" name_space="__script__" type="Python" mobile="">
       <core>
@@ -495,29 +515,6 @@
 	r.addChild(VR.rob)
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="3" base_name="trigger" name_space="__global__"/>
-    </Script>
-    <Script name_suffix="0" base_name="platzhalter_roboter" name_space="__script__" type="Python" mobile="">
-      <core>
-	import VR
-	
-	#erzeugt einen quader, wo später der roboter steht. macht sonst nichts.
-	
-	mcarboard = VR.Material('mcarboard')
-	tg = VR.TextureGenerator()
-	tg.setSize(50,50,50)
-	tg.add('Perlin', 1, [0.7,0.3,0.1], [0.8,0.4,0.1])
-	mcarboard.setTexture(tg.compose(0))
-	
-	VR.rob = VR.Geometry('Roboter Platzhalter')
-	VR.rob.setPrimitive('Box 1 1 1 1')
-	VR.rob.setMaterial(mcarboard)
-	
-	VR.rob.setFrom(-4,1,4)
-	
-	r = VR.getRoot().find('Headlight')
-	r.addChild(VR.rob)
-</core>
-      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="roboter_pickandplace" name_space="__script__" type="Python" mobile="">
       <core>
