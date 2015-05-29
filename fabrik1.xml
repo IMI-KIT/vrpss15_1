@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.124586 5.04894 -1.64444" at="-0.0727558 5.05313 0" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-4.72191 3.72671 -2.8416" at="0.582267 -4.76837e-07 1.61769" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -11,6 +11,24 @@
   </Objects>
   <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
   <Scripts>
+    <Script name_suffix="0" base_name="Auftrag" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	if hasattr(VR,'containers'):
+		if(VR.containers[0].isEmpty()):
+			VR.containers[0].setCapacity(anzahl)
+			VR.containers[3].setCapacity(anzahl)
+			VR.log.fillContainer(VR.containers[0],anzahl,VR.rohling)
+		else:
+			print "Container0 (Lager) ist noch nicht leer! Starte Auftrag nicht."
+		
+	
+	else:
+		print "Achtung! Container noch nicht initialisiert!"
+</core>
+      <arg type="int" value="50" name_suffix="0" base_name="anzahl" name_space="Auftrag"/>
+      <arg type="int" value="0" name_suffix="0" base_name="modell" name_space="Auftrag"/>
+    </Script>
     <Script name_suffix="0" base_name="FraeseControl" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
@@ -31,7 +49,20 @@
 			#tür auf
 			
 			#fertig - callback an Logistik
+			
+			#Felge erzeugen
 			objekt = rohling # rohling bitte durch fertige felge ersetzen
+			#if (modell == 0):#Alisa sagt: Ihr kriegt von mir nur nen int (1 oder 2), der das Modell repräsentiert.
+				# Kümmert euch bitte selbst drum, welchen Pfad oder wasauchimmer ihr dann hier haben wollt.
+				# VR.felge1 wird im Moment in initScene erstellt. duplicate() erstellt ein Duplikat davon.
+			#	objekt = VR.felge0.duplicate()
+			#elif (modell == 1):
+			#	objekt = VR.felge1.duplicate()
+			#objekt.setFrom(VR.fraese_ablegepunkt)
+			felge = VR.felge0.duplicate()
+			objekt = VR.log.addProduct(felge)
+			#print objekt
+			#objekt = felge
 			print "Fraesevorgang done, call back Logistik"
 			VR.logisticController.fraeseDone(objekt)
 		
@@ -54,9 +85,7 @@
 	VR.states_MoveFelgeToBand = 3
 	VR.currentState = VR.states_WaitForRohling
 	
-	#objekt: Sollte mindestens vom Typ Geometry sein, damit wir die Position abfragen können.
-	
-	
+		
 	class LogisticController:
 		def __init__(self):
 			print "initialisiere LogisticController"
@@ -73,6 +102,7 @@
 				# Ich hab hier sonst etwas Angst vor Endlosrekursion! Gehe lieber erstmal in Zustand Warten,
 				# Klasse mit regelmäßigem Update reagiert darauf.
 				print "Felge done. Place on band."
+				#objekt = VR.felge1
 				VR.containers[2].add(objekt)
 			else:
 				print "Achtung! moveDone called, aber Zustand passt nicht!"
@@ -182,7 +212,8 @@
 		VR.log = VR.Factory.Logistics()
 		VR.lnet = VR.log.addNetwork()
 		r.addChild(VR.cardbox)
-		r.addChild(VR.product)
+		r.addChild(VR.rohling)
+		r.addChild(VR.felge1)
 	
 	capacity0 = 1000 # ins Lager passt viel
 	capacity1 = 10	# ist grade erstmal weniger, damit alles übersichtlich bleibt. Kann später gern mehr werden
@@ -200,7 +231,6 @@
 
 	VR.containers = [c0,c1,c2,c3]
 
-	
 
 	# Pfad 0:
 	p0 = VR.paths[0]
@@ -217,11 +247,11 @@
 		nodes.append(n)
 	nodes[0].set(c0)
 	nodes[-1].set(c1)
-	VR.log.fillContainer(c0,capacity0,VR.product) #TODO (Alisa): Rausfinden, wie man regeln kann, dass nur ein bestimmter Anteil des aktuellen Füllstands losgeschickt wird.
+	#VR.log.fillContainer(c0,capacity0,VR.rohling) #TODO (Alisa): Rausfinden, wie man regeln kann, dass nur ein bestimmter Anteil des aktuellen Füllstands losgeschickt wird.
 
-	t = VR.log.addTransporter('Product')
-	t.setPath(lp)
-	t.setSpeed(speed0)
+	t1 = VR.log.addTransporter('Transporter_Rohling')
+	t1.setPath(lp)
+	t1.setSpeed(speed0)
 
 
 	#Pfad 2:
@@ -240,9 +270,9 @@
 	nodes[0].set(c2)
 	nodes[-1].set(c3)
 		
-	t = VR.log.addTransporter('Product')
-	t.setPath(lp)
-	t.setSpeed(speed2)
+	t2 = VR.log.addTransporter('Transporter_Felge')
+	t2.setPath(lp)
+	t2.setSpeed(speed2)
 
 </core>
     </Script>
@@ -280,18 +310,19 @@
 			
 		if hasattr(VR, 'fertiglabel'):
 			fertig_count = VR.containers[3].getCount()
-			textLager = 'Fertig: ' + str(fertig_count)
+			textLager = 'Fertig: ' + str(fertig_count) + " / " + str(VR.containers[3].getCapacity())
 			VR.fertiglabel.setText(textLager)
 			VR.fertiglabel.setSize(len(textLager)*0.15,0.3)
 		
 
 	
 	#=====Starte einen Roboter-Fräs-Durchlauf=====
-	if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
-		c1 = VR.containers[1]
-		objekt = c1.get()
-		bla = 1
-		VR.logisticController.start(objekt)
+	if hasattr(VR, 'containers'):
+		if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
+			c1 = VR.containers[1]
+			objekt = c1.get()
+			bla = 1
+			VR.logisticController.start(objekt)
 	
 	
 	# Wir kriegen wahrsch noch für die Container Notifications immer wenn ein neues Teil reinfällt,
@@ -468,28 +499,51 @@
 	VR.cardbox.setPrimitive('Box 1 1 1 1')
 	VR.cardbox.setMaterial(mcarboard)
 	VR.cardbox.hide()
+
 	
+	VR.rohling = VR.Geometry('tt1')
+	VR.rohling.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
+	root.addChild(VR.rohling)
+	VR.rohling.setMaterial(mchrome)#Alisa sagt: Ja ich weiß dass das das gleiche ist. ist mir grade egal.
+	VR.rohling.setTexCoords(VR.rohling.getPositions())
+	VR.rohling.hide()
+		
+	#Erstelle Geometrie für Felge0. Einzelne Instanzen können hinterher mit VR.felge0.duplicate() geholt werden.
+	u1 = VR.Geometry('u1')
+	u2 = VR.Geometry('u2')
+	u1.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
+	u2.setPrimitive('Box 0.12 0.1 0.2 1 1 1')
+	u2.setFrom(0,0.05,0.02)
+	VR.felge0 = VR.CSGGeometry('felge0')
+	VR.felge0.addChild(u1)
+	VR.felge0.addChild(u2)
+	VR.felge0.setOperation('subtract')
+	root.addChild(VR.felge0)
+	VR.felge0.setEditMode(0)
+	VR.felge0.setMaterial(mchrome)
+	VR.felge0.setTexCoords(VR.felge0.getPositions())
+	VR.felge0.hide()
+	
+	#Erstelle Geometrie für Felge1
 	t1 = VR.Geometry('t1')
 	t2 = VR.Geometry('t2')
 	t1.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
 	t2.setPrimitive('Box 0.12 0.1 0.2 1 1 1')
-	#t2.setPrimitive('Gear 0.1 0.3 0.1 32 0.3 0')
 	t2.setFrom(0,0.05,0.02)
-	#VR.product ist das, was im Moment über beide Fließbänder transportiert wird
-	#TODO (von Alisa): Wir brauchen mindestens 3 products, eins für den Rohling
-	#und 2 für die beiden Felgen die rauskommen.
-	#Die Transportpfade müssen auch entsprechend angepasst werden.
-	VR.product = VR.CSGGeometry('product')
-	VR.product.addChild(t1)
-	VR.product.addChild(t2)
-	VR.product.setOperation('subtract')
-	root.addChild(VR.product)
-	VR.product.setEditMode(0)
-	VR.product.setMaterial(mchrome)
-	VR.product.setTexCoords(VR.product.getPositions())
-	VR.product.hide()
+	VR.felge1 = VR.CSGGeometry('felge1')
+	VR.felge1.addChild(t1)
+	VR.felge1.addChild(t2)
+	VR.felge1.setOperation('subtract')
+	root.addChild(VR.felge1)
+	VR.felge1.setEditMode(0)
+	VR.felge1.setMaterial(mchrome)
+	VR.felge1.setTexCoords(VR.felge1.getPositions())
+	VR.felge1.hide()
+
 	
-	test = VR.product.duplicate()
+	
+	
+	test = VR.rohling.duplicate()
 		
 </core>
     </Script>
@@ -498,6 +552,7 @@
 	import VR
 	VR.initScene()
 	VR.LogisticsInit()
+	VR.Auftrag(10,0)#nur Übergangsweise
 	#TODO von Alisa (29.5.): Wir könnten überlegen, alle Initialisierungsskripte
 	#hierüber zu starten, sodass nur dieses Skript den on_scene_load-Trigger hat.
 	#Dann hätten wir ne bisschen bessere Kontrolle über die Reihenfolge.
