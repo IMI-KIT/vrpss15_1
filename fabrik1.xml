@@ -305,6 +305,7 @@
 	#
 	#container.addNotification(f)
 </core>
+      <trig type="on_timeout" dev="" state="Pressed" param="" key="0" name_suffix="1" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="RobotAnimation" name_space="__script__" type="Python" mobile="">
       <core>
