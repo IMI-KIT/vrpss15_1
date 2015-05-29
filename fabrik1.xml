@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.70206 8.3716 2.26431" at="-0.255964 3.97985 4.02222" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.138927 7.27999 -5.25232" at="-0.621706 0 4.49089" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -11,6 +11,49 @@
   </Objects>
   <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
   <Scripts>
+    <Script name_suffix="0" base_name="Auftrag" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	if (anzahl &lt; 1):
+		print "Kann keinen Auftrag für &lt;1 Felgen starten. Abbruch."
+		return
+	
+	if hasattr(VR,'containers'):
+		if(VR.containers[0].isEmpty()):
+			print "Starte Auftrag für " + str(anzahl) + " Felgen Typ " + str(modell)
+			VR.auftragFertig = False # Ja ich weiß dass das noch woanders gemacht wird. sicher ist sicher.
+			VR.containers[0].setCapacity(anzahl)
+			VR.containers[3].clear()
+			VR.containers[3].setCapacity(anzahl)
+			VR.log.fillContainer(VR.containers[0],anzahl,VR.rohling)
+		else:
+			print "Container0 (Lager) ist noch nicht leer! Starte Auftrag nicht."
+		
+	
+	else:
+		print "Achtung! Container noch nicht initialisiert!"
+</core>
+      <arg type="int" value="50" name_suffix="0" base_name="anzahl" name_space="Auftrag"/>
+      <arg type="int" value="0" name_suffix="0" base_name="modell" name_space="Auftrag"/>
+    </Script>
+    <Script name_suffix="0" base_name="AuftragWarteschlange" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import Queue
+	if not hasattr(VR,'auftragqueue'):
+		VR.auftragqueue = Queue.Queue() # Enthält Aufträge in der Form [Anzahl,Modell]
+	if not hasattr(VR, 'auftragFertig'):
+		VR.auftragFertig = True
+	
+	if (VR.auftragFertig and (not VR.auftragqueue.empty())):
+		print "TODO starte auftrag."
+		VR.auftragFertig = False
+		auftragtupel = VR.auftragqueue.get()
+		VR.Auftrag(auftragtupel[0],auftragtupel[1])
+</core>
+      <trig type="on_timeout" dev="" state="Pressed" param="100" key="0" name_suffix="9" base_name="trigger" name_space="__global__"/>
+    </Script>
     <Script name_suffix="0" base_name="FraeseControl" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
@@ -249,7 +292,10 @@
     <Script name_suffix="0" base_name="LogisticsUpdate" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
-	
+	if not hasattr(VR,'neuerauftrag_count'):
+		VR.neuerauftrag_count = 1
+	if not hasattr(VR, 'neuerauftrag_model'):
+		VR.neuerauftrag_model = 0
 	
 	#=====Logging=====
 	
@@ -284,6 +330,12 @@
 			VR.fertiglabel.setText(textLager)
 			VR.fertiglabel.setSize(len(textLager)*0.15,0.3)
 		
+		
+		if hasattr(VR, 'neuerAuftragLabel'):
+			textAuftrag = 'Neuer Auftrag: ' + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
+			VR.neuerAuftragLabel.setText(textAuftrag)
+			VR.neuerAuftragLabel.setSize(len(textAuftrag)*0.15,0.3)
+			
 
 	
 	#=====Starte einen Roboter-Fräs-Durchlauf=====
@@ -292,6 +344,13 @@
 		objekt = c1.get()
 		bla = 1
 		VR.logisticController.start(objekt)
+	
+	
+	#=====Prüfe, ob Auftrag beendet=====
+	if (hasattr(VR, 'containers')):
+		if (VR.containers[3].isFull()):
+			VR.auftragFertig = True
+	
 	
 	
 	# Wir kriegen wahrsch noch für die Container Notifications immer wenn ein neues Teil reinfällt,
@@ -580,6 +639,16 @@
 	VR.fertiglabel.setDir(1,0,0)
 	
 	
+	#Auftrag erstellen
+	if not hasattr(VR, 'neuerAuftragLabel'):
+		VR.neuerAuftragLabel = VR.Sprite('neuerAuftrag')
+		mat4 = VR.Material('mymatAuftrag')
+		VR.neuerAuftragLabel.setMaterial(mat4)
+		r.addChild(VR.neuerAuftragLabel)
+	VR.neuerAuftragLabel.setFrom(0,4.3,-0.5)
+	VR.neuerAuftragLabel.setDir(0,0,1)
+	
+	
 	
 	
 	
@@ -719,6 +788,14 @@
     <Script name_suffix="0" base_name="monitorControls" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
+	if not hasattr(VR,'auftragqueue'):
+		VR.auftragqueue = Queue() # Enthält Aufträge in der Form [Anzahl,Modell]
+	if not hasattr(VR,'neuerauftrag_count'):
+		VR.neuerauftrag_count = 1
+	if not hasattr(VR, 'neuerauftrag_model'):
+		VR.neuerauftrag_model = 0
+	
+	
 	#Die Klasse hat einen Trigger für das Device mobile mit -1
 	#-1 bedeutet die Klasse reagiert auf alles was iwie mit der Webseite ist
 	#Wir können dann hier kucken, welcher Knopf gedrückt wurde
@@ -729,7 +806,24 @@
 	
 	if (k == 101):
 		#So den gedrückten Knopf finden
-		print "Button 101 gedrückt"
+		if (VR.neuerauftrag_model == 0): VR.neuerauftrag_model = 1
+		else: VR.neuerauftrag_model = 0
+		print "Wähle Modell " + str(VR.neuerauftrag_model)
+	if (k == 102):
+		VR.neuerauftrag_count = VR.neuerauftrag_count + 1
+		print "Anzahl: " + str(VR.neuerauftrag_count)
+	if (k == 103):
+		if (VR.neuerauftrag_count &lt;= 1):
+			print "Ein Auftrag kann nicht weniger als eine Felge enthalten."
+		else:
+			VR.neuerauftrag_count = VR.neuerauftrag_count -1
+			print "Anzahl: " + str(VR.neuerauftrag_count)
+	if (k == 104):
+		print "Reset Anzahl und Modell. TODO starte Auftrag für " + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
+		VR.auftragqueue.put([VR.neuerauftrag_count,VR.neuerauftrag_model])
+		VR.neuerauftrag_count = 1
+		VR.neuerauftrag_model = 0
+		
 </core>
       <trig type="on_device" dev="mobile" state="Pressed" param="" key="-1" name_suffix="4" base_name="trigger" name_space="__global__"/>
     </Script>
@@ -742,7 +836,7 @@
 	
 	geo = VR.Geometry('gui')
 	#erste beiden zahlen: breite und höhe
-	geo.setPrimitive('Plane 1 1 1 1')
+	geo.setPrimitive('Plane 2 2 1 1')
 	geo.setMaterial(mat)
 	geo.setPose([0,5,0],[0,0,-1],[0,-1,0])
 	
@@ -798,16 +892,18 @@
 &lt;table&gt; 
  &lt;tr&gt;
 	&lt;td&gt;&lt;/td&gt;
-	&lt;td&gt;&lt;h1&gt;Tolle Auftragsbearbeitung&lt;/h1&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;h1&gt;Tolle Auftragsbearbeitung&lt;/h1&gt;
+	Linker Knopf: Modell. Mittlere Knöpfe: Anzahl.&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
-	&lt;td&gt;&lt;button onmousedown='get(101,1)' onmouseup='get(101,0)' type='button'&gt;Klick mich!&lt;/button&gt;&lt;/td&gt;
-	&lt;td&gt;&lt;button onmousedown='get(102,1)' onmouseup='get(102,0)' type='button'&gt;KIT&lt;/button&gt;&lt;/td&gt;
-	&lt;td&gt;&lt;button onmousedown='get(103,1)' onmouseup='get(103,0)' type='button'&gt;Google&lt;/button&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;button onmousedown='get(101,1)' onmouseup='get(103,0)' type='button'&gt;toggle modell&lt;/button&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;button onmousedown='get(102,1)' onmouseup='get(104,0)' type='button'&gt;+&lt;/button&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;button onmousedown='get(103,1)' onmouseup='get(105,0)' type='button'&gt;-&lt;/button&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;button onmousedown='get(104,1)' onmouseup='get(102,0)' type='button'&gt;Start&lt;/button&gt;&lt;/td&gt;
+	
  &lt;/tr&gt;
 &lt;/table&gt;
-Die Buttons machen grade noch nichts. Funktionalität muss noch in monitorControls eingebaut werden.
-
+Funktionalität ist da. Feedback bisher nur über Log-Ausgaben und Sprite, nicht ueber Webseite.
 &lt;/body&gt;
 
 &lt;/html&gt;
