@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.124586 5.04894 -1.64444" at="-0.0727558 5.05313 0" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-5.38451 7.95931 -8.68746" at="-2.9735 2.8753 4.46912" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -305,13 +305,29 @@
 	#
 	#container.addNotification(f)
 </core>
-      <trig type="on_timeout" dev="" state="Pressed" param="50" key="0" name_suffix="1" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="RobotAnimation" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+
+	VR.robotController.move_a1()
+	VR.robotController.move_a2()
+	VR.robotController.move_a3()
+	VR.robotController.move_a4()
+	VR.robotController.move_a5()
+	
+	
+	
+	pass
+</core>
     </Script>
     <Script name_suffix="0" base_name="RobotControl" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
 	import math
 	class RobotController:
+		#colorVector Konstante für die Animation
+		c = [0,0,0]
 	
 		def __init__(self):
 			#geometrie laden
@@ -337,18 +353,117 @@
 			# Felge nehmen
 		
 		# Felge ablegen
-		
 			# In neutrale Ausgangsstellung zurück
 		
 			#fertig
 			print "Move done, callback Logistik"
 			VR.logisticController.moveDone(objekt)
 		
-		
-		
-		
-		
+		#Zum löschen
+		def destroy(self):
+			if hasattr(VR, 'robot'):
+				VR.robot.destroy()
+				
+		#Arm1 bewegen
+		def move_a1(self):
+			arm = VR.robot.find('Arm1')
+			f = arm.getFrom()
+			d = arm.getDir()
+			u = arm.getUp()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,RobotController.c,u)
+			path.addPoint(f,d,RobotController.c,[1,0,0])
+			path.addPoint(f,d,RobotController.c,[0,-1,0])
+			path2.addPoint(f,d,RobotController.c,[0,-1,0])
+			path2.addPoint(f,d,RobotController.c,[1,0,0])
+			path2.addPoint(f,d,RobotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path, 3, 0, True)
+			arm.animate(path2, 3, 5, True)
+			del arm, f, d, u, path, path2
 
+		
+		#Arm2 bewegen
+		def move_a2(self):
+			arm = VR.robot.find('Arm2')
+			f = arm.getFrom()
+			u = arm.getUp()
+			d = arm.getDir()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,RobotController.c,u)
+			path.addPoint(f,[-0.4,0,-1],RobotController.c,u)
+			path2.addPoint(f,[-0.4,0,-1],RobotController.c,u)
+			path2.addPoint(f,d,RobotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path,1.5,1.5,True)
+			arm.animate(path2,1.5,5,True)
+			del arm, f, d, u, path, path2
+			
+		#Arm3 bewegen
+		def move_a3(self):
+			arm = VR.robot.find('Motor_oben')
+			f = arm.getFrom()
+			u = arm.getUp()
+			d = arm.getDir()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,VR.robotController.c,u)
+			path.addPoint(f,[-1,0,-0.5],VR.robotController.c,u)
+			path2.addPoint(f,[-1,0,-0.5],VR.robotController.c,u)
+			path2.addPoint(f,d,VR.robotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path,1.5,1.5,True)
+			arm.animate(path2,1.5,5,True)
+			del arm, f, d, u, path, path2
+		
+		#Arm4 bewegen
+		def move_a4(self):
+			arm = VR.robot.find('Arm4')
+			f = arm.getFrom()
+			u = arm.getUp()
+			d = arm.getDir()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,VR.robotController.c,u)
+			path.addPoint(f,[0,1,0,],VR.robotController.c,[0,0,1])
+			path.addPoint(f,[0,0,1],VR.robotController.c,[0,-1,0])
+			path2.addPoint(f,[0,0,1],VR.robotController.c,[0,-1,0])
+			path2.addPoint(f,[0,-1,0],VR.robotController.c,[0,0,-1])
+			path2.addPoint(f,d,VR.robotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path,3,0,True)
+			arm.animate(path2,3,5,True)
+			del arm, f, d, u, path, path2
+			
+		#Arm5 bewegen
+		def move_a5(self):
+			arm = VR.robot.find('Arm5')
+			f = arm.getFrom()
+			u = arm.getUp()
+			d = arm.getDir()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,VR.robotController.c,u)
+			path.addPoint(f,[-1,0,-0.2,],VR.robotController.c,u)
+			path2.addPoint(f,[-1,0,-0.2,],VR.robotController.c,u)
+			path2.addPoint(f,d,VR.robotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path,2,1,True)
+			arm.animate(path2,2,5,True)
+			del arm, f, d, u, path, path2
+		
+		
+		
+	#if hasattr(VR, 'robotController'):
+	#	VR.robotController.destroy()
+		
 	VR.robotController = RobotController()
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="6" base_name="trigger" name_space="__global__"/>
