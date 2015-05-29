@@ -25,7 +25,9 @@ FProduct* FContainer::pop() {
 Zu Beginn eines Auftrags werden Anfangs- und Endlager-Kapazität auf Auftragsgröße gesetzt, und die Logistiktransportsimulation läuft an
 
 Dann wird durchgeloopt:
-* Sobald ein Rohling in erstem Container `VR.containers[0]` vorhanden und grade kein Rohling in Bearbeitung: LogisticsControl ruft `move` beim VR.robotController auf und übergibt Rohling und Positionen
+* Sobald ein Rohling in erstem Container `VR.containers[1]` vorhanden und grade kein Rohling in Bearbeitung:
+  LogisticControl nimmt Rohling aus Container
+  LogisticsControl ruft `move` beim VR.robotController auf und übergibt Rohling und Positionen
 * Roboter bewegt Rohling in Fräse, ruft Callback `moveDone` auf
 * LogisticsControl ruft `VR.fraeseController.startFraese` auf. Übergeben werden der Rohling und ein int (im Moment 0 oder 1) für das Felgenmodell.
 * Die Fräse tut Dinge und erstellt am Ende das fertige Felgen-Objekt.
