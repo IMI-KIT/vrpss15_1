@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-5.38451 7.95931 -8.68746" at="-2.9735 2.8753 4.46912" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.70206 8.3716 2.26431" at="-0.255964 3.97985 4.02222" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -310,16 +310,14 @@
     <Script name_suffix="0" base_name="RobotAnimation" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
+	import time
 
 	VR.robotController.move_a1()
 	VR.robotController.move_a2()
 	VR.robotController.move_a3()
 	VR.robotController.move_a4()
 	VR.robotController.move_a5()
-	
-	
-	
-	pass
+	VR.robotController.greifen()
 </core>
     </Script>
     <Script name_suffix="0" base_name="RobotControl" name_space="__script__" type="Python" mobile="">
@@ -341,7 +339,8 @@
 			light.addChild(VR.robot)
 			VR.robot.rotate(1,0,0, -0.5 * math.pi)
 			VR.robot.translate(-4,0,4)
-			VR.robot.setScale(0.003,0.003,0.003)
+			VR.robot.setScale(0.3,0.3,0.3)
+			#RobotController.kalkuliereGreifPfad(self)
 			
 
 		#Punkte: In mm relativ zu Roboter-Ursprung Format [x,y,z]
@@ -459,6 +458,65 @@
 			arm.animate(path,2,1,True)
 			arm.animate(path2,2,5,True)
 			del arm, f, d, u, path, path2
+			
+		#Greifen
+		def greifen(self):
+			if hasattr(RobotController, 'lpath'):
+				RobotController.lpath.invert()
+				RobotController.rpath.invert()
+				
+			else :
+				#feste Positionen für Hinweg
+				lf = [0.24, 0.79, -0.00]
+				lu = [0,0,1]
+				ld = [0,-1,0]
+	
+				rf = [0.24, -0.80, 0.00]
+				ru = [0,0,1]
+				rd = [0,1,0]
+	
+				lpath = VR.Path()
+				rpath = VR.Path()
+				#Punkte hinzufügen
+				new_lf = lf[:]
+				new_lf[1] -= 0.2
+				lpath.addPoint(lf,ld,VR.robotController.c,lu)
+				lpath.addPoint(new_lf,ld,VR.robotController.c,lu)
+	
+				new_rf = rf[:]
+				new_rf[1] += 0.2
+				rpath.addPoint(rf,rd,VR.robotController.c,ru)
+				rpath.addPoint(new_rf,rd,VR.robotController.c,ru)
+				#Pfade erstellen
+				lpath.compute(80)
+				rpath.compute(80)
+				RobotController.lpath = lpath
+				RobotController.rpath = rpath
+		
+			
+			arm_l = VR.robot.find('Arm_links')
+			arm_r = VR.robot.find('Arm_rechts')
+	
+			
+			arm_l.animate(RobotController.lpath,1,0.1,False)
+			arm_r.animate(RobotController.rpath,1,0.1,False)
+		
+		#öffnen
+		def oeffnen(self):
+			if hasattr(RobotController, 'lpath'):
+				RobotController.lpath.invert()
+				RobotController.rpath.invert()
+			
+				arm_l = VR.robot.find('Arm_links')
+				arm_r = VR.robot.find('Arm_rechts')
+	
+			
+				arm_l.animate(RobotController.lpath,1,0.1,False)
+				arm_r.animate(RobotController.rpath,1,0.1,False)
+			else:
+				return
+			
+
 		
 		
 		
