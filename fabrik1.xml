@@ -90,7 +90,20 @@
 			#tür auf
 			
 			#fertig - callback an Logistik
+
+			#Felge erzeugen
 			objekt = rohling # rohling bitte durch fertige felge ersetzen
+			#if (modell == 0):#Alisa sagt: Ihr kriegt von mir nur nen int (1 oder 2), der das Modell repräsentiert.
+			# Kümmert euch bitte selbst drum, welchen Pfad oder wasauchimmer ihr dann hier haben wollt.
+			# VR.felge1 wird im Moment in initScene erstellt. duplicate() erstellt ein Duplikat davon.
+			# objekt = VR.felge0.duplicate()
+			#elif (modell == 1):
+			# objekt = VR.felge1.duplicate()
+			#objekt.setFrom(VR.fraese_ablegepunkt)
+			felge = VR.felge0.duplicate()
+			objekt = VR.log.addProduct(felge)
+			#print objekt
+			#objekt = felge
 			print "Fraesevorgang done, call back Logistik"
 			VR.logisticController.fraeseDone(objekt)
 		
@@ -241,7 +254,8 @@
 		VR.log = VR.Factory.Logistics()
 		VR.lnet = VR.log.addNetwork()
 		r.addChild(VR.cardbox)
-		r.addChild(VR.product)
+		r.addChild(VR.rohling)
+		r.addChild(VR.felge1)
 	
 	capacity0 = 1000 # ins Lager passt viel
 	capacity1 = 10	# ist grade erstmal weniger, damit alles übersichtlich bleibt. Kann später gern mehr werden
@@ -276,11 +290,11 @@
 		nodes.append(n)
 	nodes[0].set(c0)
 	nodes[-1].set(c1)
-	VR.log.fillContainer(c0,capacity0,VR.product) #TODO (Alisa): Rausfinden, wie man regeln kann, dass nur ein bestimmter Anteil des aktuellen Füllstands losgeschickt wird.
+	#VR.log.fillContainer(c0,capacity0,VR.product) #TODO (Alisa): Rausfinden, wie man regeln kann, dass nur ein bestimmter Anteil des aktuellen Füllstands losgeschickt wird.
 
-	t = VR.log.addTransporter('Product')
-	t.setPath(lp)
-	t.setSpeed(speed0)
+	t1 = VR.log.addTransporter('Transporter_Rohling')
+	t1.setPath(lp)
+	t1.setSpeed(speed0)
 
 
 	#Pfad 2:
@@ -299,9 +313,9 @@
 	nodes[0].set(c2)
 	nodes[-1].set(c3)
 		
-	t = VR.log.addTransporter('Product')
-	t.setPath(lp)
-	t.setSpeed(speed2)
+	t2 = VR.log.addTransporter('Transporter_Felge')
+	t2.setPath(lp)
+	t2.setSpeed(speed2)
 
 </core>
     </Script>
@@ -342,7 +356,7 @@
 			
 		if hasattr(VR, 'fertiglabel'):
 			fertig_count = VR.containers[3].getCount()
-			textLager = 'Fertig: ' + str(fertig_count)
+			textLager = 'Fertig: ' + str(fertig_count) + " / " + str(VR.containers[3].getCapacity())
 			VR.fertiglabel.setText(textLager)
 			VR.fertiglabel.setSize(len(textLager)*0.15,0.3)
 		
@@ -355,11 +369,12 @@
 
 	
 	#=====Starte einen Roboter-Fräs-Durchlauf=====
-	if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
-		c1 = VR.containers[1]
-		objekt = c1.get()
-		bla = 1
-		VR.logisticController.start(objekt)
+	if hasattr(VR, 'containers'):
+		if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
+			c1 = VR.containers[1]
+			objekt = c1.get()
+			bla = 1
+			VR.logisticController.start(objekt)
 	
 	
 	#=====Prüfe, ob Auftrag beendet=====
@@ -380,7 +395,7 @@
 	#
 	#container.addNotification(f)
 </core>
-      <trig type="on_timeout" dev="" state="Pressed" param="" key="0" name_suffix="1" base_name="trigger" name_space="__global__"/>
+      <trig type="on_timeout" dev="" state="Pressed" param="50" key="0" name_suffix="1" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="RobotAnimation" name_space="__script__" type="Python" mobile="">
       <core>
@@ -728,28 +743,47 @@
 	VR.cardbox.setMaterial(mcarboard)
 	VR.cardbox.hide()
 	
+	VR.rohling = VR.Geometry('tt1')
+	VR.rohling.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
+	root.addChild(VR.rohling)
+	VR.rohling.setMaterial(mchrome)#Alisa sagt: Ja ich weiß dass das das gleiche ist. ist mir grade egal.
+	VR.rohling.setTexCoords(VR.rohling.getPositions())
+	VR.rohling.hide()
+	
+	#Erstelle Geometrie für Felge0. Einzelne Instanzen können hinterher mit VR.felge0.duplicate() geholt werden.
+	u1 = VR.Geometry('u1')
+	u2 = VR.Geometry('u2')
+	u1.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
+	u2.setPrimitive('Box 0.12 0.1 0.2 1 1 1')
+	u2.setFrom(0,0.05,0.02)
+	VR.felge0 = VR.CSGGeometry('felge0')
+	VR.felge0.addChild(u1)
+	VR.felge0.addChild(u2)
+	VR.felge0.setOperation('subtract')
+	root.addChild(VR.felge0)
+	VR.felge0.setEditMode(0)
+	VR.felge0.setMaterial(mchrome)
+	VR.felge0.setTexCoords(VR.felge0.getPositions())
+	VR.felge0.hide()
+	
+	#Erstelle Geometrie für Felge1
 	t1 = VR.Geometry('t1')
 	t2 = VR.Geometry('t2')
 	t1.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
 	t2.setPrimitive('Box 0.12 0.1 0.2 1 1 1')
-	#t2.setPrimitive('Gear 0.1 0.3 0.1 32 0.3 0')
 	t2.setFrom(0,0.05,0.02)
-	#VR.product ist das, was im Moment über beide Fließbänder transportiert wird
-	#TODO (von Alisa): Wir brauchen mindestens 3 products, eins für den Rohling
-	#und 2 für die beiden Felgen die rauskommen.
-	#Die Transportpfade müssen auch entsprechend angepasst werden.
-	VR.product = VR.CSGGeometry('product')
-	VR.product.addChild(t1)
-	VR.product.addChild(t2)
-	VR.product.setOperation('subtract')
-	root.addChild(VR.product)
-	VR.product.setEditMode(0)
-	VR.product.setMaterial(mchrome)
-	VR.product.setTexCoords(VR.product.getPositions())
-	VR.product.hide()
+	VR.felge1 = VR.CSGGeometry('felge1')
+	VR.felge1.addChild(t1)
+	VR.felge1.addChild(t2)
+	VR.felge1.setOperation('subtract')
+	root.addChild(VR.felge1)
+	VR.felge1.setEditMode(0)
+	VR.felge1.setMaterial(mchrome)
+	VR.felge1.setTexCoords(VR.felge1.getPositions())
+	VR.felge1.hide()
 	
-	test = VR.product.duplicate()
-		
+	
+	test = VR.rohling.duplicate()
 </core>
     </Script>
     <Script name_suffix="1" base_name="init" name_space="__script__" type="Python" mobile="">
