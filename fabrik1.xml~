@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene name_suffix="0" base_name="Logistics" name_space="Scene">
+  <Objects>
+    <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
+      <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
+<<<<<<< HEAD
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.138927 7.27999 -5.25232" at="-0.621706 0 4.49089" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+=======
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-5.38451 7.95931 -8.68746" at="-2.9735 2.8753 4.46912" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+>>>>>>> 00e7b04a50cac3eefd582be46961b7e5ee050a0c
+          <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
+        </Object>
+      </Object>
+    </Object>
+  </Objects>
+  <Rendering frustum_culling="1" occlusion_culling="0" two_sided="1"/>
+  <Scripts>
+<<<<<<< HEAD
+    <Script name_suffix="0" base_name="Auftrag" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	if (anzahl &lt; 1):
+		print "Kann keinen Auftrag für &lt;1 Felgen starten. Abbruch."
+		return
+	
+	if hasattr(VR,'containers'):
+		if(VR.containers[0].isEmpty()):
+			print "Starte Auftrag für " + str(anzahl) + " Felgen Typ " + str(modell)
+			VR.auftragFertig = False # Ja ich weiß dass das noch woanders gemacht wird. sicher ist sicher.
+			VR.containers[0].setCapacity(anzahl)
+			VR.containers[3].clear()
+			VR.containers[3].setCapacity(anzahl)
+			VR.log.fillContainer(VR.containers[0],anzahl,VR.rohling)
+		else:
+			print "Container0 (Lager) ist noch nicht leer! Starte Auftrag nicht."
+		
+	
+	else:
+		print "Achtung! Container noch nicht initialisiert!"
+</core>
+      <arg type="int" value="50" name_suffix="0" base_name="anzahl" name_space="Auftrag"/>
+      <arg type="int" value="0" name_suffix="0" base_name="modell" name_space="Auftrag"/>
+    </Script>
+    <Script name_suffix="0" base_name="AuftragWarteschlange" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import Queue
+	if not hasattr(VR,'auftragqueue'):
+		VR.auftragqueue = Queue.Queue() # Enthält Aufträge in der Form [Anzahl,Modell]
+	if not hasattr(VR, 'auftragFertig'):
+		VR.auftragFertig = True
+	
+	if (VR.auftragFertig and (not VR.auftragqueue.empty())):
+		print "TODO starte auftrag."
+		VR.auftragFertig = False
+		auftragtupel = VR.auftragqueue.get()
+		VR.Auftrag(auftragtupel[0],auftragtupel[1])
+</core>
+      <trig type="on_timeout" dev="" state="Pressed" param="100" key="0" name_suffix="9" base_name="trigger" name_space="__global__"/>
+    </Script>
+=======
+>>>>>>> 00e7b04a50cac3eefd582be46961b7e5ee050a0c
+    <Script name_suffix="0" base_name="FraeseControl" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	class FraeseController:
+		def __init__(self):
+			#geometrie laden?
+			print "initialisiere Fraesenklasse"
+			
+		#rohling: Ein Geometriedings oder so
+		# dateipfad zum modell oder so, wie ihr wollt.
+		def startFraese(self,rohling,modell):
+			print "Starte Fräsvorgang"
+			#tür zu
+			
+			#fräsen
+			
+			#tür auf
+			
+			#fertig - callback an Logistik
+			objekt = rohling # rohling bitte durch fertige felge ersetzen
+			print "Fraesevorgang done, call back Logistik"
+			VR.logisticController.fraeseDone(objekt)
+		
+		
+		
+		
+
+	VR.fraeseController = FraeseController()
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="8" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="LogisticsControl" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#Pseudo-Enums für Zustände, da ich nicht weiß, wie man das in Python anständig macht
+	VR.states_WaitForRohling = 0
+	VR.states_MoveRohlingToFraese = 1
+	VR.states_RohlingInFraese = 2
+	VR.states_MoveFelgeToBand = 3
+	VR.currentState = VR.states_WaitForRohling
+	
+	#objekt: Sollte mindestens vom Typ Geometry sein, damit wir die Position abfragen können.
+	
+	
+	class LogisticController:
+		def __init__(self):
+			print "initialisiere LogisticController"
+		
+		def moveDone(self,objekt):
+			print "moveDone called, state: " + str(VR.currentState)
+			if (VR.currentState == VR.states_MoveRohlingToFraese):
+				VR.currentState = VR.states_RohlingInFraese
+				modell = 0
+				VR.fraeseController.startFraese(objekt,modell)
+			elif (VR.currentState == VR.states_MoveFelgeToBand):
+				VR.currentState = VR.states_WaitForRohling
+				# Achtung, nicht direkt wieder roboter rohling aufnehmen lassen,
+				# Ich hab hier sonst etwas Angst vor Endlosrekursion! Gehe lieber erstmal in Zustand Warten,
+				# Klasse mit regelmäßigem Update reagiert darauf.
+				print "Felge done. Place on band."
+				VR.containers[2].add(objekt)
+			else:
+				print "Achtung! moveDone called, aber Zustand passt nicht!"
+				
+						
+		def fraeseDone(self,objekt):
+			print "fraeseDone called"
+			if (VR.currentState == VR.states_RohlingInFraese):
+				VR.currentState = VR.states_MoveFelgeToBand
+				startpunkt = VR.fraese_ablegepunkt
+				endpunkt = VR.pfad2_startpunkt
+				startrichtung = [-1,0,0]#TODO das ist grade nur waagrecht rein. Vllt muss das noch bisschen von Oben oder so.
+				endrichtung = [0,1,0]
+				VR.robotController.move(startpunkt,startrichtung,endpunkt,endrichtung,objekt)
+			else:
+				print "Achtung! Fraese fertig, aber Zustand passt nicht!"
+				
+		def start(self,objekt):
+			print "Starte neuen Beweg-und-Fräs-Vorgang"
+			VR.currentState =  VR.states_MoveRohlingToFraese
+			startpunkt = VR.pfad1_endpunkt
+			endpunkt = VR.fraese_ablegepunkt
+			startrichtung = [0,0,-1]
+			endrichtung = [1,0,0]
+			VR.robotController.move(startpunkt,startrichtung,endpunkt,endrichtung,objekt)
+			
+
+		
+		
+	VR.logisticController = LogisticController()
+		
+		
+
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="5" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="LogisticsInit" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	r = VR.getRoot().find('Headlight')
+
+	
+	# ------------ paths -----------------
+
+	#Pfade: (a,1,1) zu (b,1,1): Fließband zu erster box
+	# (b,1,1) zu (b,1,c): erste Box zu zweiter Box (kein Fließband, nur zum Produktflussmodellieren
+	# (b,1,c) zu (d,1,c): Fließband ins Lager.
+	# Ist grade am Einfachsten, die Fließbänder erstmal geradeaus parallel zur x-Achse laufen zu lassen.
+	
+	p0_length = 10 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
+	p2_length = 10 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
+
+	speed0 = 0.8 # Geschwindigkeit erstes Fließband
+	speed2 = 0.8 # Geschwindigkeit zweites Fließband
+
+	p0_startx = 8.0
+	p0_endx = -4.0
+
+	p2_startx = -4.0
+	p2_endx = 8.0
+	
+	p_y = 1
+	p0_z = 1
+	p2_z = 7
+	
+	
+	VR.pfad2_startpunkt = [p2_startx,p_y,p2_z]
+	VR.fraese_ablegepunkt = [-8.0,3,3.5]
+	VR.pfad1_endpunkt = [p0_endx,p_y,p0_z]
+
+
+
+	if not hasattr(VR, 'ptool'): 
+		VR.ptool = VR.Pathtool()	
+		VR.paths = [p0_length,p2_length] # min 2
+		for i,N in enumerate(VR.paths):
+			VR.paths[i] = VR.ptool.newPath(None, r)
+			for j in range(N-2):
+				VR.ptool.extrude(None, VR.paths[i])
+			
+	# Pfad vom Lager zur ersten Kiste
+	handles = VR.ptool.getHandles(VR.paths[0])
+	p0_geolength = p0_endx - p0_startx
+	for x in range (0,p0_length):		# Verteile gleichmäßig Stationen auf dem Fließband. Falls die unregelmäßig sind kommt der Fluss ins Stocken, und im schlimmsten Fall kommen die Produkte gar nicht erst am Ende an.
+		handles[x].setFrom(p0_startx + p0_geolength*x/(p0_length-1),p_y,p0_z)
+		handles[x].setDir(0.1,0,0)
+
+
+	# Pfad von zweiter Kiste ins Lager
+	handles = VR.ptool.getHandles(VR.paths[1])
+	p2_geolength = p2_endx - p2_startx
+	for x in range (0,p2_length):
+		handles[x].setFrom(p2_startx + p2_geolength*x/(p2_length-1),p_y,p2_z)
+		handles[x].setDir(-1,0,0)
+	
+	
+	VR.ptool.update()
+	
+
+	# Bis hierher werden nur die Wege mit den Haltepunkten erstellt, die Container sind noch nicht da.
+
+
+	# ------------ logistics -------------
+	
+	if not hasattr(VR, 'log'):
+		VR.log = VR.Factory.Logistics()
+		VR.lnet = VR.log.addNetwork()
+		r.addChild(VR.cardbox)
+		r.addChild(VR.product)
+	
+	capacity0 = 1000 # ins Lager passt viel
+	capacity1 = 10	# ist grade erstmal weniger, damit alles übersichtlich bleibt. Kann später gern mehr werden
+	capacity2 = 10 # Hier steht am Ende eh keine Box, es wird alles direkt aufs Fließband gelegt. Kapazität sollte egal sein.
+	capacity3 = 1000 # Endlager
+
+	c0 = VR.log.addContainer(VR.cardbox)
+	c0.setCapacity(capacity0)
+	c1 = VR.log.addContainer(VR.cardbox)
+	c1.setCapacity(capacity1)
+	c2 = VR.log.addContainer(VR.cardbox)
+	c2.setCapacity(capacity2)
+	c3 = VR.log.addContainer(VR.cardbox)
+	c3.setCapacity(capacity3)
+
+	VR.containers = [c0,c1,c2,c3]
+
+	
+
+	# Pfad 0:
+	p0 = VR.paths[0]
+	lp = VR.log.addPath()
+	n0 = None
+	nodes = []
+	
+	for h in VR.ptool.getHandles(p0):
+		n = VR.lnet.addNodes(1,n0)
+		nodes.append(n)
+		n.setTransform(h)
+		n0 = n
+		lp.add(n)
+		nodes.append(n)
+	nodes[0].set(c0)
+	nodes[-1].set(c1)
+	VR.log.fillContainer(c0,capacity0,VR.product) #TODO (Alisa): Rausfinden, wie man regeln kann, dass nur ein bestimmter Anteil des aktuellen Füllstands losgeschickt wird.
+
+	t = VR.log.addTransporter('Product')
+	t.setPath(lp)
+	t.setSpeed(speed0)
+
+
+	#Pfad 2:
+	p2 = VR.paths[1]
+	lp = VR.log.addPath()
+	n2 = None
+	nodes = []
+	
+	for h in VR.ptool.getHandles(p2):
+		n = VR.lnet.addNodes(1,n2)
+		nodes.append(n)
+		n.setTransform(h)
+		n2 = n
+		lp.add(n)
+		nodes.append(n)
+	nodes[0].set(c2)
+	nodes[-1].set(c3)
+		
+	t = VR.log.addTransporter('Product')
+	t.setPath(lp)
+	t.setSpeed(speed2)
+
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="LogisticsUpdate" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	if not hasattr(VR,'neuerauftrag_count'):
+		VR.neuerauftrag_count = 1
+	if not hasattr(VR, 'neuerauftrag_model'):
+		VR.neuerauftrag_model = 0
+	
+	#=====Logging=====
+	
+	if hasattr(VR, 'log'):
+		VR.log.update()
+		
+		# Aktualisiere Anzeigetafeln			
+		if hasattr(VR, 'lagerlabel'):
+			lagercount = VR.containers[0].getCount()
+			text = 'Lager: ' + str(lagercount) + " / " + str(VR.containers[0].getCapacity())
+			VR.lagerlabel.setText(text)
+			VR.lagerlabel.setSize(len(text)*0.15,0.3)
+			
+			
+		if hasattr(VR, 'container1_label'):
+			container1_count = VR.containers[1].getCount()
+			text1 = 'Füllstand: ' + str(container1_count) + " / " + str(VR.containers[1].getCapacity())
+			VR.container1_label.setText(text1)
+			VR.container1_label.setSize(len(text1)*0.1,0.2)
+			
+			
+		if hasattr(VR, 'container2_label'):
+			container2_count = VR.containers[2].getCount()
+			text2 = 'Füllstand: ' + str(container2_count) + " / " + str(VR.containers[2].getCapacity())
+			VR.container2_label.setText(text2)
+			VR.container2_label.setSize(len(text2)*0.1,0.2)
+			
+			
+		if hasattr(VR, 'fertiglabel'):
+			fertig_count = VR.containers[3].getCount()
+			textLager = 'Fertig: ' + str(fertig_count)
+			VR.fertiglabel.setText(textLager)
+			VR.fertiglabel.setSize(len(textLager)*0.15,0.3)
+		
+		
+		if hasattr(VR, 'neuerAuftragLabel'):
+			textAuftrag = 'Neuer Auftrag: ' + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
+			VR.neuerAuftragLabel.setText(textAuftrag)
+			VR.neuerAuftragLabel.setSize(len(textAuftrag)*0.15,0.3)
+			
+
+	
+	#=====Starte einen Roboter-Fräs-Durchlauf=====
+	if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
+		c1 = VR.containers[1]
+		objekt = c1.get()
+		bla = 1
+		VR.logisticController.start(objekt)
+	
+	
+	#=====Prüfe, ob Auftrag beendet=====
+	if (hasattr(VR, 'containers')):
+		if (VR.containers[3].isFull()):
+			VR.auftragFertig = True
+	
+	
+	
+	# Wir kriegen wahrsch noch für die Container Notifications immer wenn ein neues Teil reinfällt,
+	# brauchen wir für ne bessere Anzeige, wie viele Produkte fertig sind / durchgelaufen sind,
+	# ohne auf die Anzeige fürs hintere Lager angewiesen zu sein oder komisch rumrechnen zu müssen
+	# ist bestimmt auch für andere Sachen nützlich.
+	# Wird in etwa so aussehen:
+	
+	#def f(e):
+	#	print e
+	#
+	#container.addNotification(f)
+</core>
+      <trig type="on_timeout" dev="" state="Pressed" param="" key="0" name_suffix="1" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="RobotAnimation" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+
+	VR.robotController.move_a1()
+	VR.robotController.move_a2()
+	VR.robotController.move_a3()
+	VR.robotController.move_a4()
+	VR.robotController.move_a5()
+	
+	
+	
+	pass
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="RobotControl" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	import math
+	class RobotController:
+		#colorVector Konstante für die Animation
+		c = [0,0,0]
+	
+		def __init__(self):
+			#geometrie laden
+			
+			print "initialisiere Roboterklasse"
+			if hasattr(VR, 'robot'):
+				VR.robot.destroy()
+			VR.robot = VR.loadGeometry('Alle_teile.dae', True)
+			light = VR.getRoot().find('Headlight')
+			light.addChild(VR.robot)
+			VR.robot.rotate(1,0,0, -0.5 * math.pi)
+			VR.robot.translate(-4,0,4)
+			VR.robot.setScale(0.003,0.003,0.003)
+			
+
+		#Punkte: In mm relativ zu Roboter-Ursprung Format [x,y,z]
+		#Richtung: Von da aus den Punkt anfahren
+		#Objekt: Rohling / Felge
+		def move(self,startpunkt,startrichtung,endpunkt,endrichtung,objekt):
+			print "move called"
+			# Bewegung
+		
+			# Felge nehmen
+		
+		# Felge ablegen
+			# In neutrale Ausgangsstellung zurück
+		
+			#fertig
+			print "Move done, callback Logistik"
+			VR.logisticController.moveDone(objekt)
+		
+		#Zum löschen
+		def destroy(self):
+			if hasattr(VR, 'robot'):
+				VR.robot.destroy()
+				
+		#Arm1 bewegen
+		def move_a1(self):
+			arm = VR.robot.find('Arm1')
+			f = arm.getFrom()
+			d = arm.getDir()
+			u = arm.getUp()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,RobotController.c,u)
+			path.addPoint(f,d,RobotController.c,[1,0,0])
+			path.addPoint(f,d,RobotController.c,[0,-1,0])
+			path2.addPoint(f,d,RobotController.c,[0,-1,0])
+			path2.addPoint(f,d,RobotController.c,[1,0,0])
+			path2.addPoint(f,d,RobotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path, 3, 0, True)
+			arm.animate(path2, 3, 5, True)
+			del arm, f, d, u, path, path2
+
+		
+		#Arm2 bewegen
+		def move_a2(self):
+			arm = VR.robot.find('Arm2')
+			f = arm.getFrom()
+			u = arm.getUp()
+			d = arm.getDir()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,RobotController.c,u)
+			path.addPoint(f,[-0.4,0,-1],RobotController.c,u)
+			path2.addPoint(f,[-0.4,0,-1],RobotController.c,u)
+			path2.addPoint(f,d,RobotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path,1.5,1.5,True)
+			arm.animate(path2,1.5,5,True)
+			del arm, f, d, u, path, path2
+			
+		#Arm3 bewegen
+		def move_a3(self):
+			arm = VR.robot.find('Motor_oben')
+			f = arm.getFrom()
+			u = arm.getUp()
+			d = arm.getDir()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,VR.robotController.c,u)
+			path.addPoint(f,[-1,0,-0.5],VR.robotController.c,u)
+			path2.addPoint(f,[-1,0,-0.5],VR.robotController.c,u)
+			path2.addPoint(f,d,VR.robotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path,1.5,1.5,True)
+			arm.animate(path2,1.5,5,True)
+			del arm, f, d, u, path, path2
+		
+		#Arm4 bewegen
+		def move_a4(self):
+			arm = VR.robot.find('Arm4')
+			f = arm.getFrom()
+			u = arm.getUp()
+			d = arm.getDir()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,VR.robotController.c,u)
+			path.addPoint(f,[0,1,0,],VR.robotController.c,[0,0,1])
+			path.addPoint(f,[0,0,1],VR.robotController.c,[0,-1,0])
+			path2.addPoint(f,[0,0,1],VR.robotController.c,[0,-1,0])
+			path2.addPoint(f,[0,-1,0],VR.robotController.c,[0,0,-1])
+			path2.addPoint(f,d,VR.robotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path,3,0,True)
+			arm.animate(path2,3,5,True)
+			del arm, f, d, u, path, path2
+			
+		#Arm5 bewegen
+		def move_a5(self):
+			arm = VR.robot.find('Arm5')
+			f = arm.getFrom()
+			u = arm.getUp()
+			d = arm.getDir()
+			path = VR.Path()
+			path2 = VR.Path()
+			path.addPoint(f,d,VR.robotController.c,u)
+			path.addPoint(f,[-1,0,-0.2,],VR.robotController.c,u)
+			path2.addPoint(f,[-1,0,-0.2,],VR.robotController.c,u)
+			path2.addPoint(f,d,VR.robotController.c,u)
+			path.compute(80)
+			path2.compute(80)
+			arm.animate(path,2,1,True)
+			arm.animate(path2,2,5,True)
+			del arm, f, d, u, path, path2
+		
+		
+		
+	#if hasattr(VR, 'robotController'):
+	#	VR.robotController.destroy()
+		
+	VR.robotController = RobotController()
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="6" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="initAnzeigetafeln" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#die Nb: x - Anzeigen kommen noch weg.
+	
+	r = VR.getRoot().find('Headlight')
+	# Füllstand Lager
+	if not hasattr(VR, 'lagerlabel'):
+		r = VR.getRoot().find('Headlight')
+		VR.lagerlabel = VR.Sprite('lager-label')
+		mat1 = VR.Material('mymat1')
+		VR.lagerlabel.setMaterial(mat1)
+		r.addChild(VR.lagerlabel)
+	
+	VR.lagerlabel.setFrom(7.5,2,1)
+	VR.lagerlabel.setDir(1,0,0)
+	VR.lagerlabel.setText('Voll')
+	VR.lagerlabel.setSize(0.4,0.2)
+	
+	# Füllstand erste Box
+	if not hasattr(VR, 'container1_label'):
+		VR.container1_label= VR.Sprite('fuellstand1')
+		mat2 = VR.Material('mymat2') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
+		VR.container1_label.setMaterial(mat2)
+		r.addChild(VR.container1_label)
+	
+	VR.container1_label.setFrom(-4.5,2,1)
+	VR.container1_label.setDir(1,0,0)
+	
+	
+	# Füllstand zweite Box - die sollte am ende immer ziemlich leer sein, da alles direkt weiter ins Lager läuft
+	if not hasattr(VR, 'container2_label'):
+		VR.container2_label= VR.Sprite('fuellstand2')
+		mat22 = VR.Material('mymat22') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
+		VR.container2_label.setMaterial(mat22)
+		r.addChild(VR.container2_label)
+	
+	VR.container2_label.setFrom(-4.5,2,7)
+	VR.container2_label.setDir(1,0,0)
+	
+	
+	# Angekommen zur Weiterverarbeitung
+	if not hasattr(VR, 'weiterverarbeitung_label'):
+		VR.fertiglabel = VR.Sprite('fertig')
+		mat3 = VR.Material('mymat3')
+		VR.fertiglabel.setMaterial(mat3)
+		r.addChild(VR.fertiglabel)
+		
+	VR.fertiglabel.setFrom(7.5,2,7)
+	VR.fertiglabel.setDir(1,0,0)
+	
+	
+	#Auftrag erstellen
+	if not hasattr(VR, 'neuerAuftragLabel'):
+		VR.neuerAuftragLabel = VR.Sprite('neuerAuftrag')
+		mat4 = VR.Material('mymatAuftrag')
+		VR.neuerAuftragLabel.setMaterial(mat4)
+		r.addChild(VR.neuerAuftragLabel)
+	VR.neuerAuftragLabel.setFrom(0,4.3,-0.5)
+	VR.neuerAuftragLabel.setDir(0,0,1)
+	
+	
+	
+	
+	
+	
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="0" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="initScene" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	# materials
+	
+	mbricks = VR.Material('mbricks')
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	cp = 0.95
+	tg.add('Perlin', 1, [cp,cp,cp], [1,1,1])
+	tg.add('Perlin', 1.0/4, [cp,cp,cp], [1,1,1])
+	tg.add('Bricks', 1, [0.4,0.4,0.4], [1,1,1])
+	mbricks.setTexture(tg.compose(0))
+	
+	mcarboard = VR.Material('mcarboard')
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	tg.add('Perlin', 1, [0.5,0.3,0.1], [0.6,0.4,0.1])
+	tg.add('Perlin', 1.0/4, [0.5,0.3,0.1], [0.7,0.6,0.2])
+	mcarboard.setTexture(tg.compose(0))
+	
+	def setMetalic(mat, a,d,sp,sh):
+		mat.setDiffuse([d,d,d])
+		mat.setSpecular([sp,sp,sp])
+		mat.setAmbient([a,a,a])
+		mat.setShininess(128*sh)
+	mchrome = VR.Material('mchrome')
+	setMetalic(mchrome, 0.25, 0.4, 0.77, 0.6)
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	cp = 0.6
+	tg.add('Perlin', 1.0/2, [cp,cp,cp], [1,1,1])
+	tg.add('Perlin', 1.0/8, [cp,cp,cp], [1,1,1])
+	mchrome.setTexture(tg.compose(0))
+	mchrome.addPass()
+	setMetalic(mchrome, 0.25, 0.9, 1, 0.6)
+	mchrome.setTexture(tg.compose(1))
+	mchrome.setTextureType('SphereEnv')
+	mchrome.setTransparency(0.4)
+	
+	# geometries
+	
+	floor = VR.Geometry('floor')
+	floor.setPrimitive('Plane 20 20 20 20')
+	floor.setMaterial(mbricks)
+	floor.setTexCoords(floor.getPositions())
+	floor.setPose([0,0,0], [0,1,0], [1,0,0])
+	root = VR.getRoot().find('Headlight')
+	root.addChild(floor)
+	
+	VR.cardbox = VR.Geometry('cardbox')
+	VR.cardbox.setPrimitive('Box 1 1 1 1')
+	VR.cardbox.setMaterial(mcarboard)
+	VR.cardbox.hide()
+	
+	t1 = VR.Geometry('t1')
+	t2 = VR.Geometry('t2')
+	t1.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
+	t2.setPrimitive('Box 0.12 0.1 0.2 1 1 1')
+	#t2.setPrimitive('Gear 0.1 0.3 0.1 32 0.3 0')
+	t2.setFrom(0,0.05,0.02)
+	#VR.product ist das, was im Moment über beide Fließbänder transportiert wird
+	#TODO (von Alisa): Wir brauchen mindestens 3 products, eins für den Rohling
+	#und 2 für die beiden Felgen die rauskommen.
+	#Die Transportpfade müssen auch entsprechend angepasst werden.
+	VR.product = VR.CSGGeometry('product')
+	VR.product.addChild(t1)
+	VR.product.addChild(t2)
+	VR.product.setOperation('subtract')
+	root.addChild(VR.product)
+	VR.product.setEditMode(0)
+	VR.product.setMaterial(mchrome)
+	VR.product.setTexCoords(VR.product.getPositions())
+	VR.product.hide()
+	
+	test = VR.product.duplicate()
+		
+</core>
+    </Script>
+    <Script name_suffix="1" base_name="init" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	VR.initScene()
+	VR.LogisticsInit()
+	#TODO von Alisa (29.5.): Wir könnten überlegen, alle Initialisierungsskripte
+	#hierüber zu starten, sodass nur dieses Skript den on_scene_load-Trigger hat.
+	#Dann hätten wir ne bisschen bessere Kontrolle über die Reihenfolge.
+	#Kann aber für unser Projekt auch überflüssig sein.
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="7" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="mat_Chrome" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#if hasattr(VR, 'chrome'):
+	#	return VR.chrome
+	
+	#http://devernay.free.fr/cours/opengl/materials.html
+	
+	def setMetalic(mat, a,d,sp,sh):
+		mat.setDiffuse([d,d,d])
+		mat.setSpecular([sp,sp,sp])
+		mat.setAmbient([a,a,a])
+		mat.setShininess(128*sh)	
+	
+	VR.chrome = VR.Material('Chrome')
+	setMetalic(VR.chrome, 0.25, 0.4, 0.77, 0.6) #chrome
+	#VR.chrome.setDiffuse([d,d,d])
+	
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	cp = 0.6
+	
+	tg.add('Perlin', 1.0/2, [cp,cp,cp], [1,1,1])
+	tg.add('Perlin', 1.0/8, [cp,cp,cp], [1,1,1])
+	VR.chrome.setTexture(tg.compose(0))
+	#return VR.chrome
+	
+	VR.chrome.addPass()
+	setMetalic(VR.chrome, 0.25, 0.9, 1, 0.6)
+	VR.chrome.setTexture('metal5.jpg')
+	VR.chrome.setTextureType('SphereEnv')
+	VR.chrome.setTransparency(0.4)
+	
+	return VR.chrome
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="monitorControls" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	if not hasattr(VR,'auftragqueue'):
+		VR.auftragqueue = Queue() # Enthält Aufträge in der Form [Anzahl,Modell]
+	if not hasattr(VR,'neuerauftrag_count'):
+		VR.neuerauftrag_count = 1
+	if not hasattr(VR, 'neuerauftrag_model'):
+		VR.neuerauftrag_model = 0
+	
+	
+	#Die Klasse hat einen Trigger für das Device mobile mit -1
+	#-1 bedeutet die Klasse reagiert auf alles was iwie mit der Webseite ist
+	#Wir können dann hier kucken, welcher Knopf gedrückt wurde
+	#und entsprechend Sachen tun.
+	
+	k = dev.getKey()
+	print k
+	
+	if (k == 101):
+		#So den gedrückten Knopf finden
+		if (VR.neuerauftrag_model == 0): VR.neuerauftrag_model = 1
+		else: VR.neuerauftrag_model = 0
+		print "Wähle Modell " + str(VR.neuerauftrag_model)
+	if (k == 102):
+		VR.neuerauftrag_count = VR.neuerauftrag_count + 1
+		print "Anzahl: " + str(VR.neuerauftrag_count)
+	if (k == 103):
+		if (VR.neuerauftrag_count &lt;= 1):
+			print "Ein Auftrag kann nicht weniger als eine Felge enthalten."
+		else:
+			VR.neuerauftrag_count = VR.neuerauftrag_count -1
+			print "Anzahl: " + str(VR.neuerauftrag_count)
+	if (k == 104):
+		print "Reset Anzahl und Modell. TODO starte Auftrag für " + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
+		VR.auftragqueue.put([VR.neuerauftrag_count,VR.neuerauftrag_model])
+		VR.neuerauftrag_count = 1
+		VR.neuerauftrag_model = 0
+		
+</core>
+      <trig type="on_device" dev="mobile" state="Pressed" param="" key="-1" name_suffix="4" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="monitorInit" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR	
+	
+	mat = VR.Material('gui')
+	mat.setLit(False)
+	
+	geo = VR.Geometry('gui')
+	#erste beiden zahlen: breite und höhe
+	geo.setPrimitive('Plane 2 2 1 1')
+	geo.setMaterial(mat)
+	geo.setPose([0,5,0],[0,0,-1],[0,-1,0])
+	
+	r = VR.getRoot()
+	r.addChild(geo)
+	
+	cef = VR.CEF()
+	cef.setMaterial(mat)
+	cef.open('http://localhost:5500/monitorWebsite')
+	cef.addMouse(mouse, geo, 0, 2, 3, 4)
+	cef.addKeyboard(keyboard)
+	cef.setAspectRatio(2)
+</core>
+      <arg type="VRPyDeviceType" value="keyboard" name_suffix="0" base_name="keyboard" name_space="monitorInit"/>
+      <arg type="VRPyDeviceType" value="mouse" name_suffix="0" base_name="mouse" name_space="monitorInit"/>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="monitorWebsite" name_space="__script__" type="HTML" mobile="mobile">
+      <core>
+&lt;html&gt;
+
+&lt;head&gt;
+ &lt;style type="text/css"&gt;
+  body {font-size:200%;
+		text-align:center;
+		background:#fff0e0;
+		color:#ff6622}
+  button {font-size:120%;
+		padding:3%;
+		padding-left:10%;
+		padding-right:10%;}
+  table {width:95%;
+		padding-left:2%;
+		padding-right:2%;
+		margin-left:auto; 
+		margin-right:auto;
+		background:#f9f9ff;}
+  td	{height:170px; 
+		width:33%;}
+ &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+ &lt;script&gt;
+  function get(b,s) {
+   var xmlHttp = new XMLHttpRequest();
+   var uri = document.URL+'mobile?button='+b+'&amp;state='+s;
+   xmlHttp.open( "GET", uri, true );
+   xmlHttp.send( null );
+  }
+ &lt;/script&gt;
+
+&lt;table&gt; 
+ &lt;tr&gt;
+	&lt;td&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;h1&gt;Tolle Auftragsbearbeitung&lt;/h1&gt;
+	Linker Knopf: Modell. Mittlere Knöpfe: Anzahl.&lt;/td&gt;
+ &lt;/tr&gt;
+ &lt;tr&gt;
+	&lt;td&gt;&lt;button onmousedown='get(101,1)' onmouseup='get(103,0)' type='button'&gt;toggle modell&lt;/button&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;button onmousedown='get(102,1)' onmouseup='get(104,0)' type='button'&gt;+&lt;/button&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;button onmousedown='get(103,1)' onmouseup='get(105,0)' type='button'&gt;-&lt;/button&gt;&lt;/td&gt;
+	&lt;td&gt;&lt;button onmousedown='get(104,1)' onmouseup='get(102,0)' type='button'&gt;Start&lt;/button&gt;&lt;/td&gt;
+	
+ &lt;/tr&gt;
+&lt;/table&gt;
+Funktionalität ist da. Feedback bisher nur über Log-Ausgaben und Sprite, nicht ueber Webseite.
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="platzhalter_fraese" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	#erzeugt einen quader, wo später die fräse steht. macht sonst nichts.
+	
+	mcarboard = VR.Material('mcarboard')
+	tg = VR.TextureGenerator()
+	tg.setSize(50,50,50)
+	tg.add('Perlin', 1, [0.3,0.3,0.3], [0.5,0.5,0.5])
+	mcarboard.setTexture(tg.compose(0))
+	
+	VR.rob = VR.Geometry('Roboter Platzhalter')
+	VR.rob.setPrimitive('Box 1 3 3 1')
+	VR.rob.setMaterial(mcarboard)
+	
+	VR.rob.setFrom(-6,1,4)
+	
+	r = VR.getRoot().find('Headlight')
+	r.addChild(VR.rob)
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="3" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="roboter_pickandplace" name_space="__script__" type="Python" mobile="">
+      <core>
+	#Alisa (29.05.): Die Klasse ist alt, war nur ein Platzhalter um die Objekte 
+	#unabhängig von der eingebauten Logistiksimulation vom einen in den anderen
+	#Container zu bewegen. Ich lass den Code mal noch drin, um Sachen nachschauen
+	#zu können. Ausgeführt wird aber nichts mehr.
+	return
+	
+	import VR
+	import signal, sys
+	
+		
+	c1 = VR.containers[1]
+	c2 = VR.containers[2]
+	
+	bearbeitungszeit_sekunden = 3
+	
+	if not hasattr(VR, 'teilInBearbeitung'):
+		VR.teilInBearbeitung = False
+	
+	#Das sollten wir später ersetzen durch nen Aufruf von sonstwo
+	#wenn die Animation ("Simulation"...) fertig ist
+	# fügt das (im moment gleiche) Objekt in den 2. Container
+	# Wir müssen noch dran denken dass wir das objekt ersetzen
+	def handler(signum, frame):
+		print "Objekt empfangen. Hält Obj:" + str(VR.teilInBearbeitung)
+		VR.teilInBearbeitung = False
+		c2.add(objekt)
+	
+	
+	if not(c1.isEmpty() or VR.teilInBearbeitung):
+		objekt = c1.get()
+		#c2.add(objekt)
+		signal.signal(signal.SIGALRM, handler)
+		signal.setitimer(signal.ITIMER_REAL,bearbeitungszeit_sekunden)
+		print "Signal gesendet" + str(VR.teilInBearbeitung)
+		VR.teilInBearbeitung = True
+	elif (VR.teilInBearbeitung):
+		print "Roboter hält schon Objekt, nimm kein neues"
+		
+	
+</core>
+    </Script>
+  </Scripts>
+  <Sockets/>
+  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Navigation active="Orbit"/>
+  <Materials/>
+</Scene>

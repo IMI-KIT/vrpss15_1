@@ -1,0 +1,11 @@
+%
+%Programm Taschenkontur mit G02
+N10 G01 X0 Y0 Z0
+N20 G01 Z-10
+N30 G02 X0 Y10 I0 J5
+N40 G01 X10 Y10
+N50 G02 X10 Y0 I0 J-5
+N60 G01 X0 Y0
+N70 G01 Z0
+%Ende Programm Taschenkontur
+%
