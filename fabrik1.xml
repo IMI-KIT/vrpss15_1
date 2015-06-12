@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.35445 2.64055 -7.3303" at="-3.37737 0.738326 4.17911" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.185177 2.58394 -2.99003" at="0.021159 1.62545 -2.38419e-07" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -1326,13 +1326,13 @@
 	
 	
 	#Auftrag erstellen
-	if not hasattr(VR, 'neuerAuftragLabel'):
-		VR.neuerAuftragLabel = VR.Sprite('neuerAuftrag')
-		mat4 = VR.Material('mymatAuftrag')
-		VR.neuerAuftragLabel.setMaterial(mat4)
-		r.addChild(VR.neuerAuftragLabel)
-	VR.neuerAuftragLabel.setFrom(0,4.3,-0.5)
-	VR.neuerAuftragLabel.setDir(0,0,1)
+	#if not hasattr(VR, 'neuerAuftragLabel'):
+	#	VR.neuerAuftragLabel = VR.Sprite('neuerAuftrag')
+	#	mat4 = VR.Material('mymatAuftrag')
+	#	VR.neuerAuftragLabel.setMaterial(mat4)
+	#	r.addChild(VR.neuerAuftragLabel)
+	#VR.neuerAuftragLabel.setFrom(0,4.3,-0.5)
+	#VR.neuerAuftragLabel.setDir(0,0,1)
 	
 	
 	
@@ -1525,10 +1525,7 @@
 	import VR
 	if not hasattr(VR,'auftragqueue'):
 		VR.auftragqueue = Queue() # Enthält Aufträge in der Form [Anzahl,Modell]
-	if not hasattr(VR,'neuerauftrag_count'):
-		VR.neuerauftrag_count = 1
-	if not hasattr(VR, 'neuerauftrag_model'):
-		VR.neuerauftrag_model = 0
+	
 	
 	
 	#Die Klasse hat einen Trigger für das Device mobile mit -1
@@ -1539,25 +1536,39 @@
 	k = dev.getKey()
 	print k
 	
-	if (k == 101):
-		#So den gedrückten Knopf finden
-		if (VR.neuerauftrag_model == 0): VR.neuerauftrag_model = 1
-		else: VR.neuerauftrag_model = 0
-		print "Wähle Modell " + str(VR.neuerauftrag_model)
-	if (k == 102):
-		VR.neuerauftrag_count = VR.neuerauftrag_count + 1
-		print "Anzahl: " + str(VR.neuerauftrag_count)
-	if (k == 103):
-		if (VR.neuerauftrag_count &lt;= 1):
-			print "Ein Auftrag kann nicht weniger als eine Felge enthalten."
-		else:
-			VR.neuerauftrag_count = VR.neuerauftrag_count -1
-			print "Anzahl: " + str(VR.neuerauftrag_count)
-	if (k == 104):
-		print "Reset Anzahl und Modell. TODO starte Auftrag für " + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
-		VR.auftragqueue.put([VR.neuerauftrag_count,VR.neuerauftrag_model])
-		VR.neuerauftrag_count = 1
-		VR.neuerauftrag_model = 0
+	if(k == 1):
+		msg = dev.getMessage()
+		#print msg + " msg"
+		split = msg.split("|")
+		#print split
+		rimCount = int(split[0])
+		rimType = int(split[1])
+		print "Control: Starte Auftrag für " + str(split[0]) + " Felgen Typ " + str(split[1])
+		VR.auftragqueue.put([rimCount,rimType])
+	else:
+		print "Unknown button pressed"
+	
+	#if (k == 101):
+	#	#So den gedrückten Knopf finden
+	#	if (VR.neuerauftrag_model == 0): VR.neuerauftrag_model = 1
+	#	else: VR.neuerauftrag_model = 0
+	#	print "Wähle Modell " + str(VR.neuerauftrag_model)
+	#if (k == 102):
+	#	VR.neuerauftrag_count = VR.neuerauftrag_count + 1
+	#	msg = dev.getMessage()
+	#	print msg + " msg"
+	#	print "Anzahl: " + str(VR.neuerauftrag_count)
+	#if (k == 103):
+	#	if (VR.neuerauftrag_count &lt;= 1):
+	#		print "Ein Auftrag kann nicht weniger als eine Felge enthalten."
+	#	else:
+	#		VR.neuerauftrag_count = VR.neuerauftrag_count -1
+	#		print "Anzahl: " + str(VR.neuerauftrag_count)
+	#if (k == 104):
+	#	print "Reset Anzahl und Modell. TODO starte Auftrag für " + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
+	#	VR.auftragqueue.put([VR.neuerauftrag_count,VR.neuerauftrag_model])
+	#	VR.neuerauftrag_count = 1
+	#	VR.neuerauftrag_model = 0
 		
 </core>
       <trig type="on_device" dev="mobile" state="Pressed" param="" key="-1" name_suffix="4" base_name="trigger" name_space="__global__"/>
@@ -1599,9 +1610,9 @@
  &lt;style type="text/css"&gt;
   body {font-size:200%;
 		text-align:center;
-		background:#fff0e0;
-		color:#ff6622}
-  button {font-size:120%;
+		background:#ffffff;
+		}
+  button {font-size:150%;
 		padding:3%;
 		padding-left:10%;
 		padding-right:10%;}
@@ -1610,7 +1621,7 @@
 		padding-right:2%;
 		margin-left:auto; 
 		margin-right:auto;
-		background:#f9f9ff;}
+		background:#ffffff;}
   td	{height:170px; 
 		width:33%;}
  &lt;/style&gt;
@@ -1618,29 +1629,64 @@
 
 &lt;body&gt;
  &lt;script&gt;
-  function get(b,s) {
-   var xmlHttp = new XMLHttpRequest();
-   var uri = document.URL+'mobile?button='+b+'&amp;state='+s;
+ var type;
+ var count;
+ 
+ function start() {
+	var xmlHttp = new XMLHttpRequest();
+   
+	var rimCount = document.getElementById('number').value;
+	var radios = document.getElementsByName('Felgentyp');
+	var rimType;
+	// stupid but maybe we have more than one rimType one day
+	for (var i = 0, length = radios.length; i &lt; length; i++) {
+		if (radios[i].checked) {
+		    rimType = i;
+		    break;
+		}
+	}
+   
+   var s = "" + rimCount + "|" + rimType;
+   
+   var uri = document.URL+'mobile?button=1'+'&amp;state=1'+'&amp;message='+s;
    xmlHttp.open( "GET", uri, true );
    xmlHttp.send( null );
-  }
- &lt;/script&gt;
+ }
 
-&lt;table&gt; 
- &lt;tr&gt;
-	&lt;td&gt;&lt;/td&gt;
-	&lt;td&gt;&lt;h1&gt;Tolle Auftragsbearbeitung&lt;/h1&gt;
-	Linker Knopf: Modell. Mittlere Knöpfe: Anzahl.&lt;/td&gt;
- &lt;/tr&gt;
- &lt;tr&gt;
-	&lt;td&gt;&lt;button onmousedown='get(101,1)' onmouseup='get(103,0)' type='button'&gt;toggle modell&lt;/button&gt;&lt;/td&gt;
-	&lt;td&gt;&lt;button onmousedown='get(102,1)' onmouseup='get(104,0)' type='button'&gt;+&lt;/button&gt;&lt;/td&gt;
-	&lt;td&gt;&lt;button onmousedown='get(103,1)' onmouseup='get(105,0)' type='button'&gt;-&lt;/button&gt;&lt;/td&gt;
-	&lt;td&gt;&lt;button onmousedown='get(104,1)' onmouseup='get(102,0)' type='button'&gt;Start&lt;/button&gt;&lt;/td&gt;
-	
- &lt;/tr&gt;
-&lt;/table&gt;
-Funktionalitaet ist da. Feedback bisher nur ueber Log-Ausgaben und Sprite, nicht ueber Webseite.
+  function incrementValue()
+{
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    value++;
+    document.getElementById('number').value = value;
+}
+  function decrementValue()
+{
+    var value = parseInt(document.getElementById('number').value, 10);
+    value = isNaN(value) ? 0 : value;
+    if(value &lt;= 1){
+		value = 1
+    } else {
+		value--;
+    }
+    document.getElementById('number').value = value;
+}
+ &lt;/script&gt;
+&lt;center&gt;
+&lt;h1&gt;Control&lt;/h1&gt;
+&lt;form&gt;
+	Teilmenge:
+	&lt;input type="text" id="number" value="1"/&gt;
+	&lt;input type="button" onclick="incrementValue()" value="More" /&gt;
+	&lt;input type="button" onclick="decrementValue()" value="Less" /&gt;
+	&lt;br /&gt;
+	Felgentyp: &lt;/br&gt;
+	 &lt;input type="radio" id="r0" name="Felgentyp" value="0" checked&gt;&lt;label for="mc"&gt; 1&lt;/label&gt;&lt;br&gt; 
+	 &lt;input type="radio" id="r1" name="Felgentyp" value="1"&gt;&lt;label for="vi"&gt; 2&lt;/label&gt;&lt;br&gt; 
+	 &lt;br /&gt;
+	 &lt;input type="button" onclick="start()" value="Start" /&gt;	 	 
+&lt;/form&gt;
+&lt;/center&gt;
 &lt;/body&gt;
 
 &lt;/html&gt;
