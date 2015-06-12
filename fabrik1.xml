@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-2.49678 4.20221 9.17085" at="-3.40967 1.6566 4.20337" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.5014 13.6117 6.00176" at="-1.23102 0 3.60856" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -58,6 +58,7 @@
       <core>
 	import VR
 	import math
+	return
 
 	if hasattr(VR, 'halle'):
 		VR.halle.destroy()
@@ -78,6 +79,7 @@
 	Pi = math.pi
 	debugDoor = True
 	debugdraw = True
+	VR.debugdraws = []
 	
 	_animationTime = 50
 	_animationOffset = 0
@@ -126,14 +128,20 @@
 			self.RightDoor.setFrom([-0.14, 0, 0])
 			
 		def startFraese(self,rohling,modell):
-			print "Starte Fräsvorgang"
+			print "Starte Fräsvorgang",rohling,rohling.getName()
 			#rohling positionieren
 			rohling.rotate(1,0,0, -Pi)
 			rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			rohling.setFrom(VR.fraese_ablegepunkt)
-			self.Base.addChild(rohling)
+			rohling.setVisible(True)
+			rohling.switchParent(self.Base)
+			#self.Base.addChild(rohling)
 			self.rohling = rohling
 			
+			for d in VR.debugdraws:
+				d.destroy()
+				
+			debugdraws = []
 			#fräsen
 			self.useDoor()
 			if modell == 0:
@@ -143,7 +151,6 @@
 
 		def nextGCode(self,parser):
 			if parser.hasNext():
-				print "next Gcode"
 				#parsen
 				paths = parser.ParseLine()
 				if paths is  None:
@@ -169,6 +176,7 @@
 					prof.append([b,0,b])
 					s.strokeProfile(prof, True, True)
 					self.Base.addChild(s)
+					VR.debugdraws.append(s)
 				#abtrag
 				if paths[4]:
 					print "Abtrag"
@@ -191,8 +199,10 @@
 			objekt.rotate(1,0,0, -Pi)
 			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			objekt.setFrom(VR.fraese_ablegepunkt)
+			objekt.setVisible(true)
 			self.rohling.destroy()
-			self.Base.addChild(objekt)
+			objekt.switchParent(self.Base)
+			#self.Base.addChild(objekt)
 			
 			#objekt = VR.log.addProduct(felge)
 			#print objekt
@@ -209,9 +219,12 @@
 				self.RightDoor.animate(self.p2o, 1, 0, True)
 			self.doorOpen = not self.doorOpen
 			
+		def destroy(self):
+			self.Base.destroy()
 		
-	if not hasattr(VR, 'fraeseController'):
-		VR.fraeseController = FraeseController(root)	
+	if hasattr(VR, 'fraeseController'):
+		VR.fraeseController.destroy()
+	VR.fraeseController = FraeseController(root)	
 
 </core>
       <arg type="VRPyGeometryType" value="Headlight" name_suffix="0" base_name="root" name_space="FraeseControl"/>
@@ -569,7 +582,7 @@
 		def ParseLine(self):
 		#returns [p1, p2, p3, pd, loch (None oder True), Zeit]
 			line = self.lines[self.currentLine]
-			print line
+			#print line
 			p1 = VR.Path()
 			p2 = VR.Path()
 			p3 = VR.Path()
@@ -691,9 +704,9 @@
 				self.plane = "X"
 		
 			if regexG02.match(line):
-				newX = 0
-				newY = 0
-				newZ = 0
+				newX = self.lastPos[0]
+				newY = self.lastPos[1]
+				newZ = self.lastPos[2]
 				
 				centerX = self.lastPos[0]
 				centerY = self.lastPos[1]
@@ -780,9 +793,9 @@
 			
 			
 			if regexG03.match(line):
-				newX = 0
-				newY = 0
-				newZ = 0
+				newX = self.lastPos[0]
+				newY = self.lastPos[1]
+				newZ = self.lastPos[2]
 				
 				centerX = self.lastPos[0]
 				centerY = self.lastPos[1]
