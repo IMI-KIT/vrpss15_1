@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-9.11391 6.75828 -7.24683" at="-3.97544 1.62408 3.56604" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-2.48321 9.52672 -5.94089" at="-3.97544 1.62408 3.56604" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -58,6 +58,7 @@
       <core>
 	import VR
 	import math
+	return
 
 	if hasattr(VR, 'halle'):
 		VR.halle.destroy()
@@ -124,35 +125,10 @@
 			
 			
 		#rohling: Ein Geometriedings oder so
-		def startFraese(self,rohlingProduct,modell):
+		def startFraese(self,rohling,modell):
 			print "Starte Fräsvorgang"
 			#rohling positionieren
-			
-			print "Überspringe Fräse (Bug!!!), direkt Callback an logistik"
-			VR.logisticController.fraeseDone(rohlingProduct)
-			return
-			if modell == 0:
-				felge = VR.FRfelge0.duplicate()
-			else :
-				felge = VR.FRfelge1.duplicate()
-			#Alisa sagt: Hier ist ein Bug. Das muss Victor mal anschauen.			
-			objekt = VR.log.addProduct(felge)	
-			objekt.rotate(1,0,0, -Pi)
-			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
-			objekt.setFrom(VR.fraese_ablegepunkt)
-			rohling.destroy()
-			self.parent.addChild(objekt)
-			
-			#objekt = VR.log.addProduct(felge)
-			#print objekt
-			#objekt = felge
-			print "Fraesevorgang done, call back Logistik"
-			VR.logisticController.fraeseDone(objekt)
-			#Das drüber nur reinkopiert als schneller fix
-			return
-			
-			rohling = VR.log.addProduct(rohlingProduct)
-			#TODO Alisa sagt: Hier ist ein Problem - warum ist rohling immernoch ein Product?
+
 			rohling.rotate(1,0,0, -Pi)
 			rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			rohling.setFrom(VR.fraese_ablegepunkt)
@@ -160,12 +136,13 @@
 				
 			#fräsen
 			self.startFraesen()
-			
-			VR.stackCall( self.stop, _animationTime+_animationOffset , [modell,rohling] )
+			self.stop(modell, rohling)#von Alisa
+			#VR.stackCall( self.stop, _animationTime+_animationOffset , [modell,rohling] ) Auskommentiert von Alisa
 
 			
 		def startFraesen(self):
 			self.useDoor()
+			return #von Alisa
 			paths = VR.ParseGCode("NewModell1.nc")
 			p1 = paths[0]
 			p2 = paths[1]
@@ -194,11 +171,9 @@
 			self.useDoor()
 			#Felge erzeugen
 			if modell == 0:
-				felge = VR.FRfelge0.duplicate()
+				objekt = VR.FRfelge0.duplicate()
 			else :
-				felge = VR.FRfelge1.duplicate()
-				
-			objekt = VR.log.addProduct(felge)				
+				objekt = VR.FRfelge1.duplicate()
 			objekt.rotate(1,0,0, -Pi)
 			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			objekt.setFrom(VR.fraese_ablegepunkt)
@@ -256,7 +231,8 @@
 				# Ich hab hier sonst etwas Angst vor Endlosrekursion! Gehe lieber erstmal in Zustand Warten,
 				# Klasse mit regelmäßigem Update reagiert darauf.
 				print "Felge done. Place on band."
-				VR.containers[2].add(objekt)
+				product = VR.log.addProduct(objekt)
+				VR.containers[2].add(product)
 			else:
 				print "Achtung! moveDone called, aber Zustand passt nicht!"
 				
@@ -273,14 +249,15 @@
 			else:
 				print "Achtung! Fraese fertig, aber Zustand passt nicht!"
 				
-		def start(self,objekt):
+		def start(self,product):
 			print "Starte neuen Beweg-und-Fräs-Vorgang"
 			VR.currentState =  VR.states_MoveRohlingToFraese
 			startpunkt = VR.pfad1_endpunkt
 			endpunkt = VR.fraese_ablegepunkt
 			startrichtung = [0,0,-1]
 			endrichtung = [1,0,0]
-			VR.robotController.move(startpunkt,startrichtung,endpunkt,endrichtung,objekt)
+			geo = product.getGeometry()
+			VR.robotController.move(startpunkt,startrichtung,endpunkt,endrichtung,geo)
 			
 
 		
@@ -486,9 +463,9 @@
 	if hasattr(VR, 'containers'):
 		if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
 			c1 = VR.containers[1]
-			objekt = c1.get()
+			product = c1.get()
 			bla = 1
-			VR.logisticController.start(objekt)
+			VR.logisticController.start(product)
 	
 	
 	#=====Prüfe, ob Auftrag beendet=====
@@ -1036,6 +1013,13 @@
 	VR.robotController = RobotController()
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="6" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="Script" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	help(VR.Factory)
+</core>
     </Script>
     <Script name_suffix="0" base_name="initAnzeigetafeln" name_space="__script__" type="Python" mobile="">
       <core>
