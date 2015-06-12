@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-3.39237 5.41267 -4.81817" at="-1.54208 4.00176 3.82889" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="2.4499 6.83327 9.9474" at="-3.37737 0.738326 4.17911" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -882,13 +882,59 @@
 	import time
 	import math
 
-	#VR.robotController.move_a1(100)
-	#VR.robotController.move_a2(-40)
-	#VR.robotController.move_a3(20)
-	#VR.robotController.move_a4(90)
-	VR.robotController.move_a5(30)
+
+	#VR.robotController.move_a1(180)
+	#VR.robotController.move_a2(-10)
+	#VR.robotController.move_a3(-10)
+	#VR.robotController.move_a4(180)
+	#VR.robotController.move_a5(-5)
 	#VR.robotController.greifen()
 	
+	#if not VR.robotAnimationStep == 15 :
+	#   VR.robotController.reset()
+	#VR.robotAnimationStep = 15
+	#return
+	
+	
+	if not hasattr(VR, 'robotAnimationStep'):
+		VR.robotAnimationStep = 0
+	else :
+		VR.robotAnimationStep += 1
+		VR.robotAnimationStep %= 8
+	
+	#print VR.robotAnimationStep
+	
+	if VR.robotAnimationStep == 0:
+		#print "Schritt 1!"
+		VR.robotController.move_a1(-90)
+		VR.robotController.move_a2(-25)
+		VR.robotController.move_a3(-50)
+		VR.robotController.move_a5(75)
+	if VR.robotAnimationStep == 1:
+		#print "Schritt 2!"
+		VR.robotController.greifen()
+	if VR.robotAnimationStep == 2:
+		#print "Schritt 3!"
+		VR.robotController.move_a2(25)
+		VR.robotController.move_a3(50)
+	if VR.robotAnimationStep == 3:
+		#print "Schritt 4!"
+		VR.robotController.move_a1(-93)
+	if VR.robotAnimationStep == 4:
+		#print "Schritt 5!"
+		VR.robotController.move_a2(-50)
+		VR.robotController.move_a3(-20)
+		VR.robotController.move_a5(-5)
+	if VR.robotAnimationStep == 5:
+		#print "Schritt 6!"
+		VR.robotController.greifen()
+	if VR.robotAnimationStep == 6:
+		#print "Schritt 7!"
+		VR.robotController.move_a2(50)
+		VR.robotController.move_a3(20)
+		VR.robotController.move_a5(-70)
+	if VR.robotAnimationStep == 7:
+		print "Teil eingelegt"
 </core>
     </Script>
     <Script name_suffix="0" base_name="RobotControl" name_space="__script__" type="Python" mobile="">
@@ -925,7 +971,7 @@
 			self.winkelA4 = 0
 			self.winkelA5 = 0
 			
-			self.movingArms = [0, 0, 0, 0, 0]
+			self.movingArms = [0, 0, 0, 0, 0, 0]
 			
 
 		#Punkte: In mm relativ zu Roboter-Ursprung Format [x,y,z]
@@ -966,7 +1012,9 @@
 			#Animation starten
 			path = self.x_rotatePath(f, u, d, winkel_deg,winkel_rad)
 			anTime = self.animationTime(6, winkel_deg)
+			self.movingArms[0] = 1
 			arm.animate(path,anTime,0,True)
+			VR.stackCall(self.endAnimation, anTime, [0]) 
 			del arm, f, u, d, path, anTime
 
 		
@@ -987,7 +1035,9 @@
 			#Animation starten
 			path = self.y_rotatePath(f, u, d, winkel_deg,winkel_rad)
 			anTime = self.animationTime(6, winkel_deg)
+			self.movingArms[1] = 1
 			arm.animate(path,anTime,0,True)
+			VR.stackCall(self.endAnimation, anTime, [1]) 
 			del arm, f, u, d, path, anTime
 			
 		#Arm3 bewegen
@@ -1007,7 +1057,9 @@
 			#Animation starten
 			path = self.y_rotatePath(f, u, d, winkel_deg,winkel_rad)
 			anTime = self.animationTime(6, winkel_deg)
+			self.movingArms[2] = 1
 			arm.animate(path,anTime,0,True)
+			VR.stackCall(self.endAnimation, anTime, [2]) 
 			del arm, f, u, d, path, anTime
 		
 		#Arm4 bewegen
@@ -1034,7 +1086,9 @@
 			#Animation starten
 			path = self.z_rotatePath(f, u, d, winkel_deg, winkel_rad)
 			anTime = self.animationTime(6, winkel_deg)
+			self.movingArms[3] = 1
 			arm.animate(path,anTime,0,True)
+			VR.stackCall(self.endAnimation, anTime, [3]) 
 			del arm, f, u, d, path, anTime
 			
 		#Arm5 bewegen
@@ -1055,7 +1109,9 @@
 			#Animation starten
 			path = self.y_rotatePath(f, u, d, winkel_deg,winkel_rad)
 			anTime = self.animationTime(6, winkel_deg)
+			self.movingArms[4] = 1
 			arm.animate(path,anTime,0,True)
+			VR.stackCall(self.endAnimation, anTime, [4]) 
 			del arm, f, u, d, path, anTime
 			
 			
@@ -1097,24 +1153,25 @@
 			arm_l = VR.robot.find('Arm_links')
 			arm_r = VR.robot.find('Arm_rechts')
 	
-			
+			self.movingArms[5] = 1
 			arm_l.animate(RobotController.lpath,1,0.1,False)
 			arm_r.animate(RobotController.rpath,1,0.1,False)
+			VR.stackCall(self.endAnimation, 1.1, [5]) 
 		
 		#öffnen
-		def oeffnen(self):
-			if hasattr(RobotController, 'lpath'):
-				RobotController.lpath.invert()
-				RobotController.rpath.invert()
-			
-				arm_l = VR.robot.find('Arm_links')
-				arm_r = VR.robot.find('Arm_rechts')
-	
-			
-				arm_l.animate(RobotController.lpath,1,0.1,False)
-				arm_r.animate(RobotController.rpath,1,0.1,False)
-			else:
-				return
+		#def oeffnen(self):
+		#	if hasattr(RobotController, 'lpath'):
+		#		RobotController.lpath.invert()
+		#		RobotController.rpath.invert()
+		#	
+		#		arm_l = VR.robot.find('Arm_links')
+		#		arm_r = VR.robot.find('Arm_rechts')
+		#
+		#	
+		#		arm_l.animate(RobotController.lpath,1,0.1,False)
+		#		arm_r.animate(RobotController.rpath,1,0.1,False)
+		#	else:
+		#		return
 				
 		# Pfad für Drehung in der y-Achse
 		def y_rotatePath(self, f, u, d, winkel_deg, zielWinkel_rad):
@@ -1168,7 +1225,23 @@
 		# Bewungsarray beenden und Benachrtigungs funktionen aufrufen
 		def endAnimation(self, armIndex):
 			self.movingArms[armIndex] = 0
-			
+			#print "Arm", armIndex  ," bewegung Beendet"
+			allArms = 0
+			for arm in self.movingArms:
+				allArms += arm
+			if allArms &lt;= 0:
+				#Alle notify Funktionen hier aufrufen!
+				#print "Roboter steht"
+				VR.RobotAnimation()
+		
+		# Bringt den Roboter in Ausgangstellung
+		def reset(self):
+			self.move_a1(-self.winkelA1)
+			self.move_a2(-self.winkelA2)
+			self.move_a3(-self.winkelA3)
+			self.move_a4(-self.winkelA4)
+			self.move_a5(-self.winkelA5)
+					
 		
 		
 		
