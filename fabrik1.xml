@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-2.49678 4.20221 9.17085" at="-3.40967 1.6566 4.20337" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-3.39237 5.41267 -4.81817" at="-1.54208 4.00176 3.82889" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -882,11 +882,11 @@
 	import time
 	import math
 
-	VR.robotController.move_a1(180)
-	VR.robotController.move_a2(10)
-	VR.robotController.move_a3(-20)
-	VR.robotController.move_a4()
-	VR.robotController.move_a5()
+	#VR.robotController.move_a1(100)
+	#VR.robotController.move_a2(-40)
+	#VR.robotController.move_a3(20)
+	#VR.robotController.move_a4(90)
+	VR.robotController.move_a5(30)
 	#VR.robotController.greifen()
 	
 </core>
@@ -901,6 +901,7 @@
 	class RobotController:
 		#colorVector Konstante für die Animation
 		c = [0,0,0]
+		
 	
 		def __init__(self):
 			#geometrie laden
@@ -923,6 +924,9 @@
 			self.winkelA3 = 0
 			self.winkelA4 = 0
 			self.winkelA5 = 0
+			
+			self.movingArms = [0, 0, 0, 0, 0]
+			
 
 		#Punkte: In mm relativ zu Roboter-Ursprung Format [x,y,z]
 		#Richtung: Von da aus den Punkt anfahren
@@ -947,141 +951,113 @@
 				
 		#Arm1 bewegen
 		def move_a1(self, winkel_deg):
-			arm = VR.robot.find('Arm1.2')
+			arm = VR.robot.find('r_Arm1')
 			f = arm.getFrom()
 			d = arm.getDir()
 			u = arm.getUp()
-			#Vektoren berechnen
-			#if winkel_deg &gt; 180 | winkel_deg &lt; -180 :
-			#	winkel_deg = (360 - winkel_deg) % 360
-			#	winkel_deg = (-1) * winkel_deg
-			#winkel_deg = winkel_deg % 360
-			winkel_rad = math.radians(winkel_deg + self.winkelA1)
 			
-			zielVector = [math.sin(winkel_rad),math.cos(winkel_rad),0]
-			
-			#Pfad erstellen
-			path = VR.Path()
-			path.addPoint(f,d,RobotController.c,u)
-			if (winkel_deg == 180) | (winkel_deg == -180) :
-				zwischenVec = [math.sin(winkel_rad - (winkel_deg/2)),math.cos(winkel_rad - (winkel_deg/2)),0]
-				path.addPoint(f,d,RobotController.c,zwischenVec)#
-				del zwischenVec
-			path.addPoint(f,d,RobotController.c,zielVector)
-			path.compute(80)
-			
-			#animationZeit berechnen
-			anTime = math.fabs(6 * (winkel_deg/360.0))
-			if anTime &lt; 1 :
-				anTime = 1
-			arm.animate(path, anTime, 0, True)
+			#Werte sichern
 			self.winkelA1 += winkel_deg
-			self.winkelA1 = self.winkelA1 % 360
-			del arm, f, d, u, path, zielVector, anTime
+			self.winkelA1 %= 360
+			
+			#Zielwinkel im Bogenmaß berechnen berechnen
+			winkel_rad = math.radians(self.winkelA1)
+			
+			#Animation starten
+			path = self.x_rotatePath(f, u, d, winkel_deg,winkel_rad)
+			anTime = self.animationTime(6, winkel_deg)
+			arm.animate(path,anTime,0,True)
+			del arm, f, u, d, path, anTime
 
 		
 		#Arm2 bewegen
 		def move_a2(self, winkel_deg):
-			arm = VR.robot.find('Arm2.2')
+			arm = VR.robot.find('r_Arm2')
 			f = arm.getFrom()
 			u = arm.getUp()
 			d = arm.getDir()
 			
-			#Zielvektor berechnen
-			#winkel_deg = winkel_deg % 360
-			winkel_rad = math.radians(winkel_deg + self.winkelA2)
-			zielVector = [math.sin(winkel_rad),0,-math.cos(winkel_rad)]
-			
-			#Pfad erstellen
-			path = VR.Path()
-			path.addPoint(f,d,RobotController.c,u)
-			if (winkel_deg == 180) | (winkel_deg == -180) :
-				zwischenVec = [math.sin(winkel_rad - (winkel_deg/2)),0,-math.cos(winkel_rad - (winkel_deg/2))]
-				path.addPoint(f,zwischenVec,RobotController.c,u)
-				del zwischenVec
-			path.addPoint(f,zielVector,RobotController.c,u)
-			path.compute(80)
-			
-			#animationZeit berechnen
-			anTime = math.fabs(6 * (winkel_deg/360.0))
-			if anTime &lt; 1 :
-				anTime = 1
-			arm.animate(path, anTime, 0, True)
-			#werte sichern
+			#Werte sichern
 			self.winkelA2 += winkel_deg
-			self.winkelA2 = self.winkelA2 % 360
-			del arm, f, d, u, path, zielVector, anTime
+			self.winkelA2 %= 360
+			
+			#Zielwinkel im Bogenmaß berechnen berechnen
+			winkel_rad = math.radians(self.winkelA2)
+			
+			#Animation starten
+			path = self.y_rotatePath(f, u, d, winkel_deg,winkel_rad)
+			anTime = self.animationTime(6, winkel_deg)
+			arm.animate(path,anTime,0,True)
+			del arm, f, u, d, path, anTime
 			
 		#Arm3 bewegen
 		def move_a3(self, winkel_deg):
-			arm = VR.robot.find('Motor_oben')
+			arm = VR.robot.find('r_Motor_oben')
 			f = arm.getFrom()
 			u = arm.getUp()
 			d = arm.getDir()
-			
-			#Zielvektor berechnen
-			winkel_rad = math.radians(winkel_deg + self.winkelA3)
-			zielVector = [math.sin(winkel_rad),0,-math.cos(winkel_rad)]
-			
-			#Pfad erstellen
-			path = VR.Path()
-			path.addPoint(f,d,VR.robotController.c,u)
-			if (winkel_deg == 180) | (winkel_deg == -180) :
-				zwischenVec = [math.sin(winkel_rad - (winkel_deg/2)),0,-math.cos(winkel_rad - (winkel_deg/2))]
-				path.addPoint(f,zwischenVec,RobotController.c,u)
-				del zwischenVec
-			path.addPoint(f,zielVector,RobotController.c,u)
-			path.compute(80)
-			
-			#animationZeit berechnen
-			anTime = math.fabs(6 * (winkel_deg/360.0))
-			if anTime &lt; 1 :
-				anTime = 1
-			arm.animate(path,anTime,0,True)
 			
 			#Werte sichern
 			self.winkelA3 += winkel_deg
-			self.winkelA3 = self.winkelA3 % 360
+			self.winkelA3 %= 360
 			
-			del arm, f, d, u, path, zielVector, anTime
+			#Zielwinkel im Bogenmaß berechnen berechnen
+			winkel_rad = math.radians(self.winkelA3)
+			
+			#Animation starten
+			path = self.y_rotatePath(f, u, d, winkel_deg,winkel_rad)
+			anTime = self.animationTime(6, winkel_deg)
+			arm.animate(path,anTime,0,True)
+			del arm, f, u, d, path, anTime
 		
 		#Arm4 bewegen
-		def move_a4(self):
-			arm = VR.robot.find('Arm4')
+		def move_a4(self, winkel_deg):
+			arm = VR.robot.find('r_Arm4')
 			f = arm.getFrom()
 			u = arm.getUp()
 			d = arm.getDir()
-			path = VR.Path()
-			path2 = VR.Path()
-			path.addPoint(f,d,VR.robotController.c,u)
-			path.addPoint(f,[0,1,0,],VR.robotController.c,[0,0,1])
-			path.addPoint(f,[0,0,1],VR.robotController.c,[0,-1,0])
-			path2.addPoint(f,[0,0,1],VR.robotController.c,[0,-1,0])
-			path2.addPoint(f,[0,-1,0],VR.robotController.c,[0,0,-1])
-			path2.addPoint(f,d,VR.robotController.c,u)
-			path.compute(80)
-			path2.compute(80)
-			arm.animate(path,3,0,True)
-			arm.animate(path2,3,5,True)
-			del arm, f, d, u, path, path2
+			
+			
+			#Werte sichern
+			self.winkelA4 += winkel_deg
+			self.winkelA4 %= 360
+			
+			#Zielwinkel im Bogenmaß berechnen berechnen
+			winkel_rad = math.radians(self.winkelA4)
+			
+			#print u, d
+			#up_zielVector = [0, math.cos(winkel_rad), math.sin(winkel_rad)]
+			#dir_zielVector =[0, math.sin(winkel_rad), -math.cos(winkel_rad)]
+			#print up_zielVector, dir_zielVector
+			#return
+			
+			#Animation starten
+			path = self.z_rotatePath(f, u, d, winkel_deg, winkel_rad)
+			anTime = self.animationTime(6, winkel_deg)
+			arm.animate(path,anTime,0,True)
+			del arm, f, u, d, path, anTime
 			
 		#Arm5 bewegen
-		def move_a5(self):
-			arm = VR.robot.find('Arm5')
+		def move_a5(self, winkel_deg):
+			arm = VR.robot.find('r_Arm5')
 			f = arm.getFrom()
 			u = arm.getUp()
 			d = arm.getDir()
-			path = VR.Path()
-			path2 = VR.Path()
-			path.addPoint(f,d,VR.robotController.c,u)
-			path.addPoint(f,[-1,0,-0.2,],VR.robotController.c,u)
-			path2.addPoint(f,[-1,0,-0.2,],VR.robotController.c,u)
-			path2.addPoint(f,d,VR.robotController.c,u)
-			path.compute(80)
-			path2.compute(80)
-			arm.animate(path,2,1,True)
-			arm.animate(path2,2,5,True)
-			del arm, f, d, u, path, path2
+			
+			
+			#Werte sichern
+			self.winkelA5 += winkel_deg
+			self.winkelA5 %= 360
+			
+			#Zielwinkel im Bogenmaß berechnen berechnen
+			winkel_rad = math.radians(self.winkelA5)
+			
+			#Animation starten
+			path = self.y_rotatePath(f, u, d, winkel_deg,winkel_rad)
+			anTime = self.animationTime(6, winkel_deg)
+			arm.animate(path,anTime,0,True)
+			del arm, f, u, d, path, anTime
+			
 			
 		#Greifen
 		def greifen(self):
@@ -1139,8 +1115,60 @@
 				arm_r.animate(RobotController.rpath,1,0.1,False)
 			else:
 				return
+				
+		# Pfad für Drehung in der y-Achse
+		def y_rotatePath(self, f, u, d, winkel_deg, zielWinkel_rad):
+			zielVector = [math.sin(zielWinkel_rad),0,-math.cos(zielWinkel_rad)]
+			path = VR.Path()
+			path.addPoint(f,d,VR.robotController.c,u)
+			if (winkel_deg == 180) | (winkel_deg == -180) :
+				zwischenVec = [math.sin(zielWinkel_rad - (winkel_deg/2)),0,-math.cos(zielWinkel_rad - (winkel_deg/2))]
+				path.addPoint(f,zwischenVec,RobotController.c,u)
+				del zwischenVec
+			path.addPoint(f,zielVector,RobotController.c,u)
+			path.compute(80)
+			return path
 			
-
+		# Pfad für Drehung in der x-Achse
+		def x_rotatePath(self, f, u, d, winkel_deg, zielWinkel_rad):
+			zielVector = [math.sin(zielWinkel_rad),math.cos(zielWinkel_rad),0]
+			path = VR.Path()
+			path.addPoint(f,d,RobotController.c,u)
+			if (winkel_deg == 180) | (winkel_deg == -180) :
+				zwischenVec = [math.sin(zielWinkel_rad - (winkel_deg/2)),math.cos(zielWinkel_rad - (winkel_deg/2)),0]
+				path.addPoint(f,d,RobotController.c,zwischenVec)#
+				del zwischenVec
+			path.addPoint(f,d,RobotController.c,zielVector)
+			path.compute(80)
+			return path
+			
+		# Pfad für Drehung in der z-Achse
+		def z_rotatePath(self, f, u, d, winkel_deg, zielWinkel_rad):
+			up_zielVector = [0, math.cos(zielWinkel_rad), math.sin(zielWinkel_rad)]
+			dir_zielVector =[0, math.sin(zielWinkel_rad), -math.cos(zielWinkel_rad)]
+			path = VR.Path()
+			path.addPoint(f,d,RobotController.c,u)
+			if (winkel_deg == 180) | (winkel_deg == -180) :
+				zwischenWinkel = zielWinkel_rad - (winkel_deg/2)
+				up_zwischenVec = [0, math.cos(zwischenWinkel), math.sin(zwischenWinkel)]
+				dir_zwischenVec =[0, math.sin(zwischenWinkel), -math.cos(zwischenWinkel)]
+				path.addPoint(f, dir_zwischenVec,RobotController.c, up_zwischenVec)
+				del zwischenWinkel, up_zwischenVec, dir_zwischenVec
+			path.addPoint(f,dir_zielVector,RobotController.c,up_zielVector)
+			path.compute(80)
+			return path
+			
+		# Zeit für animation berechnen
+		def animationTime(self, roationSpeed, winkel_deg):
+			anTime = math.fabs(roationSpeed * (winkel_deg/360.0))
+			if anTime &lt; 1 :
+				anTime = 1
+			return anTime
+			
+		# Bewungsarray beenden und Benachrtigungs funktionen aufrufen
+		def endAnimation(self, armIndex):
+			self.movingArms[armIndex] = 0
+			
 		
 		
 		
