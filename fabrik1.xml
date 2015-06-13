@@ -800,6 +800,10 @@
 	#return
 	
 	
+	#Tobias: return, dass manuelle steuerung moeglich ist
+	# einfach wieder auskommentieren, dann geht die Animation wieder
+	return
+	
 	if not hasattr(VR, 'robotAnimationStep'):
 		VR.robotAnimationStep = 0
 	else :
@@ -1418,6 +1422,22 @@
 		rimType = int(split[1])
 		print "Control: Starte Auftrag für " + str(split[0]) + " Felgen Typ " + str(split[1])
 		VR.auftragqueue.put([rimCount,rimType])
+	elif(k == 2):
+		msg = dev.getMessage()
+		split = msg.split("|")
+		joint = int(split[0])
+		degree = int(split[1])
+		if(joint == 1):
+			VR.robotController.move_a1(degree)	
+		elif(joint == 2):
+			VR.robotController.move_a2(degree)	
+		elif(joint == 3):
+			VR.robotController.move_a3(degree)	
+		elif(joint == 4):
+			VR.robotController.move_a4(degree)	
+		elif(joint == 5):
+			VR.robotController.move_a5(degree)				
+		
 	else:
 		print "Unknown button pressed"
 	
@@ -1480,86 +1500,140 @@
 &lt;html&gt;
 
 &lt;head&gt;
- &lt;style type="text/css"&gt;
-  body {font-size:200%;
-		text-align:center;
-		background:#ffffff;
-		}
-  button {font-size:150%;
-		padding:3%;
-		padding-left:10%;
-		padding-right:10%;}
-  table {width:95%;
-		padding-left:2%;
-		padding-right:2%;
-		margin-left:auto; 
-		margin-right:auto;
-		background:#ffffff;}
-  td	{height:170px; 
-		width:33%;}
- &lt;/style&gt;
+&lt;style type="text/css"&gt;
+body{ 
+	background:#FFFFFF; 
+}
+h2 {
+	font-size: 120%;
+	color: #718DA5;
+}
+#header{
+	background:#2A4F6E;   
+	color: #718DA5;  
+	font-size: 100%; 
+	height:40px;
+}
+#content{ 
+	color:#042037;
+	font-size: 150%;
+	padding-bottom:40px; 
+}
+#footer{
+	background: #2A4F6E;
+	color: #718DA5; 
+	position:fixed;
+	bottom:0px;
+	width:100%;
+	height:40px;
+}
+&lt;/style&gt;
 &lt;/head&gt;
-
-&lt;body&gt;
- &lt;script&gt;
- var type;
- var count;
- 
- function start() {
-	var xmlHttp = new XMLHttpRequest();
-   
-	var rimCount = document.getElementById('number').value;
-	var radios = document.getElementsByName('Felgentyp');
-	var rimType;
-	// stupid but maybe we have more than one rimType one day
-	for (var i = 0, length = radios.length; i &lt; length; i++) {
-		if (radios[i].checked) {
-		    rimType = i;
-		    break;
-		}
+&lt;script&gt;
+	var type;
+	var count;
+	 
+	function start() {
+		var rimCount = document.getElementById('RimCount').value;
+		
+		var radios = document.getElementsByName('RimType');
+		var rimType;
+		// stupid but maybe we have more than one rimType one day
+		for (var i = 0, length = radios.length; i &lt; length; i++) {
+			if (radios[i].checked) {
+				rimType = i;
+				break;
+			}
+		}   
+		var s = "" + rimCount + "|" + rimType;	   
+		var uri = document.URL+'mobile?button=1'+'&amp;state=1'+'&amp;message='+s;
+		
+		var xmlHttp = new XMLHttpRequest();  
+		xmlHttp.open( "GET", uri, true );
+		xmlHttp.send( null );
 	}
-   
-   var s = "" + rimCount + "|" + rimType;
-   
-   var uri = document.URL+'mobile?button=1'+'&amp;state=1'+'&amp;message='+s;
-   xmlHttp.open( "GET", uri, true );
-   xmlHttp.send( null );
- }
+	
+	function incrementRimCount()
+	{
+		var value = parseInt(document.getElementById('RimCount').value, 10);
+		value = isNaN(value) ? 0 : value;
+		value++;
+		document.getElementById('RimCount').value = value;
+	}
+	function decrementRimCount()
+	{
+		var value = parseInt(document.getElementById('RimCount').value, 10);
+		value = isNaN(value) ? 0 : value;
+		// only values &gt;=1 allowed here
+		if(value &lt;= 1){
+			value = 1
+		} else {
+			value--;
+		}
+		document.getElementById('RimCount').value = value;
+	}
+	function moveRobot(joint, degree){
+		var s = "" + joint + "|" + degree;	   
+		var uri = document.URL+'mobile?button=2'+'&amp;state=1'+'&amp;message='+s;
+		var xmlHttp = new XMLHttpRequest();  
+		xmlHttp.open( "GET", uri, true );
+		xmlHttp.send( null );
+	}
+&lt;/script&gt;
+&lt;body&gt;
 
-  function incrementValue()
-{
-    var value = parseInt(document.getElementById('number').value, 10);
-    value = isNaN(value) ? 0 : value;
-    value++;
-    document.getElementById('number').value = value;
-}
-  function decrementValue()
-{
-    var value = parseInt(document.getElementById('number').value, 10);
-    value = isNaN(value) ? 0 : value;
-    if(value &lt;= 1){
-		value = 1
-    } else {
-		value--;
-    }
-    document.getElementById('number').value = value;
-}
- &lt;/script&gt;
-&lt;center&gt;
-&lt;h1&gt;Control&lt;/h1&gt;
-&lt;form&gt;
-	Teilmenge:
-	&lt;input type="text" id="number" value="1"/&gt;
-	&lt;input type="button" onclick="incrementValue()" value="More" /&gt;
-	&lt;input type="button" onclick="decrementValue()" value="Less" /&gt;
-	&lt;br /&gt;
-	Felgentyp: &lt;/br&gt;
-	 &lt;input type="radio" id="r0" name="Felgentyp" value="0" checked&gt;&lt;label for="mc"&gt; 1&lt;/label&gt;&lt;br&gt; 
-	 &lt;input type="radio" id="r1" name="Felgentyp" value="1"&gt;&lt;label for="vi"&gt; 2&lt;/label&gt;&lt;br&gt; 
-	 &lt;br /&gt;
-	 &lt;input type="button" onclick="start()" value="Start" /&gt;	 	 
-&lt;/form&gt;
-&lt;/center&gt;
+&lt;div id="header"&gt;
+	&lt;center&gt;
+		&lt;h1&gt;Control&lt;/h1&gt;
+	&lt;/center&gt;
+&lt;/div&gt;
+&lt;div id="content"&gt;
+    &lt;p&gt;
+		&lt;center&gt;
+		&lt;form&gt;
+			Teilmenge:
+			&lt;input type="text" id="RimCount" value="1"/&gt;
+			&lt;input type="button" onclick="incrementRimCount()" value="More" /&gt;
+			&lt;input type="button" onclick="decrementRimCount()" value="Less" /&gt;
+			&lt;br /&gt;
+			Felgentyp: 
+			 &lt;input type="radio" id="r0" name="RimType" value="0" checked&gt;&lt;label for="mc"&gt; 1&lt;/label&gt; 
+			 &lt;input type="radio" id="r1" name="RimType" value="1"&gt;&lt;label for="vi"&gt; 2&lt;/label&gt;&lt;br&gt; 
+			 &lt;br /&gt;
+			 &lt;input type="button" onclick="start()" value="Auftrag starten" /&gt;	 	 
+		&lt;/form&gt;
+		&lt;/center&gt;
+	&lt;/p&gt;
+	
+	&lt;p&gt;
+	&lt;center&gt;
+		&lt;h2&gt; Manual Robot control &lt;/h2&gt;
+		Joint 1:
+		&lt;input type="button" onclick="moveRobot(1,10)" value="+" /&gt;
+		&lt;input type="button" onclick="moveRobot(1,-10)" value="-" /&gt; &lt;br&gt;
+		Joint 2:
+		&lt;input type="button" onclick="moveRobot(2,10)" value="+" /&gt;
+		&lt;input type="button" onclick="moveRobot(2,-10)" value="-" /&gt; &lt;br&gt;
+		Joint 3:
+		&lt;input type="button" onclick="moveRobot(3,10)" value="+" /&gt;
+		&lt;input type="button" onclick="moveRobot(3,-10)" value="-" /&gt; &lt;br&gt;
+		Joint 4:
+		&lt;input type="button" onclick="moveRobot(4,10)" value="+" /&gt;
+		&lt;input type="button" onclick="moveRobot(4,-10)" value="-" /&gt; &lt;br&gt;
+		Joint 5:
+		&lt;input type="button" onclick="moveRobot(5,10)" value="+" /&gt;
+		&lt;input type="button" onclick="moveRobot(5,-10)" value="-" /&gt; &lt;br&gt;
+	&lt;/center&gt;	
+	&lt;/p&gt;
+	
+&lt;/div&gt;
+&lt;div id="footer"&gt;
+	&lt;center&gt;
+	-
+	&lt;/center&gt;
+&lt;/div&gt;
+
+
 &lt;/body&gt;
 
 &lt;/html&gt;
@@ -1602,42 +1676,57 @@
 &lt;html&gt;
 
 &lt;head&gt;
- &lt;style type="text/css"&gt;
-  body {font-size:200%;
-		text-align:center;
-		background:#fff0e0;
-		color:#ff6622}
-  button {font-size:120%;
-		padding:3%;
-		padding-left:10%;
-		padding-right:10%;}
-  table {width:95%;
-		padding-left:2%;
-		padding-right:2%;
-		margin-left:auto; 
-		margin-right:auto;
-		background:#f9f9ff;}
-  td	{height:170px; 
-		width:33%;}
- &lt;/style&gt;
+&lt;style type="text/css"&gt;
+body{
+  background:#FFFFFF; 
+  
+}
+#header{
+  background:#2A4F6E;   
+  color: #718DA5;  
+  font-size: 100%; 
+  height:40px;
+}
+#content{ 
+	color:#042037;
+	font-size: 150%;
+	padding-bottom:40px; 
+}
+#footer{
+  background: #2A4F6E;
+  color: #718DA5; 
+  position:fixed;
+  bottom:0px;
+  width:100%;
+  height:40px;
+}
+&lt;/style&gt;
 &lt;/head&gt;
+&lt;script&gt;
 
+
+&lt;/script&gt;
 &lt;body&gt;
- &lt;script&gt;
-  function get(b,s) {
-   var xmlHttp = new XMLHttpRequest();
-   var uri = document.URL+'mobile?button='+b+'&amp;state='+s;
-   xmlHttp.open( "GET", uri, true );
-   xmlHttp.send( null );
-  }
- &lt;/script&gt;
 
-&lt;table&gt; 
- &lt;tr&gt;
-	&lt;center&gt;&lt;h1&gt;Statusdisplay&lt;/h1&gt;&lt;/center&gt;
-	Hier wird Status angezeigt&lt;/td&gt;
- &lt;/tr&gt;
-&lt;/table&gt;
+&lt;div id="header"&gt;
+	&lt;center&gt;
+		&lt;h1&gt;Status&lt;/h1&gt;
+	&lt;/center&gt;
+&lt;/div&gt;
+&lt;div id="content"&gt;
+    &lt;p&gt;
+		&lt;center&gt;
+			Status
+		&lt;/center&gt;
+	&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id="footer"&gt;
+	&lt;center&gt;
+	-
+	&lt;/center&gt;
+&lt;/div&gt;
+
+
 &lt;/body&gt;
 
 &lt;/html&gt;
