@@ -3,8 +3,8 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-       <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="2.4499 6.83327 9.9474" at="-3.37737 0.738326 4.17911" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
-        <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-8.02658 3.6098 5.18704" at="-8.103 1.05634 3.87834" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+          <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
     </Object>
@@ -71,6 +71,15 @@
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="21" base_name="trigger" name_space="__global__"/>
     </Script>
+    <Script name_suffix="0" base_name="FraeseAnimation" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	VR.speedup = 0.1
+	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),0)
+	
+
+</core>
+    </Script>
     <Script name_suffix="0" base_name="FraeseControl" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
@@ -87,6 +96,7 @@
 	class FraeseController:
 		def __init__(self,r):
 			print "initialisiere Fraesenklasse"
+			VR.speedup = 1 # 1 = kein speedup
 			VR.fraese_ablegepunkt = [0.325,0.37,0.07]
 			#VR.fraese_scale = 0.06
 			VR.fraese_scale = 0.095
@@ -133,10 +143,11 @@
 			rohling.rotate(1,0,0, -Pi)
 			rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			rohling.setFrom(VR.fraese_ablegepunkt)
-			rohling.setVisible(True)
+			rohling.show()
 			rohling.switchParent(self.Base)
 			#self.Base.addChild(rohling)
 			self.rohling = rohling
+			self.modell = modell
 			
 			for d in VR.debugdraws:
 				d.destroy()
@@ -160,9 +171,9 @@
 					
 				#returns [p1, p2, p3, pd, loch (None oder True), Zeit]
 				#animieren
-				self.Motor.animate(paths[0], paths[5], 0, False)
-				self.Arm2.animate(paths[1], paths[5], 0, False)
-				self.Arm1.animate(paths[2], paths[5], 0, False)
+				self.Motor.animate(paths[0], paths[5]*VR.speedup, 0, False)
+				self.Arm2.animate(paths[1], paths[5]*VR.speedup, 0, False)
+				self.Arm1.animate(paths[2], paths[5]*VR.speedup, 0, False)
 				#debugdraw
 				if debugdraw:
 					s = VR.Stroke('path')
@@ -181,17 +192,17 @@
 				if paths[4]:
 					print "Abtrag"
 				#rekursiver Aufruf
-				VR.stackCall( self.nextGCode, paths[5] , [parser] )
+				VR.stackCall( self.nextGCode, paths[5]*VR.speedup , [parser] )
 	
 			else:
-				self.stop(0,)
+				self.stop()
 
 
-		def stop(self,modell):#fertig - callback an Logistik
+		def stop(self):#fertig - callback an Logistik
 			#tür auf
 			self.useDoor()
 			#Felge erzeugen
-			if modell == 0:
+			if self.modell == 0:
 				objekt = VR.felge0.duplicate()
 			else :
 				objekt = VR.felge1.duplicate()
@@ -199,7 +210,7 @@
 			objekt.rotate(1,0,0, -Pi)
 			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			objekt.setFrom(VR.fraese_ablegepunkt)
-			objekt.setVisible(true)
+			objekt.show()
 			self.rohling.destroy()
 			objekt.switchParent(self.Base)
 			#self.Base.addChild(objekt)
@@ -523,11 +534,10 @@
 	import re
 	import VR
 	import math
+	import numpy
 	
 	#notwendeig damit der pfad auch am Fräskopf ist
-	debugx = -0.02
-	debugy = 0.145
-	debugz = -0.12
+	debug = [-0.02,0.145,-0.12]
 	
 	#Path Scaling
 	_XSCALE = 0.0055
@@ -546,18 +556,8 @@
 	regexG18 = re.compile('G18.*')
 	regexG19 = re.compile('G19.*')
 	regexOther = re.compile('X-?[0-9]+\.?[0-9]* Y-?[0-9]+\.?[0-9]*.*')
-	
-
-			
 	class Parser:
-		""" nicht nötig in python
-		self.lastPos
-		self.lastOrient
-		self.lines
-		self.currentLine
-		self.coordinates #array with ALL endpoints (to detect circles)
-		self.plane
-		"""
+
 		def __init__(self,path):
 			self.lastPos = [0,0,0]
 			self.lastOrient = [0,0,-1]
@@ -575,125 +575,51 @@
 						self.lines.append(newLine)
 			
 		def hasNext(self):
-			if self.currentLine &gt; len(self.lines)-1:
+			if self.currentLine &gt; len(self.lines):
 				return False
 			return True
 			
 		def ParseLine(self):
-		#returns [p1, p2, p3, pd, loch (None oder True), Zeit]
-			line = self.lines[self.currentLine]
-			#print line
+			def cross(a,b):
+				return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]
+			def sub(a,b):
+				return [a[0]-b[0],a[1]-b[1],a[2]-b[2]]
+			def add(a,b):
+				return [a[0]+b[0],a[1]+b[1],a[2]+b[2]]
+			def mult(a,b):
+				return [a*b[0],a*b[1],a*b[2]]
+					
+			#returns [p1, p2, p3, pd, loch (None oder True), Zeit]
+			
+			compute = 80
+			
 			p1 = VR.Path()
 			p2 = VR.Path()
 			p3 = VR.Path()
 			pd = VR.Path()
-			p1.addPoint(self.lastPos, self.lastOrient, [0,0,0], [0,0,0])
-			p2.addPoint([self.lastPos[0], self.lastPos[1], 0], self.lastOrient, [0,0,0], [0,0,0])
-			p3.addPoint([self.lastPos[0], 0, 0], self.lastOrient, [0,0,0], [0,0,0])
-			pd.addPoint([self.lastPos[0]+debugx, self.lastPos[1]+debugy, self.lastPos[2]+debugz], self.lastOrient, [0,0,0], [0,0,0])
 			
-			#reset after last line
-			if self.currentLine &gt; (len(self.lines) - 1):
+			def addPoint(p,d):
+				p1.addPoint(p, d, [0,0,0], None)
+				p2.addPoint([p[0], p[1], 0], d, [0,0,0],  None)
+				p3.addPoint([p[0], 0, 0], d, [0,0,0],  None)
+				pd.addPoint(add(p,debug), d, [0,0,0],  None)
+
+			#special Cases
+			if self.currentLine == (len(self.lines)):
 				print "Reset"
-				p1.addPoint([0,0,0], self.lastOrient, [0,0,0], [0,0,0])
-				p2.addPoint([0,0,0], self.lastOrient, [0,0,0], [0,0,0])
-				p3.addPoint([0,0,0], self.lastOrient, [0,0,0], [0,0,0])
-				pd.addPoint([0,0,0], self.lastOrient, [0,0,0], [0,0,0])
-				out = [p1,p2,p3,pd,None,1]
-			
+				addPoint(self.lastPos,sub([0,0,0],self.lastPos))
+				addPoint([0,0,0],sub([0,0,0],self.lastPos))
+				p1.compute(compute)
+				p2.compute(compute)
+				p3.compute(compute)
+				pd.compute(compute)
+				self.currentLine += 1
+				return [p1,p2,p3,pd,None,1]
+				
+			line = self.lines[self.currentLine]
 			self.currentLine += 1
-			
-			if regexG00.match(line):
-				newX = self.lastPos[0]
-				newY = self.lastPos[1]
-				newZ = self.lastPos[2]
-		
-				tmpReg = re.compile('X-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					xCoord = m.group()
-					newX = float(xCoord[1:]) * _XSCALE + _XOFFSET
-			
-				tmpReg = re.compile('Y-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					xCoord = m.group()
-					newY = float(xCoord[1:]) * _YSCALE + _YOFFSET
-			
-				tmpReg = re.compile('Z-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					xCoord = m.group()
-					newZ = -(float(xCoord[1:]) * _ZSCALE) + _ZOFFSET
-			
-				p1.addPoint([newX, newY, newZ], self.lastOrient, [0,0,0], [0,0,0])
-				p2.addPoint([newX, newY, 0], self.lastOrient, [0,0,0], [0,0,0])
-				p3.addPoint([newX, 0, 0], self.lastOrient, [0,0,0], [0,0,0])
-				pd.addPoint([newX+debugx, newY+debugy, newZ+debugz], self.lastOrient, [0,0,0], [0,0,0])
+			print line.rstrip()
 				
-				p1.compute(2)
-				p2.compute(2)
-				p3.compute(2)
-				pd.compute(2)
-				
-				loch = None
-				
-				for coords in self.coordinates:
-					if coords == [newX, newY, newZ]:
-						loch = True
-				
-				self.coordinates.append([newX, newY, newZ])
-				self.lastPos = [newX, newY, newZ]
-				out = [p1, p2, p3, pd, loch, 1]
-				
-				return out
-				
-			if regexG01.match(line):
-				newX = self.lastPos[0]
-				newY = self.lastPos[1]
-				newZ = self.lastPos[2]
-		
-				tmpReg = re.compile('X-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					xCoord = m.group()
-					newX = float(xCoord[1:]) * _XSCALE + _XOFFSET
-			
-				tmpReg = re.compile('Y-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					xCoord = m.group()
-					newY = float(xCoord[1:]) * _YSCALE + _YOFFSET
-			
-				tmpReg = re.compile('Z-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					xCoord = m.group()
-					newZ = -(float(xCoord[1:]) * _ZSCALE) + _ZOFFSET
-			
-				p1.addPoint([newX, newY, newZ], self.lastOrient, [0,0,0], [0,0,0])
-				p2.addPoint([newX, newY, 0], self.lastOrient, [0,0,0], [0,0,0])
-				p3.addPoint([newX, 0, 0], self.lastOrient, [0,0,0], [0,0,0])
-				pd.addPoint([newX+debugx, newY+debugy, newZ+debugz], self.lastOrient, [0,0,0], [0,0,0])
-				
-				p1.compute(2)
-				p2.compute(2)
-				p3.compute(2)
-				pd.compute(2)
-				
-				loch = None
-				
-				for coords in self.coordinates:
-					if coords == [newX, newY, newZ]:
-						loch = True
-				
-				self.coordinates.append([newX, newY, newZ])
-				self.lastPos = [newX, newY, newZ]
-				out = [p1, p2, p3, pd, loch, 1.5]
-				
-				return out
-		
-		
 			if regexG17.match(line):
 				self.plane = "Z"
 			
@@ -702,183 +628,120 @@
 			
 			if regexG19.match(line):
 				self.plane = "X"
-		
-			if regexG02.match(line):
-				newX = self.lastPos[0]
-				newY = self.lastPos[1]
-				newZ = self.lastPos[2]
-				
-				centerX = self.lastPos[0]
-				centerY = self.lastPos[1]
-				centerZ = self.lastPos[2]
 			
-				tmpReg = re.compile('X-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					newX = float(coord[1:]) * _XSCALE + _XOFFSET
+			#init computing
+			dirP1 = [0,0,0]
+			newX = self.lastPos[0]
+			newY = self.lastPos[1]
+			newZ = self.lastPos[2]
+			dirP2 = [0,0,0]
 			
-				tmpReg = re.compile('Y-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					newY = float(coord[1:]) * _YSCALE + _YOFFSET
+			centerX = self.lastPos[0]
+			centerY = self.lastPos[1]
+			centerZ = self.lastPos[2]
+			time = 1
 			
-				tmpReg = re.compile('Z-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					newZ = -(float(coord[1:]) * _ZSCALE) + _ZOFFSET
+			#read Parameters
+			#X
+			tmpReg = re.compile('X-?[0-9]+\.?[0-9]*')
+			m = tmpReg.search(line)
+			if m:
+				xCoord = m.group()
+				newX = float(xCoord[1:]) * _XSCALE + _XOFFSET
+			#Y
+			tmpReg = re.compile('Y-?[0-9]+\.?[0-9]*')
+			m = tmpReg.search(line)
+			if m:
+				xCoord = m.group()
+				newY = float(xCoord[1:]) * _YSCALE + _YOFFSET
+			#Z
+			tmpReg = re.compile('Z-?[0-9]+\.?[0-9]*')
+			m = tmpReg.search(line)
+			if m:
+				xCoord = m.group()
+				newZ = -(float(xCoord[1:]) * _ZSCALE) + _ZOFFSET
+			#I
+			tmpReg = re.compile('I-?[0-9]+\.?[0-9]*')
+			m = tmpReg.search(line)
+			if m:
+				coord = m.group()
+				centerX += (float(coord[1:]) * _XSCALE)
+			#J	
+			tmpReg = re.compile('J-?[0-9]+\.?[0-9]*')
+			m = tmpReg.search(line)
+			if m:
+				coord = m.group()
+				centerY += (float(coord[1:]) * _YSCALE)
+			#K
+			tmpReg = re.compile('K-?[0-9]+\.?[0-9]*')
+			m = tmpReg.search(line)
+			if m:
+				coord = m.group()
+				centerZ += -(float(coord[1:]) * _ZSCALE)
 				
-		
-				tmpReg = re.compile('I-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					centerX += (float(coord[1:]) * _XSCALE)
-					
-				tmpReg = re.compile('J-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					centerY += (float(coord[1:]) * _YSCALE)
-				
-				tmpReg = re.compile('K-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					centerZ += -(float(coord[1:]) * _ZSCALE)
-					
-					
-				radius = math.sqrt(math.pow((self.lastPos[0]-centerX), 2) + math.pow((self.lastPos[1]-centerY), 2) + math.pow((self.lastPos[2]-centerZ), 2))
-				angle = math.degrees(math.acos((((self.lastPos[0]-centerX) * (newX-centerX)) + ((self.lastPos[1]-centerY) * (newY-centerY)) + ((self.lastPos[2]-centerZ) * (newZ-centerZ))) / (math.sqrt(math.pow((self.lastPos[0]-centerX), 2) + math.pow((self.lastPos[1]-centerY), 2) + math.pow((self.lastPos[2]-centerZ), 2)) * (math.sqrt(math.pow((newX-centerX), 2) + math.pow((newY-centerY), 2) + math.pow((newZ-centerZ), 2))))))
-				
-				orientation = []
-				
+			
+			new = [newX, newY, newZ]
+			center = [centerX,centerY,centerZ]
+			
+			#Match G-Code
+			if regexG00.match(line):
+				time = 1 
+				dirP1 = sub(new,self.lastPos)
+				dirP2 = dirP1
+			if regexG01.match(line):
+				time = 1.5 
+				dirP1 = sub(new,self.lastPos)
+				dirP2 = dirP1
+			if (regexG02.match(line) or regexG03.match(line)):
+				#TODO Normale der Ebene kann man aus start,center und end pos berechnen
 				if self.plane == "Z":
-					tmpAngle = math.atan(abs((self.lastPos[1]-centerY)/(self.lastPos[0]-centerX))) + math.radians(angle + 90)
-					orientation = [math.sin(tmpAngle), math.cos(tmpAngle), self.lastOrient[2]]
-
+					n = [0,0,1]
 				if self.plane == "Y":
-					tmpAngle = math.atan(abs((self.lastPos[2]-centerZ)/(self.lastPos[0]-centerX))) + math.radians(angle + 90)
-					orientation = [math.sin(tmpAngle), self.lastOrtient[1], math.cos(tmpAngle)]
-					
+					n = [0,1,0]
 				if self.plane == "X":
-					tmpAngle = math.atan(abs((self.lastPos[1]-centerY)/(self.lastPos[2]-centerZ))) + math.radians(angle + 90)
-					orientation = [self.lastOrient[0], math.sin(tmpAngle), math.cos(tmpAngle)]
+					n = [1,0,0]
+					
+				dirP1 = cross(sub(self.lastPos,center),n)
+				dirP2 = cross(sub(new,center),n)
 
-				loch = None
-				
-				for coords in self.coordinates:
-					if coords == [newX, newY, newZ]:
-						loch = True
-						
-				self.coordinates.append([newX, newY, newZ])
-				
-				p1.addPoint([newX, newY, newZ], orientation, [0,0,0], [0,0,0])
-				p2.addPoint([newX, newY, 0], orientation, [0,0,0], [0,0,0])
-				p3.addPoint([newX, 0, 0], orientation, [0,0,0], [0,0,0])
-				pd.addPoint([newX+debugx, newY+debugy, newZ+debugz], orientation, [0,0,0], [0,0,0])
-				
-				p1.compute(3)
-				p2.compute(3)
-				p3.compute(3)
-				pd.compute(3)
-				
-				self.lastOrient = orientation
-				self.lastPos = [newX, newY, newZ]
-				out = [p1, p2, p3, pd, loch, 2]
-				
-				return out
+				time = 2
+			
+			#generate Paths	
 			
 			
-			if regexG03.match(line):
-				newX = self.lastPos[0]
-				newY = self.lastPos[1]
-				newZ = self.lastPos[2]
-				
-				centerX = self.lastPos[0]
-				centerY = self.lastPos[1]
-				centerZ = self.lastPos[2]
+			addPoint(self.lastPos,dirP1)
+			addPoint(new,dirP2)
 			
-				tmpReg = re.compile('X-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					newX = float(coord[1:]) * _XSCALE + _XOFFSET
+			"""
+			p1.addPoint(self.lastPos, dirP1, [0,0,0], [0,0,0])
+			p2.addPoint([self.lastPos[0], self.lastPos[1], 0], dirP1, [0,0,0], [0,0,0])
+			p3.addPoint([self.lastPos[0], 0, 0], dirP1, [0,0,0], [0,0,0])
+			pd.addPoint(add(self.lastPos,debug), dirP1, [0,0,0], [0,0,0])
 			
-				tmpReg = re.compile('Y-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					newY = float(coord[1:]) * _YSCALE + _YOFFSET
+			p1.addPoint(new, dirP2, [0,0,0], [0,0,0])
+			p2.addPoint([newX, newY, 0], dirP2, [0,0,0], [0,0,0])
+			p3.addPoint([newX, 0, 0],dirP2, [0,0,0], [0,0,0])
+			pd.addPoint(add(new,debug), dirP2, [0,0,0], [0,0,0])
+			"""
 			
-				tmpReg = re.compile('Z-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					newZ = -(float(coord[1:]) * _ZSCALE) + _ZOFFSET
-				
-		
-				tmpReg = re.compile('I-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					centerX += (float(coord[1:]) * _XSCALE)
+			print "P1",self.lastPos,"D1",dirP1,"P2",new,"D2",dirP2
+			
+			
+			p1.compute(compute)
+			p2.compute(compute)
+			p3.compute(compute)
+			pd.compute(compute)
+			
+			loch = None
+			for coords in self.coordinates:
+				if coords == new:
+					loch = True #TODO
 					
-				tmpReg = re.compile('J-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					centerY += (float(coord[1:]) * _YSCALE)
-				
-				tmpReg = re.compile('K-?[0-9]+\.?[0-9]*')
-				m = tmpReg.search(line)
-				if m:
-					coord = m.group()
-					centerZ += -(float(coord[1:]) * _ZSCALE)
-					
-					
-				radius = math.sqrt(math.pow((self.lastPos[0]-centerX), 2) + math.pow((self.lastPos[1]-centerY), 2) + math.pow((self.lastPos[2]-centerZ), 2))
-				angle = math.degrees(math.acos((((self.lastPos[0]-centerX) * (newX-centerX)) + ((self.lastPos[1]-centerY) * (newY-centerY)) + ((self.lastPos[2]-centerZ) * (newZ-centerZ))) / (math.sqrt(math.pow((self.lastPos[0]-centerX), 2) + math.pow((self.lastPos[1]-centerY), 2) + math.pow((self.lastPos[2]-centerZ), 2)) * (math.sqrt(math.pow((newX-centerX), 2) + math.pow((newY-centerY), 2) + math.pow((newZ-centerZ), 2))))))
-				
-				orientation = []
-				
-				if self.plane == "Z":
-					tmpAngle = math.atan(abs((self.lastPos[1]-centerY)/(self.lastPos[0]-centerX))) + math.radians(angle - 90)
-					orientation = [math.sin(tmpAngle), math.cos(tmpAngle), self.lastOrient[2]]
-
-				if self.plane == "Y":
-					tmpAngle = math.atan(abs((self.lastPos[2]-centerZ)/(self.lastPos[0]-centerX))) + math.radians(angle - 90)
-					orientation = [math.sin(tmpAngle), self.lastOrtient[1], math.cos(tmpAngle)]
-					
-				if self.plane == "X":
-					tmpAngle = math.atan(abs((self.lastPos[1]-centerY)/(self.lastPos[2]-centerZ))) + math.radians(angle - 90)
-					orientation = [self.lastOrient[0], math.sin(tmpAngle), math.cos(tmpAngle)]
-
-				loch = None
-				
-				for coords in self.coordinates:
-					if coords == [newX, newY, newZ]:
-						loch = True
-						
-				self.coordinates.append([newX, newY, newZ])
-				
-				p1.addPoint([newX, newY, newZ], orientation, [0,0,0], [0,0,0])
-				p2.addPoint([newX, newY, 0], orientation, [0,0,0], [0,0,0])
-				p3.addPoint([newX, 0, 0], orientation, [0,0,0], [0,0,0])
-				pd.addPoint([newX+debugx, newY+debugy, newZ+debugz], orientation, [0,0,0], [0,0,0])
-				
-				p1.compute(3)
-				p2.compute(3)
-				p3.compute(3)
-				pd.compute(3)
-				
-				self.lastOrient = orientation				
-				self.lastPos = [newX, newY, newZ]
-				out = [p1, p2, p3, pd, loch, 2]
-				
-				return out
+			self.coordinates.append(new)
+			self.lastPos = new
+			return [p1, p2, p3, pd, loch, time]
+			
+	
 		
 
 	return Parser(filepath)
@@ -1342,23 +1205,6 @@
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="0" base_name="trigger" name_space="__global__"/>
     </Script>
-    <Script name_suffix="0" base_name="initFraese" name_space="__script__" type="Python" mobile="">
-      <core>
-	import VR
-
-	class LC:
-		def fraeseDone(self,object):
-			print "Callback done"
-		
-#	VR.logisticController = LC()
-
-	
-#	VR.FreaseControl(VR.getRoot().find('Headlight'))
-#	VR.fraeseController.startFraese(rohling,0)
-	
-
-</core>
-    </Script>
     <Script name_suffix="0" base_name="initScene" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
@@ -1475,7 +1321,6 @@
 	import VR
 	VR.initScene()
 	VR.LogisticsInit()
-	VR.initFraese()
 	#TODO von Alisa (29.5.): Wir könnten überlegen, alle Initialisierungsskripte
 	#hierüber zu starten, sodass nur dieses Skript den on_scene_load-Trigger hat.
 	#Dann hätten wir ne bisschen bessere Kontrolle über die Reihenfolge.
