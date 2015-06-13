@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-6.75629 3.451 4.97848" at="-7.91359 1.05634 4.16805" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.459236 2.84673 -3.07926" at="-7.91359 1.05634 4.16805" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -793,6 +793,10 @@
 	#return
 	
 	
+	#Tobias: return, dass manuelle steuerung moeglich ist
+	# einfach wieder auskommentieren, dann geht die Animation wieder
+	return
+	
 	if not hasattr(VR, 'robotAnimationStep'):
 		VR.robotAnimationStep = 0
 	else :
@@ -1129,9 +1133,7 @@
 			if allArms &lt;= 0:
 				#Alle notify Funktionen hier aufrufen!
 				#print "Roboter steht"
-				#Tobias: Auskommentiert, dass manuelle steuerung moeglich ist
-				# einfach wieder einkommentieren, dann geht die Animation wieder
-				#VR.RobotAnimation()
+				VR.RobotAnimation()
 		
 		# Bringt den Roboter in Ausgangstellung
 		def reset(self):
