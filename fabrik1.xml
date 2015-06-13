@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-6.75629 3.451 4.97848" at="-7.91359 1.05634 4.16805" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.95031 3.15879 4.22298" at="-7.91359 1.05634 4.16805" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -566,7 +566,7 @@
 	
 	#notwendeig damit der pfad auch am Fräskopf ist
 	debug = [-0.02,0.145,-0.12]
-	log = False
+	log = True
 	
 	#Path Scaling
 	_XSCALE = 0.0055
@@ -617,6 +617,9 @@
 				return [a[0]+b[0],a[1]+b[1],a[2]+b[2]]
 			def mult(a,b):
 				return [a*b[0],a*b[1],a*b[2]]
+			def normalize(a):
+				temp = math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2])
+				return [a[0]/temp,a[1]/temp,a[2]/temp]
 					
 			#returns [p1, p2, p3, pd, loch (None oder True), Zeit]
 			
@@ -628,6 +631,7 @@
 			pd = VR.Path()
 			
 			def addPoint(p,d):
+				d = normalize(d)
 				p1.addPoint(p, d, [0,0,0], None)
 				p2.addPoint([p[0], p[1], 0], d, [0,0,0],  None)
 				p3.addPoint([p[0], 0, 0], d, [0,0,0],  None)
@@ -660,11 +664,11 @@
 				self.plane = "X"
 			
 			#init computing
-			dirP1 = [0,0,0]
+			dirP1 = [0,0,1]
 			newX = self.lastPos[0]
 			newY = self.lastPos[1]
 			newZ = self.lastPos[2]
-			dirP2 = [0,0,0]
+			dirP2 = [0,0,1]
 			
 			centerX = self.lastPos[0]
 			centerY = self.lastPos[1]
@@ -723,16 +727,19 @@
 				dirP1 = sub(new,self.lastPos)
 				dirP2 = dirP1
 			if (regexG02.match(line) or regexG03.match(line)):
+				centerpos = sub(self.lastPos,center)
+				centernew = sub(new,center)
 				#TODO Normale der Ebene kann man aus start,center und end pos berechnen
-				if self.plane == "Z":
+				""""if self.plane == "Z":
 					n = [0,0,1]
 				if self.plane == "Y":
 					n = [0,1,0]
 				if self.plane == "X":
-					n = [1,0,0]
+					n = [1,0,0]"""
+				n = cross(centernew,centerpos)
 					
-				dirP1 = cross(sub(self.lastPos,center),n)
-				dirP2 = cross(sub(new,center),n)
+				dirP1 = cross(centerpos,n)
+				dirP2 = cross(centernew,n)
 
 				time = 2
 			
