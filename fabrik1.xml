@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.95031 3.15879 4.22298" at="-7.91359 1.05634 4.16805" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.41164 3.81494 5.11605" at="-7.91359 1.05634 4.16805" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -79,6 +79,7 @@
 	
 
 </core>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="102" name_suffix="11" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="FraeseControl" name_space="__script__" type="Python" mobile="">
       <core>
@@ -88,7 +89,7 @@
 	Pi = math.pi
 	debugDoor = True
 	debugdraw = True
-	generateHoles = False
+	generateHoles = True
 	VR.debugdraws = []
 	
 	_animationTime = 50
@@ -566,7 +567,7 @@
 	
 	#notwendeig damit der pfad auch am Fräskopf ist
 	debug = [-0.02,0.145,-0.12]
-	log = True
+	log = False
 	
 	#Path Scaling
 	_XSCALE = 0.0055
@@ -617,9 +618,13 @@
 				return [a[0]+b[0],a[1]+b[1],a[2]+b[2]]
 			def mult(a,b):
 				return [a*b[0],a*b[1],a*b[2]]
+			def lenght(a):
+				return math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2])
 			def normalize(a):
-				temp = math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2])
+				temp = lenght(a)
 				return [a[0]/temp,a[1]/temp,a[2]/temp]
+			def dist(a,b):
+				return lenght(sub(a,b))
 					
 			#returns [p1, p2, p3, pd, loch (None oder True), Zeit]
 			
@@ -729,15 +734,9 @@
 			if (regexG02.match(line) or regexG03.match(line)):
 				centerpos = sub(self.lastPos,center)
 				centernew = sub(new,center)
-				#TODO Normale der Ebene kann man aus start,center und end pos berechnen
-				""""if self.plane == "Z":
-					n = [0,0,1]
-				if self.plane == "Y":
-					n = [0,1,0]
-				if self.plane == "X":
-					n = [1,0,0]"""
+				#Ebenen Normale
 				n = cross(centernew,centerpos)
-					
+				#Kreistangenten auf der Ebene
 				dirP1 = cross(centerpos,n)
 				dirP2 = cross(centernew,n)
 
@@ -756,14 +755,16 @@
 			p3.compute(compute)
 			pd.compute(compute)
 			
-			loch = []
-			found = False
-			for coords in self.coordinates:
-				if found or coords == new:
-					found = True
-					loch.append(coords)
-			if not found:
-				loch = None
+			loch = None
+			if not  regexG00.match(line):
+				loch = []
+				found = False
+				for coords in self.coordinates:
+					if found or dist(coords,new) &lt; 0.001:
+						found = True
+						loch.append(coords)
+				if not found:
+					loch = None
 					
 			self.coordinates.append(new)
 			self.lastPos = new
