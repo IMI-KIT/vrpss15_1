@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.109208 2.24815 -2.59391" at="0.021159 1.62545 -2.38419e-07" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-6.75629 3.451 4.97848" at="-7.91359 1.05634 4.16805" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -74,7 +74,7 @@
     <Script name_suffix="0" base_name="FraeseAnimation" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
-	VR.speedup = 0.1
+	VR.speedup = 0.2
 	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),0)
 	
 
@@ -88,6 +88,7 @@
 	Pi = math.pi
 	debugDoor = True
 	debugdraw = True
+	generateHoles = False
 	VR.debugdraws = []
 	
 	_animationTime = 50
@@ -189,8 +190,35 @@
 					self.Base.addChild(s)
 					VR.debugdraws.append(s)
 				#abtrag
-				if paths[4]:
+				if  generateHoles and paths[4] is not None:
 					print "Abtrag"
+					#Path
+					center =paths[4][0];
+					print paths[4]
+					print center
+					
+					prof.append([-b,b,0])
+					prof.append([-b,-b,0])
+					prof.append([b,-b,0])
+					prof.append([b,b,0])
+					
+					prof2 = [ [p[1]-center[1],p[0]-center[0],  0] for p in paths[4] ]
+									
+					p = VR.Path()
+					col = [1,0,0]
+					d = [0,0,1]
+					up = [1,0,0]
+					debug = [-0.02,0.145,-0.12]
+					p.addPoint([center[0]-0.02,center[1]+0.145,0-0.12],d,col,up)
+					p.addPoint([center[0]-0.02,center[1]+0.145,center[1]-0.12],d,col,up) 
+					p.compute(10)
+					
+					#Stroke
+					s = VR.Stroke('path')
+					s.addPath(p)
+					s.strokeProfile( prof2, True, True) 
+					self.Base.addChild(s)
+					
 				#rekursiver Aufruf
 				VR.stackCall( self.nextGCode, paths[5]*VR.speedup , [parser] )
 	
@@ -538,6 +566,7 @@
 	
 	#notwendeig damit der pfad auch am Fräskopf ist
 	debug = [-0.02,0.145,-0.12]
+	log = False
 	
 	#Path Scaling
 	_XSCALE = 0.0055
@@ -566,7 +595,7 @@
 			self.lines = []
 			self.coordinates = []
 			
-			with open(path) as file:
+			with open(path) as file: 
 				for line in file:
 					if (regexG00.match(line) or regexG01.match(line) or regexG02.match(line) or regexG03.match(line) or regexG17.match(line) or regexG18.match(line) or regexG19.match(line)):
 						self.lines.append(line)
@@ -618,7 +647,8 @@
 				
 			line = self.lines[self.currentLine]
 			self.currentLine += 1
-			print line.rstrip()
+			if log:	
+				print line.rstrip()
 				
 			if regexG17.match(line):
 				self.plane = "Z"
@@ -707,24 +737,11 @@
 				time = 2
 			
 			#generate Paths	
-			
-			
 			addPoint(self.lastPos,dirP1)
 			addPoint(new,dirP2)
-			
-			"""
-			p1.addPoint(self.lastPos, dirP1, [0,0,0], [0,0,0])
-			p2.addPoint([self.lastPos[0], self.lastPos[1], 0], dirP1, [0,0,0], [0,0,0])
-			p3.addPoint([self.lastPos[0], 0, 0], dirP1, [0,0,0], [0,0,0])
-			pd.addPoint(add(self.lastPos,debug), dirP1, [0,0,0], [0,0,0])
-			
-			p1.addPoint(new, dirP2, [0,0,0], [0,0,0])
-			p2.addPoint([newX, newY, 0], dirP2, [0,0,0], [0,0,0])
-			p3.addPoint([newX, 0, 0],dirP2, [0,0,0], [0,0,0])
-			pd.addPoint(add(new,debug), dirP2, [0,0,0], [0,0,0])
-			"""
-			
-			print "P1",self.lastPos,"D1",dirP1,"P2",new,"D2",dirP2
+				
+			if log:		
+				print "P1",self.lastPos,"D1",dirP1,"P2",new,"D2",dirP2
 			
 			
 			p1.compute(compute)
@@ -732,10 +749,14 @@
 			p3.compute(compute)
 			pd.compute(compute)
 			
-			loch = None
+			loch = []
+			found = False
 			for coords in self.coordinates:
-				if coords == new:
-					loch = True #TODO
+				if found or coords == new:
+					found = True
+					loch.append(coords)
+			if not found:
+				loch = None
 					
 			self.coordinates.append(new)
 			self.lastPos = new
@@ -757,6 +778,7 @@
 	import VR
 	import time
 	import math
+
 
 	#VR.robotController.move_a1(180)
 	#VR.robotController.move_a2(-10)
