@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.248331 2.70026 -2.08097" at="2.41637 1.80593 0" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="3.84815 3.49711 -3.05965" at="2.41637 1.80593 0" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -360,6 +360,7 @@
 			
 		def startFraese(self,rohling,modell):
 			print "Starte Fräsvorgang",rohling,rohling.getName()
+			VR.monitorStatusController.setFraeseStatus("fraest")
 			#rohling positionieren
 			self.Base.addChild(rohling)
 			#rohling.switchParent()
@@ -467,6 +468,8 @@
 			#print objekt
 			#objekt = felge
 			print "Fraesevorgang done, call back Logistik"
+			VR.monitorStatusController.setFraeseStatus("Steht still")
+			
 			VR.logisticController.fraeseDone(objektback)
 			#VR.logisticController.fraeseDone(objekt)
 					
@@ -715,8 +718,12 @@
 		VR.log.update()
 		
 		# Aktualisiere Anzeigetafeln
+		#lager
 		VR.monitorStatusController.setLagerCapacity(VR.containers[0].getCapacity())
 		VR.monitorStatusController.setLagerStand(VR.containers[0].getCount())
+		#fertig
+		VR.monitorStatusController.setFertigCapacity(VR.containers[3].getCapacity())	
+		VR.monitorStatusController.setFertigStand(VR.containers[3].getCount())
 			
 		if hasattr(VR, 'container1_label'):
 			container1_count = VR.containers[1].getCount()
@@ -732,11 +739,7 @@
 			VR.container2_label.setSize(len(text2)*0.1,0.2)
 			
 			
-		if hasattr(VR, 'fertiglabel'):
-			fertig_count = VR.containers[3].getCount()
-			textLager = 'Fertig: ' + str(fertig_count) + " / " + str(VR.containers[3].getCapacity())
-			VR.fertiglabel.setText(textLager)
-			VR.fertiglabel.setSize(len(textLager)*0.15,0.3)
+		
 		
 		
 		if hasattr(VR, 'neuerAuftragLabel'):
@@ -1433,14 +1436,14 @@
 	
 	
 	# Angekommen zur Weiterverarbeitung
-	if not hasattr(VR, 'weiterverarbeitung_label'):
-		VR.fertiglabel = VR.Sprite('fertig')
-		mat3 = VR.Material('mymat3')
-		VR.fertiglabel.setMaterial(mat3)
-		r.addChild(VR.fertiglabel)
+	#if not hasattr(VR, 'weiterverarbeitung_label'):
+	#	VR.fertiglabel = VR.Sprite('fertig')
+	#	mat3 = VR.Material('mymat3')
+	#	VR.fertiglabel.setMaterial(mat3)
+	#	r.addChild(VR.fertiglabel)
 		
-	VR.fertiglabel.setFrom(7.5,2,7)
-	VR.fertiglabel.setDir(1,0,0)
+	#VR.fertiglabel.setFrom(7.5,2,7)
+	#VR.fertiglabel.setDir(1,0,0)
 	
 	
 	#Auftrag erstellen
@@ -1874,9 +1877,11 @@ h2 {
 			print "initialisiere monitorStatusController"
 			self.LagerCapacity = 0
 			self.LagerStand = 0
-			self.FertigCount = 0
+			self.FertigCapacity = 0
+			self.FertigStand = 0
 			self.BoxVorFraese = 0
 			self.BoxNachFraese = 0
+			self.FraeseStatus = "Steht still"
 			self.updateHomepage()
 			
 			
@@ -1884,9 +1889,16 @@ h2 {
 			url = ("http://localhost:5500/monitorStatusWebsite?" + 
 			"lagerCapacity=" + str(self.LagerCapacity) + "&amp;" + 
 			"lagerStand=" + str(self.LagerStand) + "&amp;" + 
-			"fertig=" + str(self.FertigCount) 
+			"fertigCapacity=" + str(self.FertigCapacity) + "&amp;" + 
+			"fertigStand=" + str(self.FertigStand) + "&amp;" + 
+			"fraeseStatus=" + str(self.FraeseStatus)
 			)		
 			VR.monitorStatusWeb.open(url)
+			
+		def setFraeseStatus(self, status):
+			self.FraeseStatus = status
+			self.updateHomepage()
+			
 			
 		def setLagerCapacity(self, amount):
 			self.LagerCapacity = amount
@@ -1894,6 +1906,14 @@ h2 {
 			
 		def setLagerStand(self, amount):
 			self.LagerStand = amount
+			self.updateHomepage()
+
+		def setFertigCapacity(self, amount):
+			self.FertigCapacity = amount
+			self.updateHomepage()
+			
+		def setFertigStand(self, amount):
+			self.FertigStand = amount
 			self.updateHomepage()
 			
 		def destroy(self):
@@ -1992,10 +2012,25 @@ function getQueryVariable(variable) {
 &lt;div id="content"&gt;
     &lt;p&gt;
 		&lt;center&gt;
-			&lt;div id="lagerStand"&gt;&lt;/div&gt;
+			&lt;div id="lager"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
-				var div = document.getElementById("lagerStand");
+				var div = document.getElementById("lager");
 				div.textContent = "Lagerstand: " + getQueryVariable("lagerStand") + "/" + getQueryVariable("lagerCapacity");
+				var text = div.textContent;
+			&lt;/script&gt;
+			&lt;div id="fertig"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("fertig");
+				div.textContent = "Fertig: " + getQueryVariable("fertigStand") + "/" + getQueryVariable("fertigCapacity");
+				var text = div.textContent;
+			&lt;/script&gt;
+			&lt;br&gt;
+			&lt;br&gt;
+			&lt;br&gt;
+			&lt;div id="fraeseStatus"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("fraeseStatus");
+				div.textContent = "Fraese: " + getQueryVariable("fraeseStatus");
 				var text = div.textContent;
 			&lt;/script&gt;
 		&lt;/center&gt;
