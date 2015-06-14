@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-8.97719 8.87947 6.49432" at="-8.36728 1.05634 4.0112" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.248331 2.70026 -2.08097" at="2.41637 1.80593 0" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -714,13 +714,9 @@
 	if hasattr(VR, 'log'):
 		VR.log.update()
 		
-		# Aktualisiere Anzeigetafeln			
-		if hasattr(VR, 'lagerlabel'):
-			lagercount = VR.containers[0].getCount()
-			text = 'Lager: ' + str(lagercount) + " / " + str(VR.containers[0].getCapacity())
-			VR.lagerlabel.setText(text)
-			VR.lagerlabel.setSize(len(text)*0.15,0.3)
-			
+		# Aktualisiere Anzeigetafeln
+		VR.monitorStatusController.setLagerCapacity(VR.containers[0].getCapacity())
+		VR.monitorStatusController.setLagerStand(VR.containers[0].getCount())
 			
 		if hasattr(VR, 'container1_label'):
 			container1_count = VR.containers[1].getCount()
@@ -1402,17 +1398,17 @@
 	
 	r = VR.getRoot().find('Headlight')
 	# Füllstand Lager
-	if not hasattr(VR, 'lagerlabel'):
-		r = VR.getRoot().find('Headlight')
-		VR.lagerlabel = VR.Sprite('lager-label')
-		mat1 = VR.Material('mymat1')
-		VR.lagerlabel.setMaterial(mat1)
-		r.addChild(VR.lagerlabel)
+	#if not hasattr(VR, 'lagerlabel'):
+	#	r = VR.getRoot().find('Headlight')
+	#	VR.lagerlabel = VR.Sprite('lager-label')
+	#	mat1 = VR.Material('mymat1')
+	#	VR.lagerlabel.setMaterial(mat1)
+	#	r.addChild(VR.lagerlabel)
 	
-	VR.lagerlabel.setFrom(7.5,2,1)
-	VR.lagerlabel.setDir(1,0,0)
-	VR.lagerlabel.setText('Voll')
-	VR.lagerlabel.setSize(0.4,0.2)
+	#VR.lagerlabel.setFrom(7.5,2,1)
+	#VR.lagerlabel.setDir(1,0,0)
+	#VR.lagerlabel.setText('Voll')
+	#VR.lagerlabel.setSize(0.4,0.2)
 	
 	# Füllstand erste Box
 	if not hasattr(VR, 'container1_label'):
@@ -1638,7 +1634,7 @@
 	#und entsprechend Sachen tun.
 	
 	k = dev.getKey()
-	print k
+	#print k
 	
 	if(k == 1):
 		msg = dev.getMessage()
@@ -1869,16 +1865,53 @@ h2 {
     </Script>
     <Script name_suffix="0" base_name="monitorStatusControls" name_space="__script__" type="Python" mobile="">
       <core>
-	pass
+	import VR
+	import math
+	
+	
+	class monitorStatusController:
+		def __init__(self):
+			print "initialisiere monitorStatusController"
+			self.LagerCapacity = 0
+			self.LagerStand = 0
+			self.FertigCount = 0
+			self.BoxVorFraese = 0
+			self.BoxNachFraese = 0
+			self.updateHomepage()
+			
+			
+		def updateHomepage(self):
+			url = ("http://localhost:5500/monitorStatusWebsite?" + 
+			"lagerCapacity=" + str(self.LagerCapacity) + "&amp;" + 
+			"lagerStand=" + str(self.LagerStand) + "&amp;" + 
+			"fertig=" + str(self.FertigCount) 
+			)		
+			VR.monitorStatusWeb.open(url)
+			
+		def setLagerCapacity(self, amount):
+			self.LagerCapacity = amount
+			self.updateHomepage()
+			
+		def setLagerStand(self, amount):
+			self.LagerStand = amount
+			self.updateHomepage()
+			
+		def destroy(self):
+			return
+		
+	if hasattr(VR, 'monitorStatusController') and VR.monitorStatusController is not None:
+		VR.monitorStatusController.destroy()
+	VR.monitorStatusController = monitorStatusController()	
+
+	
 </core>
     </Script>
     <Script name_suffix="0" base_name="monitorStatusInit" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR	
-	
+
 	mat = VR.Material('gui')
 	mat.setLit(False)
-	
 	geo = VR.Geometry('gui')
 	#erste beiden zahlen: breite und höhe
 	geo.setPrimitive('Plane 2 2 1 1')
@@ -1891,10 +1924,15 @@ h2 {
 	cef = VR.CEF()
 	cef.setMaterial(mat)
 	cef.open('http://localhost:5500/monitorStatusWebsite')
-	cef.addMouse(mouse, geo, 0, 2, 3, 4)
-	cef.addMouse(flystick, geo, 0, 2, 3, 4)
-	cef.addKeyboard(keyboard)
+	#self.cef.addMouse(mouse, self.geo, 0, 2, 3, 4)
+	#self.cef.addMouse(flystick, self.geo, 0, 2, 3, 4)
+	#self.cef.addKeyboard(keyboard)
 	cef.setAspectRatio(2)
+		
+	VR.monitorStatusWeb = cef
+	VR.monitorStatusControls()
+	
+	
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="10" base_name="trigger" name_space="__global__"/>
     </Script>
@@ -1930,7 +1968,18 @@ body{
 &lt;/style&gt;
 &lt;/head&gt;
 &lt;script&gt;
-
+// kudos to stack overflow
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&amp;');
+    for (var i = 0; i &lt; vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    console.log('Query variable %s not found', variable);
+}
 
 &lt;/script&gt;
 &lt;body&gt;
@@ -1943,7 +1992,12 @@ body{
 &lt;div id="content"&gt;
     &lt;p&gt;
 		&lt;center&gt;
-			Status
+			&lt;div id="lagerStand"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("lagerStand");
+				div.textContent = "Lagerstand: " + getQueryVariable("lagerStand") + "/" + getQueryVariable("lagerCapacity");
+				var text = div.textContent;
+			&lt;/script&gt;
 		&lt;/center&gt;
 	&lt;/p&gt;
 &lt;/div&gt;
