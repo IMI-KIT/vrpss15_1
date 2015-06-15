@@ -29,3 +29,6 @@
 
 # Sceenshots von PolyVR
 *.png
+
+#PolyVR core dumps (zu groß für Github)
+core
