@@ -3,9 +3,20 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-9.48399 3.53533 5.844" at="-3.67336 0 1.62675" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-6.78559 3.09783 4.36662" at="-8.31402 1.05634 4.42964" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
       </Object>
     </Object>
   </Objects>
@@ -73,230 +84,13 @@
     </Script>
     <Script name_suffix="0" base_name="FraeseAnimation" name_space="__script__" type="Python" mobile="">
       <core>
-	import re
 	import VR
-	import math
-	import numpy
 	
+	VR.FraeseControl(VR.getRoot().find('Headlight'))
+	VR.speedup = 0.2
 	
-	#notwendeig damit der pfad auch am Fräskopf ist
-	debug = [-0.02,0.145,-0.12]
-	log = False
-	
-	#Path Scaling
-	#_scale = 0.0055
-	_scale = 0.006
-	_XSCALE = _scale
-	_YSCALE = _scale
-	_ZSCALE = _scale
-	
-	#_XOFFSET = -0.25
-	_XOFFSET = -0.31
-	#_YOFFSET = -0.75
-	_YOFFSET = -0.825
-	_ZOFFSET = 0.1
-	
-	#For line maching
-	regexG00 = re.compile('G00.*')
-	regexG01 = re.compile('G01.*')
-	regexG02 = re.compile('G02.*')
-	regexG03 = re.compile('G03.*')
-	regexG17 = re.compile('G17.*')
-	regexG18 = re.compile('G18.*')
-	regexG19 = re.compile('G19.*')
-	regexOther = re.compile('X-?[0-9]+\.?[0-9]* Y-?[0-9]+\.?[0-9]*.*')
-	class Parser:
+	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),0)
 
-		def __init__(self,path):
-			self.lastPos = [0,0,0]
-			self.lastOrient = [0,0,-1]
-			self.currentLine = 0
-			self.plane = "Z"
-			self.lines = []
-			self.coordinates = []
-			
-			with open(path) as file: 
-				for line in file:
-					if (regexG00.match(line) or regexG01.match(line) or regexG02.match(line) or regexG03.match(line) or regexG17.match(line) or regexG18.match(line) or regexG19.match(line)):
-						self.lines.append(line)
-					elif regexOther.match(line):
-						newLine = self.lines[(len(self.lines) - 1)][:4] + line
-						self.lines.append(newLine)
-			
-		def hasNext(self):
-			if self.currentLine &gt; len(self.lines):
-				return False
-			return True
-			
-		def ParseLine(self):
-			def cross(a,b):
-				return [a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]]
-			def sub(a,b):
-				return [a[0]-b[0],a[1]-b[1],a[2]-b[2]]
-			def add(a,b):
-				return [a[0]+b[0],a[1]+b[1],a[2]+b[2]]
-			def mult(a,b):
-				return [a*b[0],a*b[1],a*b[2]]
-			def lenght(a):
-				return math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2])
-			def normalize(a):
-				temp = lenght(a)
-				return [a[0]/temp,a[1]/temp,a[2]/temp]
-			def dist(a,b):
-				return lenght(sub(a,b))
-					
-			#returns [p1, p2, p3, pd, loch (None oder True), Zeit]
-			
-			compute = 80
-			
-			p1 = VR.Path()
-			p2 = VR.Path()
-			p3 = VR.Path()
-			pd = VR.Path()
-			
-			def addPoint(p,d):
-				d = normalize(d)
-				p1.addPoint(p, d, [0,0,0], None)
-				p2.addPoint([p[0], p[1], 0], d, [0,0,0],  None)
-				p3.addPoint([p[0], 0, 0], d, [0,0,0],  None)
-				pd.addPoint(add(p,debug), d, [0,0,0],  None)
-
-			#special Cases
-			if self.currentLine == (len(self.lines)):
-				print "Reset"
-				addPoint(self.lastPos,sub([0,0,0],self.lastPos))
-				addPoint([0,0,0],sub([0,0,0],self.lastPos))
-				p1.compute(compute)
-				p2.compute(compute)
-				p3.compute(compute)
-				pd.compute(compute)
-				self.currentLine += 1
-				return [p1,p2,p3,pd,None,1]
-				
-			line = self.lines[self.currentLine]
-			self.currentLine += 1
-			if log:	
-				print line.rstrip()
-				
-			if regexG17.match(line):
-				self.plane = "Z"
-			
-			if regexG18.match(line):
-				self.plane = "Y"
-			
-			if regexG19.match(line):
-				self.plane = "X"
-			
-			#init computing
-			dirP1 = [0,0,1]
-			newX = self.lastPos[0]
-			newY = self.lastPos[1]
-			newZ = self.lastPos[2]
-			dirP2 = [0,0,1]
-			
-			centerX = self.lastPos[0]
-			centerY = self.lastPos[1]
-			centerZ = self.lastPos[2]
-			time = 1
-			
-			#read Parameters
-			#X
-			tmpReg = re.compile('X-?[0-9]+\.?[0-9]*')
-			m = tmpReg.search(line)
-			if m:
-				xCoord = m.group()
-				newX = float(xCoord[1:]) * _XSCALE + _XOFFSET
-			#Y
-			tmpReg = re.compile('Y-?[0-9]+\.?[0-9]*')
-			m = tmpReg.search(line)
-			if m:
-				xCoord = m.group()
-				newY = float(xCoord[1:]) * _YSCALE + _YOFFSET
-			#Z
-			tmpReg = re.compile('Z-?[0-9]+\.?[0-9]*')
-			m = tmpReg.search(line)
-			if m:
-				xCoord = m.group()
-				newZ = -(float(xCoord[1:]) * _ZSCALE) + _ZOFFSET
-			#I
-			tmpReg = re.compile('I-?[0-9]+\.?[0-9]*')
-			m = tmpReg.search(line)
-			if m:
-				coord = m.group()
-				centerX += (float(coord[1:]) * _XSCALE)
-			#J	
-			tmpReg = re.compile('J-?[0-9]+\.?[0-9]*')
-			m = tmpReg.search(line)
-			if m:
-				coord = m.group()
-				centerY += (float(coord[1:]) * _YSCALE)
-			#K
-			tmpReg = re.compile('K-?[0-9]+\.?[0-9]*')
-			m = tmpReg.search(line)
-			if m:
-				coord = m.group()
-				centerZ += -(float(coord[1:]) * _ZSCALE)
-				
-			
-			new = [newX, newY, newZ]
-			center = [centerX,centerY,centerZ]
-			
-			#Match G-Code
-			if regexG00.match(line):
-				time = 1 
-				dirP1 = sub(new,self.lastPos)
-				dirP2 = dirP1
-			if regexG01.match(line):
-				time = 1.5 
-				dirP1 = sub(new,self.lastPos)
-				dirP2 = dirP1
-			if (regexG02.match(line) or regexG03.match(line)):
-				centerpos = sub(self.lastPos,center)
-				centernew = sub(new,center)
-				#Ebenen Normale
-				n = cross(centernew,centerpos)
-				#Kreistangenten auf der Ebene
-				dirP1 = cross(centerpos,n)
-				dirP2 = cross(centernew,n)
-
-				time = 2
-			
-			#generate Paths	
-			addPoint(self.lastPos,dirP1)
-			addPoint(new,dirP2)
-				
-			if log:		
-				print "P1",self.lastPos,"D1",dirP1,"P2",new,"D2",dirP2
-			
-			
-			p1.compute(compute)
-			p2.compute(compute)
-			p3.compute(compute)
-			pd.compute(compute)
-			
-			loch = None
-			if not  regexG00.match(line):
-				loch = []
-				found = False
-				for coords in self.coordinates:
-					if found or dist(coords,new) &lt; 0.001:
-						found = True
-						loch.append(coords)
-				if not found:
-					loch = None
-					
-			self.coordinates.append(new)
-			self.lastPos = new
-			return [p1, p2, p3, pd, loch, time]
-			
-	
-		
-
-	return Parser(filepath)
-
-
-
-				
 </core>
       <trig type="on_device" dev="keyboard" state="Pressed" param="" key="102" name_suffix="11" base_name="trigger" name_space="__global__"/>
     </Script>
@@ -308,7 +102,7 @@
 	Pi = math.pi
 	debugDoor = True
 	debugdraw = True
-	generateHoles = False
+	generateHoles = True
 	VR.debugdraws = []
 	
 	_animationTime = 50
@@ -319,9 +113,15 @@
 			print "initialisiere Fraesenklasse"
 			VR.speedup = 1 # 1 = kein speedup
 			
-			VR.fraese_ablegepunkt = [0.322,0.367,0.01]
-			#VR.fraese_scale = 0.06
+			self.substract = False
+			#rohling neu
+			VR.fraese_ablegepunkt = [0.322,-0.01,-0.366]
 			VR.fraese_scale = 0.017
+			
+			#rohling blender
+			VR.fraese_ablegepunkt = [0.322,0.06,-0.64]
+			VR.fraese_scale = 1
+			
 			#load Geometry
 			self.Base = VR.loadGeometry('Base.DAE')
 			self.LeftDoor = VR.loadGeometry('TrLinks.DAE')
@@ -337,6 +137,7 @@
 			self.Base.addChild(self.Arm1)
 			self.Base.addChild(self.Arm2)
 			self.Base.addChild(self.Motor)
+
 			
 			scale = 3
 			self.Base.setPose([-7,1.3,3],[1,0,0],[0,1,0])
@@ -361,16 +162,17 @@
 	
 			
 		def startFraese(self,rohling,modell):
-			print "Starte Fräsvorgang",rohling,rohling.getName()
+			print "Starte Fräsvorgang",rohling.getName()
 			VR.monitorStatusController.setFraeseStatus("fraest")
+			
 			#rohling positionieren
 			self.Base.addChild(rohling)
-			#rohling.switchParent()
+			rohling.setName("Rohling.Akutell")
+			rohling.switchParent(self.Base)
 			rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
-			rohling.setPose(VR.fraese_ablegepunkt,[0,0,-1],[0,1,0])
-			rohling.show()
+			rohling.setPose(VR.fraese_ablegepunkt,[0,1,0],[0,0,1])
+			#rohling.show()
 			
-			#self.Base.addChild(rohling)
 			self.rohling = rohling
 			self.modell = modell
 			
@@ -418,25 +220,39 @@
 					print "Abtrag"
 					#Path
 					center =paths[4][0];
-					print paths[4]
-					print center
 					
-					prof2 = [ [p[1]-center[1],p[0]-center[0],  0] for p in paths[4] ]
+					prof2 = [ [-p[2]+center[2],p[0]-center[0], 0 ] for p in paths[4] ]					
+					print "inpput Points",paths[4]
+					print "Center for Profile",center
+					print "Profil",prof2
+			
 									
 					p = VR.Path()
 					col = [1,0,0]
-					d = [0,0,1]
+					d = [0,1,0]
 					up = [1,0,0]
-					debug = [-0.02,0.145,-0.12]
-					p.addPoint([center[0]-0.02,center[1]+0.145,0-0.12],d,col,up)
-					p.addPoint([center[0]-0.02,center[1]+0.145,center[1]-0.12],d,col,up) 
-					p.compute(10)
 					
-					#Stroke
+					offset = [-0.02,0.145,-0.12]
+					offset = [0,0,0]
+					
+					
+					p.addPoint([center[0],center[1],center[2]],d,col,up)
+					p.addPoint([center[0],0.12,center[2]],d,col,up) #13 ist der deubig offset aus ParseGCode
+					p.compute(10)
 					s = VR.Stroke('path')
 					s.addPath(p)
 					s.strokeProfile( prof2, True, True) 
-					self.Base.addChild(s)
+
+					if self.substract:
+						#new CSG
+						c = VR.CSGGeometry('csg')
+						self.rohling.switchParent(c)
+						c.addChild(s)
+						self.Base.addChild(c)	
+						#c.setOperation('subtract')
+						#c.setEditMode(False)
+					else: 
+						self.Base.addChild(s)
 					
 				#rekursiver Aufruf
 				VR.stackCall( self.nextGCode, paths[5]*VR.speedup , [parser] )
@@ -456,19 +272,15 @@
 				objektback = VR.felge1.duplicate()
 				objekt = VR.FRfelge1.duplicate()
 			
-			objekt.switchParent(self.Base)	
-			objekt.setPose(VR.fraese_ablegepunkt,[0,0,-1],[0,1,0])
+			#objekt.switchParent(self.Base)	
+			objekt.setPose(VR.fraese_ablegepunkt,[0,1,0],[0,0,1])
 			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
-			objekt.show()
+			#objekt.show()
 			
 			
-			self.rohling.destroy()
-			
+			#self.rohling.destroy()
 			#self.Base.addChild(objekt)
 			
-			#objekt = VR.log.addProduct(felge)
-			#print objekt
-			#objekt = felge
 			print "Fraesevorgang done, call back Logistik"
 			VR.monitorStatusController.setFraeseStatus("Steht still")
 			
@@ -990,7 +802,7 @@
 				for coords in self.coordinates:
 					if found or dist(coords,new) &lt; 0.001:
 						found = True
-						loch.append(coords)
+						loch.append(add(coords,debug))
 				if not found:
 					loch = None
 					
@@ -1561,7 +1373,8 @@
 	VR.felge1.setTexCoords(VR.felge1.getPositions())
 	VR.felge1.hide()
 	
-	VR.FRrohling = VR.loadGeometry('Rohling.dae')
+	#VR.FRrohling = VR.loadGeometry('Rohling.dae')
+	VR.FRrohling = VR.loadGeometry('Rohling.dae', True).find('Felge.1')
 	VR.FRrohling.hide()
 
 	VR.FRfelge0 = VR.loadGeometry('Felge1.dae')
