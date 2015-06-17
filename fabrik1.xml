@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-9.48399 3.53533 5.844" at="-3.67336 0 1.62675" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="3.22811 1.90241 -3.39917" at="2.65394 1.6115 0" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -726,19 +726,13 @@
 		#fertig
 		VR.monitorStatusController.setFertigCapacity(VR.containers[3].getCapacity())	
 		VR.monitorStatusController.setFertigStand(VR.containers[3].getCount())
-			
-		if hasattr(VR, 'container1_label'):
-			container1_count = VR.containers[1].getCount()
-			text1 = 'Füllstand: ' + str(container1_count) + " / " + str(VR.containers[1].getCapacity())
-			VR.container1_label.setText(text1)
-			VR.container1_label.setSize(len(text1)*0.1,0.2)
+		
+		VR.monitorStatusController.setBufferCapacity(VR.containers[1].getCapacity())	
+		VR.monitorStatusController.setBufferStand(VR.containers[1].getCount())	
+	
 			
 			
-		if hasattr(VR, 'container2_label'):
-			container2_count = VR.containers[2].getCount()
-			text2 = 'Füllstand: ' + str(container2_count) + " / " + str(VR.containers[2].getCapacity())
-			VR.container2_label.setText(text2)
-			VR.container2_label.setSize(len(text2)*0.1,0.2)
+
 			
 			
 		
@@ -1402,7 +1396,7 @@
 	
 	#die Nb: x - Anzeigen kommen noch weg.
 	
-	r = VR.getRoot().find('Headlight')
+	#r = VR.getRoot().find('Headlight')
 	# Füllstand Lager
 	#if not hasattr(VR, 'lagerlabel'):
 	#	r = VR.getRoot().find('Headlight')
@@ -1417,25 +1411,25 @@
 	#VR.lagerlabel.setSize(0.4,0.2)
 	
 	# Füllstand erste Box
-	if not hasattr(VR, 'container1_label'):
-		VR.container1_label= VR.Sprite('fuellstand1')
-		mat2 = VR.Material('mymat2') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
-		VR.container1_label.setMaterial(mat2)
-		r.addChild(VR.container1_label)
+	#if not hasattr(VR, 'container1_label'):
+	#	VR.container1_label= VR.Sprite('fuellstand1')
+	#	mat2 = VR.Material('mymat2') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
+	#	VR.container1_label.setMaterial(mat2)
+	#	r.addChild(VR.container1_label)
 	
-	VR.container1_label.setFrom(-4.5,2,1)
-	VR.container1_label.setDir(1,0,0)
+	#VR.container1_label.setFrom(-4.5,2,1)
+	#VR.container1_label.setDir(1,0,0)
 	
 	
 	# Füllstand zweite Box - die sollte am ende immer ziemlich leer sein, da alles direkt weiter ins Lager läuft
-	if not hasattr(VR, 'container2_label'):
-		VR.container2_label= VR.Sprite('fuellstand2')
-		mat22 = VR.Material('mymat22') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
-		VR.container2_label.setMaterial(mat22)
-		r.addChild(VR.container2_label)
+	#if not hasattr(VR, 'container2_label'):
+	#	VR.container2_label= VR.Sprite('fuellstand2')
+	#	mat22 = VR.Material('mymat22') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
+	#	VR.container2_label.setMaterial(mat22)
+	#	r.addChild(VR.container2_label)
 	
-	VR.container2_label.setFrom(-4.5,2,7)
-	VR.container2_label.setDir(1,0,0)
+	#VR.container2_label.setFrom(-4.5,2,7)
+	#VR.container2_label.setDir(1,0,0)
 	
 	
 	# Angekommen zur Weiterverarbeitung
@@ -1873,50 +1867,58 @@ h2 {
       <core>
 	import VR
 	import math
+	import json
 	
 	
 	class monitorStatusController:
 		def __init__(self):
 			print "initialisiere monitorStatusController"
-			self.LagerCapacity = 0
-			self.LagerStand = 0
-			self.FertigCapacity = 0
-			self.FertigStand = 0
-			self.BoxVorFraese = 0
-			self.BoxNachFraese = 0
-			self.FraeseStatus = "Steht still"
+			# Data as json object 
+			self.StatusData = {
+				'LagerCapacity': 0,
+				'LagerStand': 0,
+				'FertigCapacity': 0,
+				'FertigStand': 0,
+				'BufferCapacity': 0,
+				'BufferStand': 0,
+				'FraeseStatus': 'Steht still',
+				}
+			
 			self.updateHomepage()
 			
-			
+		# Send data object to Homepage
 		def updateHomepage(self):
-			url = ("http://localhost:5500/monitorStatusWebsite?" + 
-			"lagerCapacity=" + str(self.LagerCapacity) + "&amp;" + 
-			"lagerStand=" + str(self.LagerStand) + "&amp;" + 
-			"fertigCapacity=" + str(self.FertigCapacity) + "&amp;" + 
-			"fertigStand=" + str(self.FertigStand) + "&amp;" + 
-			"fraeseStatus=" + str(self.FraeseStatus)
-			)		
+			jsondata = json.dumps(self.StatusData)
+			jsondataasbytes = jsondata.encode('utf-8')
+			url = "http://localhost:5500/monitorStatusWebsite?data=" + jsondataasbytes
 			VR.monitorStatusWeb.open(url)
 			
 		def setFraeseStatus(self, status):
-			self.FraeseStatus = status
-			self.updateHomepage()
-			
+			self.StatusData["FraeseStatus"] = status
+			self.updateHomepage()		
 			
 		def setLagerCapacity(self, amount):
-			self.LagerCapacity = amount
+			self.StatusData["LagerCapacity"] = amount
 			self.updateHomepage()
 			
 		def setLagerStand(self, amount):
-			self.LagerStand = amount
+			self.StatusData["LagerStand"] = amount
 			self.updateHomepage()
 
 		def setFertigCapacity(self, amount):
-			self.FertigCapacity = amount
+			self.StatusData["FertigCapacity"] = amount
 			self.updateHomepage()
 			
 		def setFertigStand(self, amount):
-			self.FertigStand = amount
+			self.StatusData["FertigStand"] = amount
+			self.updateHomepage()
+
+		def setBufferCapacity(self, amount):
+			self.StatusData["BufferCapacity"] = amount
+			self.updateHomepage()
+			
+		def setBufferStand(self, amount):
+			self.StatusData["BufferStand"] = amount
 			self.updateHomepage()
 			
 		def destroy(self):
@@ -2004,6 +2006,9 @@ function getQueryVariable(variable) {
     console.log('Query variable %s not found', variable);
 }
 
+json = getQueryVariable("data")
+data = JSON.parse(json)
+
 &lt;/script&gt;
 &lt;body&gt;
 
@@ -2018,13 +2023,19 @@ function getQueryVariable(variable) {
 			&lt;div id="lager"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("lager");
-				div.textContent = "Lagerstand: " + getQueryVariable("lagerStand") + "/" + getQueryVariable("lagerCapacity");
+				div.textContent = "Lagerstand: " + data.LagerStand + "/" + data.LagerCapacity;
 				var text = div.textContent;
 			&lt;/script&gt;
 			&lt;div id="fertig"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("fertig");
-				div.textContent = "Fertig: " + getQueryVariable("fertigStand") + "/" + getQueryVariable("fertigCapacity");
+				div.textContent = "Fertig: " + data.FertigStand + "/" + data.FertigCapacity;
+				var text = div.textContent;
+			&lt;/script&gt;
+			&lt;div id="buffer"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("buffer");
+				div.textContent = "Pufferbox: " + data.BufferStand + "/" + data.BufferCapacity;
 				var text = div.textContent;
 			&lt;/script&gt;
 			&lt;br&gt;
@@ -2033,7 +2044,7 @@ function getQueryVariable(variable) {
 			&lt;div id="fraeseStatus"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("fraeseStatus");
-				div.textContent = "Fraese: " + getQueryVariable("fraeseStatus");
+				div.textContent = "Fraese: " + data.FraeseStatus;
 				var text = div.textContent;
 			&lt;/script&gt;
 		&lt;/center&gt;
