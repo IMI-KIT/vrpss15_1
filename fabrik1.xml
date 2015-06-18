@@ -3,13 +3,21 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-6.78559 3.09783 4.36662" at="-8.31402 1.05634 4.42964" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-6.30105 3.42595 4.37986" at="-8.0647 1.05634 4.14484" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
         <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
         <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
         <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
+        <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
         <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
         <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
         <Object name_suffix="1" base_name="Felge" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae Felge.001"/>
@@ -102,8 +110,9 @@
 	Pi = math.pi
 	debugDoor = True
 	debugdraw = True
+	
 	generateHoles = True
-	VR.debugdraws = []
+	substract = False
 	
 	_animationTime = 50
 	_animationOffset = 0
@@ -113,14 +122,17 @@
 			print "initialisiere Fraesenklasse"
 			VR.speedup = 1 # 1 = kein speedup
 			
-			self.substract = False
-			#rohling neu
+			
+			#rohling neu(aka mitlerweile alt)
 			VR.fraese_ablegepunkt = [0.322,-0.01,-0.366]
 			VR.fraese_scale = 0.017
 			
 			#rohling blender
+			
 			VR.fraese_ablegepunkt = [0.322,0.06,-0.64]
-			VR.fraese_scale = 1
+			VR.fraese_ablegepunkt = [0.322,0.06,-0.1]
+			VR.fraese_scale = 0.5
+			
 			
 			#load Geometry
 			self.Base = VR.loadGeometry('Base.DAE')
@@ -142,11 +154,8 @@
 			scale = 3
 			self.Base.setPose([-7,1.3,3],[1,0,0],[0,1,0])
 			self.Base.setScale(scale,scale,scale)
-			#self.Base.setFrom(VR.fraese_ablegepunkt)
 			r.addChild(self.Base)
-			
-			
-			
+
 			#Door close (invert will nicht)
 			self.p1c = VR.Path()
 			self.p1c.set([0.34,0,0], [0,0,-1], [0,1,0],[0,0,0], [0,0,-1], [0,1,0], 2)
@@ -159,6 +168,14 @@
 			self.p2o.set([0.205,0,0], [0,0,-1], [-0.14,0,0], [0,0,-1], 2) 
 	
 			self.doorOpen = True
+			self.debugdraw = None
+			
+			b=0.005
+			self.prof = []
+			self.prof.append([-b,0,b])
+			self.prof.append([-b,0,-b])
+			self.prof.append([b,0,-b])
+			self.prof.append([b,0,b])
 	
 			
 		def startFraese(self,rohling,modell):
@@ -169,17 +186,19 @@
 			self.Base.addChild(rohling)
 			rohling.setName("Rohling.Akutell")
 			rohling.switchParent(self.Base)
-			rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			rohling.setPose(VR.fraese_ablegepunkt,[0,1,0],[0,0,1])
-			#rohling.show()
+			rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
+			rohling.show()
 			
 			self.rohling = rohling
 			self.modell = modell
 			
-			for d in VR.debugdraws:
-				d.destroy()
-				
-			debugdraws = []
+			if self.debugdraw is not None:
+				self.debugdraw.destroy()
+			self.debugdraw = VR.Transform("debugdraws")
+			self.Base.addChild(self.debugdraw)
+
+			
 			#fräsen
 			self.useDoor()
 			if modell == 0:
@@ -189,94 +208,80 @@
 
 		def nextGCode(self,parser):
 			if parser.hasNext():
-				#parsen
+				#parsen returns [p1, p2, p3, pd, loch (None oder True), Zeit]
 				paths = parser.ParseLine()
 				if paths is  None:
 					print "Error paths empty"
 					self.nextGCode(parser)
 					return
-					
-				#returns [p1, p2, p3, pd, loch (None oder True), Zeit]
+				
+				#debugdraw
+				if debugdraw:
+					s = VR.Stroke('path')
+					s.addPath(paths[3])
+					s.strokeProfile(self.prof, True, True)
+					self.debugdraw.addChild(s)
+				
+				#abtrag
+				self.abtrag(paths[4])
+				
 				#animieren
 				self.Motor.animate(paths[0], paths[5]*VR.speedup, 0, False)
 				self.Arm2.animate(paths[1], paths[5]*VR.speedup, 0, False)
 				self.Arm1.animate(paths[2], paths[5]*VR.speedup, 0, False)
-				#debugdraw
-				if debugdraw:
-					s = VR.Stroke('path')
-			
-					s.addPath(paths[3])
-					b=0.005
-					prof = []
-					prof.append([-b,0,b])
-					prof.append([-b,0,-b])
-					prof.append([b,0,-b])
-					prof.append([b,0,b])
-					s.strokeProfile(prof, True, True)
-					self.Base.addChild(s)
-					VR.debugdraws.append(s)
-				#abtrag
-				if  generateHoles and paths[4] is not None:
-					print "Abtrag"
-					#Path
-					center =paths[4][0];
-					
-					prof2 = [ [-p[2]+center[2],p[0]-center[0], 0 ] for p in paths[4] ]					
-					print "inpput Points",paths[4]
-					print "Center for Profile",center
-					print "Profil",prof2
-			
-									
-					p = VR.Path()
-					col = [1,0,0]
-					d = [0,1,0]
-					up = [1,0,0]
-					
-					offset = [-0.02,0.145,-0.12]
-					offset = [0,0,0]
-					
-					
-					p.addPoint([center[0],center[1],center[2]],d,col,up)
-					p.addPoint([center[0],0.12,center[2]],d,col,up) #13 ist der deubig offset aus ParseGCode
-					p.compute(10)
-					s = VR.Stroke('path')
-					s.addPath(p)
-					s.strokeProfile( prof2, True, True) 
-
-					if self.substract:
-						#new CSG
-						c = VR.CSGGeometry('csg')
-						self.rohling.switchParent(c)
-						c.addChild(s)
-						self.Base.addChild(c)	
-						#c.setOperation('subtract')
-						#c.setEditMode(False)
-					else: 
-						self.Base.addChild(s)
-					
 				#rekursiver Aufruf
 				VR.stackCall( self.nextGCode, paths[5]*VR.speedup , [parser] )
-	
 			else:
 				self.stop()
+		
+		def abtrag(self,path):
+			if  generateHoles and path is not None:
+				print "Abtrag"
+				#Profile
+				center =path[0];
+				prof2 = [[-p[2]+center[2],p[0]-center[0], 0 ] for p in path ]					
 
+				col = [1,0,0]
+				d = [0,1,0]
+				up = [1,0,0]
+	
+				#Path
+				p = VR.Path()
+				p.addPoint([center[0],center[1],center[2]],d,col,up)
+				p.addPoint([center[0],0.12,center[2]],d,col,up) #0.12 ist der deubig offset aus ParseGCode
+				p.compute(10)
+				
+				#Stroke
+				s = VR.Stroke('path')
+				s.addPath(p)
+				s.strokeProfile( prof2, True, True) 
+
+				if substract:
+					# CSG
+					csg = VR.CSGGeometry('csg')
+					self.rohling.switchParent(csg)
+					csg.setMaterial(self.rohling.getMaterial())
+					csg.addChild(s)
+					self.Base.addChild(csg)	
+					csg.setOperation('subtract')
+					csg.setEditMode(False)
+					self.rohling = csg
+				else: 
+					self.Base.addChild(s)
 
 		def stop(self):#fertig - callback an Logistik
 			#tür auf
 			self.useDoor()
 			#Felge erzeugen
 			if self.modell == 0:
-				objektback = VR.felge0.duplicate()
 				objekt = VR.FRfelge0.duplicate()#FIXME temp workaround
 			else :
-				objektback = VR.felge1.duplicate()
 				objekt = VR.FRfelge1.duplicate()
 			
-			#objekt.switchParent(self.Base)	
+			objekt.switchParent(self.Base)	
 			objekt.setPose(VR.fraese_ablegepunkt,[0,1,0],[0,0,1])
 			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
-			#objekt.show()
-			
+			objekt.show()
 			
 			#self.rohling.destroy()
 			#self.Base.addChild(objekt)
@@ -284,8 +289,7 @@
 			print "Fraesevorgang done, call back Logistik"
 			VR.monitorStatusController.setFraeseStatus("Steht still")
 			
-			VR.logisticController.fraeseDone(objektback)
-			#VR.logisticController.fraeseDone(objekt)
+			VR.logisticController.fraeseDone(objekt)
 					
 		def useDoor(self):
 			if self.doorOpen and not debugDoor:	
@@ -1935,6 +1939,6 @@ function getQueryVariable(variable) {
   </Scripts>
   <Sockets/>
   <Background color="0.6 0.6 0.6" path="" type="0"/>
-  <Navigation active="FlyWalk"/>
+  <Navigation active="Orbit"/>
   <Materials/>
 </Scene>
