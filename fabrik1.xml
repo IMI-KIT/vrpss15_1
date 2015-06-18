@@ -58,8 +58,8 @@
       <core>
 	import VR
 	import math
-	return
-
+	
+	#halle
 	if hasattr(VR, 'halle'):
 		VR.halle.destroy()
 	VR.halle = VR.loadGeometry('halle.dae', True)
@@ -67,7 +67,26 @@
 	light.addChild(VR.halle)
 	VR.halle.translate(2,1,20)
 	VR.halle.rotate(0,-1,0, -0.5 * math.pi)
-	#VR.halle.setScale(0.3,0.3,0.3)
+
+	#fliessband
+	count = 4;
+	while count >0:
+		VR.fliessband = VR.loadGeometry('fliessband.dae', True)
+		light = VR.getRoot().find('Headlight')
+		light.addChild(VR.fliessband)
+		VR.fliessband.translate(8.25-3.001*count,-0.5,1.4)
+		VR.fliessband.setScale(0.3,0.3,0.3);
+		VR.fliessband.rotate(1,0,0, -0.5 * math.pi)
+		count = count -1;
+	count = 4;
+	while count >0:
+			VR.fliessband = VR.loadGeometry('fliessband.dae', True)
+			light = VR.getRoot().find('Headlight')
+			light.addChild(VR.fliessband)
+			VR.fliessband.translate(8.25-3.001*count,-0.5,7.4)
+			VR.fliessband.setScale(0.3,0.3,0.3);
+			VR.fliessband.rotate(1,0,0, -0.5 * math.pi)
+			count = count -1;
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="21" base_name="trigger" name_space="__global__"/>
     </Script>
@@ -1508,6 +1527,7 @@
 	floor.setMaterial(mbricks)
 	floor.setTexCoords(floor.getPositions())
 	floor.setPose([0,0,0], [0,1,0], [1,0,0])
+	floor.setVisible(0);
 	root = VR.getRoot().find('Headlight')
 	root.addChild(floor)
 	
