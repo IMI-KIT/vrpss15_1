@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="2.52 1.77403 -3.33791" at="2.65394 1.6115 0" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="2.94016 2.84854 -2.83282" at="-3.12585 -0.0522757 7.85781" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -20,13 +20,13 @@
 		return
 	
 	if hasattr(VR,'containers'):
-		if(VR.containers[0].isEmpty()):
+		if(VR.containers[0].isEmpty()): #Alisa sagt: da müssen wir nochmal überlegen wie viel sinn das macht.
 			print "Starte Auftrag für " + str(anzahl) + " Felgen Typ " + str(modell)
 			VR.auftragFertig = False # Ja ich weiß dass das noch woanders gemacht wird. sicher ist sicher.
 			VR.containers[0].setCapacity(anzahl)
 			VR.containers[3].clear()
 			VR.containers[3].setCapacity(anzahl)
-			VR.log.fillContainer(VR.containers[0],anzahl,VR.rohling)
+			VR.log.fillContainer(VR.containers[0],anzahl,VR.FRrohling)
 		else:
 			print "Container0 (Lager) ist noch nicht leer! Starte Auftrag nicht."
 		
@@ -59,36 +59,43 @@
 	import VR
 	import math
 	
+	reload = False
+	light = VR.getRoot().find('Headlight')
+	
 	#halle
 	if hasattr(VR, 'halle'):
 		VR.halle.destroy()
-	VR.halle = VR.loadGeometry('halle.dae', True)
-	light = VR.getRoot().find('Headlight')
+	VR.halle = VR.loadGeometry('halle.dae', reload)
 	light.addChild(VR.halle)
 	VR.halle.translate(2,1,20)
 	VR.halle.rotate(0,-1,0, -0.5 * math.pi)
 
 	#fliessband
 	count = 4;
-	while count >0:
-		VR.fliessband = VR.loadGeometry('fliessband.dae', True)
-		light = VR.getRoot().find('Headlight')
+	while count &gt;0:
+		VR.fliessband = VR.loadGeometry('fliessband.dae', reload)
 		light.addChild(VR.fliessband)
 		VR.fliessband.translate(8.25-3.001*count,-0.5,1.4)
 		VR.fliessband.setScale(0.3,0.3,0.3);
 		VR.fliessband.rotate(1,0,0, -0.5 * math.pi)
 		count = count -1;
 	count = 4;
-	while count >0:
-			VR.fliessband = VR.loadGeometry('fliessband.dae', True)
-			light = VR.getRoot().find('Headlight')
+	while count &gt;0:
+			VR.fliessband = VR.loadGeometry('fliessband.dae', reload)
 			light.addChild(VR.fliessband)
 			VR.fliessband.translate(8.25-3.001*count,-0.5,7.4)
 			VR.fliessband.setScale(0.3,0.3,0.3);
 			VR.fliessband.rotate(1,0,0, -0.5 * math.pi)
 			count = count -1;
+			
+			
+	#monitor
+	VR.monitorRechts = VR.loadGeometry('monitor.dae', reload)
+	VR.monitorRechts.setName('Toller Monitor rechts')
+	VR.monitorRechts.setPose([0,0.5,0.12],[0,-1,0],[0,0,1])
+	VR.monitorRechts.setScale([0.9,0.9,0.9])#0.9 fuer 4:3 Bildschirm
+	light.addChild(VR.monitorRechts)
 </core>
-      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="21" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="FraeseAnimation" name_space="__script__" type="Python" mobile="">
       <core>
@@ -475,9 +482,9 @@
 				objektback = VR.felge1.duplicate()
 				objekt = VR.FRfelge1.duplicate()
 			
-			objekt.switchParent(self.Base)	
-			objekt.setPose(VR.fraese_ablegepunkt,[0,0,-1],[0,1,0])
-			objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
+			#objekt.switchParent(self.Base)	
+			#objekt.setPose(VR.fraese_ablegepunkt,[0,0,-1],[0,1,0])
+			#objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			objekt.show()
 			
 			
@@ -491,8 +498,8 @@
 			print "Fraesevorgang done, call back Logistik"
 			VR.monitorStatusController.setFraeseStatus("Steht still")
 			
-			VR.logisticController.fraeseDone(objektback)
-			#VR.logisticController.fraeseDone(objekt)
+			#VR.logisticController.fraeseDone(objektback)
+			VR.logisticController.fraeseDone(objekt)
 					
 		def useDoor(self):
 			if self.doorOpen and not debugDoor:	
@@ -658,13 +665,13 @@
 		VR.lnet = VR.log.addNetwork()
 		r.addChild(VR.cardbox)
 		r.addChild(VR.rohling)
-		r.addChild(VR.felge1)
-		r.addChild(VR.FRfelge0)
-		r.addChild(VR.FRfelge1)
+		#r.addChild(VR.felge1)
+		#r.addChild(VR.FRfelge0)
+		#r.addChild(VR.FRfelge1)
 		r.addChild(VR.FRrohling)
 	
 	capacity0 = 1000 # ins Lager passt viel
-	capacity1 = 10	# ist grade erstmal weniger, damit alles übersichtlich bleibt. Kann später gern mehr werden
+	capacity1 = 1	# ist grade erstmal weniger, damit alles übersichtlich bleibt. Kann später gern mehr werden
 	capacity2 = 10 # Hier steht am Ende eh keine Box, es wird alles direkt aufs Fließband gelegt. Kapazität sollte egal sein.
 	capacity3 = 1000 # Endlager
 
@@ -1536,12 +1543,7 @@
 	VR.cardbox.setMaterial(mcarboard)
 	VR.cardbox.hide()
 	
-	VR.rohling = VR.Geometry('tt1')
-	VR.rohling.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
-	root.addChild(VR.rohling)
-	VR.rohling.setMaterial(mchrome)#Alisa sagt: Ja ich weiß dass das das gleiche ist. ist mir grade egal.
-	VR.rohling.setTexCoords(VR.rohling.getPositions())
-	VR.rohling.hide()
+		
 	
 	#Erstelle Geometrie für Felge0. Einzelne Instanzen können hinterher mit VR.felge0.duplicate() geholt werden.
 	u1 = VR.Geometry('u1')
@@ -1575,13 +1577,42 @@
 	VR.felge1.setTexCoords(VR.felge1.getPositions())
 	VR.felge1.hide()
 	
-	VR.FRrohling = VR.loadGeometry('Rohling.dae')
+		
+	VR.rohling = VR.Geometry('tt1')
+	VR.rohling.setPrimitive('Box 0.15 0.05 0.3 1 1 1')
+	root.addChild(VR.rohling)
+	VR.rohling.setMaterial(mchrome)#Alisa sagt: Ja ich weiß dass das das gleiche ist. ist mir grade egal.
+	VR.rohling.setTexCoords(VR.rohling.getPositions())
+	VR.rohling.hide()
+	
+	
+	rohling = VR.loadGeometry('Rohling.dae')
+	rohling.setPose([0,0,0],[0,1,0],[1,0,0])
+	rohling.setScale([0.04,0.04,0.04])
+	VR.FRrohling = VR.Transform('rohling')
+	VR.FRrohling.addChild(rohling)
+	root.addChild(VR.FRrohling)
 	VR.FRrohling.hide()
+	
 
-	VR.FRfelge0 = VR.loadGeometry('Felge1.dae')
-	VR.FRfelge1 = VR.loadGeometry('Felge2.dae')
+	FRfelge0 = VR.loadGeometry('Felge1.dae')
+	FRfelge1 = VR.loadGeometry('Felge2.dae')
+	FRfelge0.setPose([0,0,0],[0,1,0],[1,0,0])
+	FRfelge0.setScale([0.04,0.04,0.04])
+	FRfelge1.setPose([0,0,0],[0,1,0],[1,0,0])
+	FRfelge1.setScale([0.04,0.04,0.04])
+	
+	VR.FRfelge0 = VR.Transform('felge0')
+	VR.FRfelge1 = VR.Transform('felge1')
+	VR.FRfelge0.addChild(FRfelge0)
+	VR.FRfelge1.addChild(FRfelge1)
+	root.addChild(VR.FRfelge0)
+	root.addChild(VR.FRfelge1)
 	VR.FRfelge0.hide()
 	VR.FRfelge1.hide()
+
+
+	
 	
 	
 	test = VR.rohling.duplicate()
@@ -1596,6 +1627,8 @@
 	import VR
 	VR.initScene()
 	VR.LogisticsInit()
+	VR.Environment()
+	VR.triggerScript('monitorControlInit')
 	#TODO von Alisa (29.5.): Wir könnten überlegen, alle Initialisierungsskripte
 	#hierüber zu starten, sodass nur dieses Skript den on_scene_load-Trigger hat.
 	#Dann hätten wir ne bisschen bessere Kontrolle über die Reihenfolge.
@@ -1718,25 +1751,23 @@
 	
 	geo = VR.Geometry('gui')
 	#erste beiden zahlen: breite und höhe
-	geo.setPrimitive('Plane 2 2 1 1')
+	geo.setPrimitive('Plane 2.34 1.31625 1 1')
 	geo.setMaterial(mat)
-	geo.setPose([0,1.5,0],[0,0,-1],[0,-1,0])
-	
-	r = VR.getRoot()
-	r.addChild(geo)
+	geo.setPose([0,-0.1,1.1],[0,-1,0],[0,0,-1])
+	VR.monitorRechts.addChild(geo)
 	
 	cef = VR.CEF()
 	cef.setMaterial(mat)
-	cef.open('http://localhost:5500/monitorControlWebsite')
 	cef.addMouse(mouse, geo, 0, 2, 3, 4)
 	cef.addMouse(flystick, geo, 0, 2, 3, 4)
 	cef.addKeyboard(keyboard)
-	cef.setAspectRatio(2)
+	cef.setResolution(800)
+	cef.setAspectRatio(16.0/9.0)
+	cef.open('http://localhost:5500/monitorControlWebsite')
 </core>
       <arg type="VRPyDeviceType" value="flystick" name_suffix="0" base_name="flystick" name_space="monitorControlInit"/>
       <arg type="VRPyDeviceType" value="keyboard" name_suffix="0" base_name="keyboard" name_space="monitorControlInit"/>
       <arg type="VRPyDeviceType" value="mouse" name_suffix="0" base_name="mouse" name_space="monitorControlInit"/>
-      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="monitorControlWebsite" name_space="__script__" type="HTML" mobile="mobile">
       <core>
@@ -1748,27 +1779,30 @@ body{
 	background:#FFFFFF; 
 }
 h2 {
-	font-size: 120%;
+	font-size: 3.0vw;
 	color: #718DA5;
 }
 #header{
 	background:#2A4F6E;   
 	color: #718DA5;  
-	font-size: 100%; 
+	font-size: 3.0vw; 
 	height:40px;
 }
 #content{ 
 	color:#042037;
-	font-size: 150%;
-	padding-bottom:40px; 
+	font-size: 2.5vw;
+	padding-bottom:2vw; 
 }
 #footer{
 	background: #2A4F6E;
 	color: #718DA5; 
 	position:fixed;
-	bottom:0px;
+	bottom:0vh;
 	width:100%;
-	height:40px;
+	height:5vh;
+}
+input{
+	font-size: 2.5vw;
 }
 &lt;/style&gt;
 &lt;/head&gt;
@@ -1968,11 +2002,11 @@ h2 {
 	
 	cef = VR.CEF()
 	cef.setMaterial(mat)
-	cef.open('http://localhost:5500/monitorStatusWebsite')
 	#self.cef.addMouse(mouse, self.geo, 0, 2, 3, 4)
 	#self.cef.addMouse(flystick, self.geo, 0, 2, 3, 4)
 	#self.cef.addKeyboard(keyboard)
-	cef.setAspectRatio(2)
+	cef.setAspectRatio(1)
+	cef.open('http://localhost:5500/monitorStatusWebsite')
 		
 	VR.monitorStatusWeb = cef
 	VR.monitorStatusControls()
