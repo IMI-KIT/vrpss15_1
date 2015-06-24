@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.7322 1.82356 6.30891" at="-7.93192 1.05634 4.33773" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="2.28123 5.04159 3.07014" at="-7.93192 1.05634 4.33773" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -913,8 +913,18 @@
 			print "initialisiere Roboterklasse"
 			if hasattr(VR, 'robot'):
 				VR.robot.destroy()
-			VR.robot = VR.loadGeometry('AlleTeile_mitFarbe.dae', True)
+				
+			# Welcher Roboter soll geladen werden?
+			
+			# Ohne Farbe, ca 13k vertices
 			#VR.robot = VR.loadGeometry('Alle_teile.dae', True)
+			# Mit Farbe, ca 13k vertices
+			#VR.robot = VR.loadGeometry('AlleTeile_mitFarbe.dae', True)
+			# Mit Farbe, ca 8k vertices
+			#VR.robot = VR.loadGeometry('Roboter_8kV.dae', True)
+			# Mit Farbe, ca 5k vertices
+			VR.robot = VR.loadGeometry('Roboter_5kV.dae', True)
+			
 			light = VR.getRoot().find('Headlight')
 			light.addChild(VR.robot)
 			VR.robot.rotate(1,0,0, -0.5 * math.pi)
