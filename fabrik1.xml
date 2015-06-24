@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.771636 3.30421 -3.88008" at="0.797546 1.48479 0.0299997" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.19227 2.84101 -4.04487" at="0.797546 1.48479 0.0299997" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -557,32 +557,7 @@
 	
 	if hasattr(VR, 'log'):
 		VR.log.update()
-		
-		# Aktualisiere Anzeigetafeln
-		#lager
-		VR.monitorStatusController.setLagerCapacity(VR.containers[0].getCapacity())
-		VR.monitorStatusController.setLagerStand(VR.containers[0].getCount())
-		#fertig
-		VR.monitorStatusController.setFertigCapacity(VR.containers[3].getCapacity())	
-		VR.monitorStatusController.setFertigStand(VR.containers[3].getCount())
-		
-		VR.monitorStatusController.setBufferCapacity(VR.containers[1].getCapacity())	
-		VR.monitorStatusController.setBufferStand(VR.containers[1].getCount())	
-	
-			
-			
-
-			
-			
-		
-		
-		
-		if hasattr(VR, 'neuerAuftragLabel'):
-			textAuftrag = 'Neuer Auftrag: ' + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
-			VR.neuerAuftragLabel.setText(textAuftrag)
-			VR.neuerAuftragLabel.setSize(len(textAuftrag)*0.15,0.3)
-			
-
+					
 	
 	#=====Starte einen Roboter-Fräs-Durchlauf=====
 	if hasattr(VR, 'containers'):
@@ -1769,7 +1744,7 @@ input{
 			self.updateHomepage()
 			
 		# Send data object to Homepage
-		def updateHomepage(self):
+		def updateHomepage(self):	
 			jsondata = json.dumps(self.StatusData)
 			jsondataasbytes = jsondata.encode('utf-8')
 			url = "http://localhost:5500/monitorStatusWebsite?data=" + jsondataasbytes
@@ -1777,41 +1752,32 @@ input{
 			VR.monitorStatusWeb.open(url)
 			
 		def setFraeseStatus(self, status):
-			self.StatusData["FraeseStatus"] = status
-			self.updateHomepage()		
+			self.StatusData["FraeseStatus"] = status		
 			
 		def setLagerCapacity(self, amount):
 			self.StatusData["LagerCapacity"] = amount
-			self.updateHomepage()
 		
 		def setCurrentJob(self, job):
 			self.StatusData["CurrentJob"] = job
-			self.updateHomepage()	
 			
 		def setLagerStand(self, amount):
 			self.StatusData["LagerStand"] = amount
-			self.updateHomepage()
 
 		def setFertigCapacity(self, amount):
 			self.StatusData["FertigCapacity"] = amount
-			self.updateHomepage()
 			
 		def setFertigStand(self, amount):
 			self.StatusData["FertigStand"] = amount
-			self.updateHomepage()
 
 		def setBufferCapacity(self, amount):
 			self.StatusData["BufferCapacity"] = amount
-			self.updateHomepage()
 			
 		def setBufferStand(self, amount):
 			self.StatusData["BufferStand"] = amount
-			self.updateHomepage()
 			
 		def updateProductionQueue(self):
 			self.StatusData["ProductionQueue"] = list(VR.auftragqueue)
-			print self.StatusData["ProductionQueue"]
-			self.updateHomepage()
+			#print self.StatusData["ProductionQueue"]
 			
 		def destroy(self):
 			return
@@ -1853,6 +1819,28 @@ input{
       <arg type="VRPyDeviceType" value="keyboard" name_suffix="0" base_name="keyboard" name_space="monitorStatusInit"/>
       <arg type="VRPyDeviceType" value="mouse" name_suffix="0" base_name="mouse" name_space="monitorStatusInit"/>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="10" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="monitorStatusUpdater" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	# Klasse für periodische Updates auf dem Statusmonitor
+	
+	# Lade Boxinhalte
+	# Aktualisiere Lager
+	VR.monitorStatusController.setLagerCapacity(VR.containers[0].getCapacity())	
+	VR.monitorStatusController.setLagerStand(VR.containers[0].getCount())
+	# Aktualisiere Buffer
+	VR.monitorStatusController.setBufferCapacity(VR.containers[1].getCapacity())	
+	VR.monitorStatusController.setBufferStand(VR.containers[1].getCount())
+	# Aktualisiere Fertig
+	VR.monitorStatusController.setFertigCapacity(VR.containers[3].getCapacity())	
+	VR.monitorStatusController.setFertigStand(VR.containers[3].getCount())
+	
+	#Update Homepage
+	VR.monitorStatusController.updateHomepage()
+		
+</core>
+      <trig type="on_timeout" dev="" state="Pressed" param="500" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="monitorStatusWebsite" name_space="__script__" type="HTML" mobile="mobile">
       <core>
