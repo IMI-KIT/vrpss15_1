@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.19227 2.84101 -4.04487" at="0.797546 1.48479 0.0299997" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.13665 5.67945 3.79321" at="-7.97402 1.20792 3.74941" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -127,7 +127,7 @@
 	import math
 	
 	Pi = math.pi
-	debugDoor = True
+	debugDoor = False
 	debugdraw = True
 	
 	generateHoles = True
@@ -154,15 +154,22 @@
 			
 			
 			#load Geometry
-			self.Base = VR.loadGeometry('Base.DAE')
-			self.LeftDoor = VR.loadGeometry('TrLinks.DAE')
-			self.RightDoor = VR.loadGeometry('TrRechts.DAE')
-			self.Arm1 = VR.loadGeometry('Arm1NEW.DAE')
-			self.Arm2 = VR.loadGeometry('Arm2NEW.DAE')
-			self.Motor = VR.loadGeometry('MotorNEW.DAE')
+			#self.Base = VR.loadGeometry('Base.DAE')
+			#self.LeftDoor = VR.loadGeometry('TrLinks.DAE')
+			#self.RightDoor = VR.loadGeometry('TrRechts.DAE')
+			#self.Arm1 = VR.loadGeometry('Arm1NEW.DAE')
+			#self.Arm2 = VR.loadGeometry('Arm2NEW.DAE')
+			#self.Motor = VR.loadGeometry('MotorNEW.DAE')
 			
-			self.LeftDoor.setFrom([0.34, 0, 0])
-			self.RightDoor.setFrom([-0.14, 0, 0])			
+			self.Base = VR.loadGeometry('fraese/Base_LOW_POLY.dae')
+			self.LeftDoor = VR.loadGeometry('fraese/TrLinks_LOW_POLY.dae')
+			self.RightDoor = VR.loadGeometry('fraese/TrRechts_LOW_POLY.dae')
+			self.Arm1 = VR.loadGeometry('fraese/Arm1_LOW_POLY.dae')
+			self.Arm2 = VR.loadGeometry('fraese/Arm2_LOW_POLY.dae')
+			self.Motor = VR.loadGeometry('fraese/Motor_LOW_POLY.dae')
+			
+			self.LeftDoor.setFrom([1.02, 0, 0])
+			self.RightDoor.setFrom([-0.43, 0, 0])			
 			self.Base.addChild(self.LeftDoor)
 			self.Base.addChild(self.RightDoor)
 			self.Base.addChild(self.Arm1)
@@ -170,21 +177,22 @@
 			self.Base.addChild(self.Motor)
 
 			
-			scale = 3
+			scale = 1
+	
 			self.Base.setPose([-7,1.3,3],[1,0,0],[0,1,0])
 			self.Base.setScale(scale,scale,scale)
 			r.addChild(self.Base)
 
 			#Door close (invert will nicht)
 			self.p1c = VR.Path()
-			self.p1c.set([0.34,0,0], [0,0,-1], [0,1,0],[0,0,0], [0,0,-1], [0,1,0], 2)
+			self.p1c.set([1.02,0,0], [0,0,-1], [0,1,0],[0,0,0], [0,0,-1], [0,1,0], 2)
 			self.p2c = VR.Path()
-			self.p2c.set([-0.14,0,0], [0,0,-1], [0,1,0],[0.205,0,0], [0,0,-1], [0,1,0], 2)
+			self.p2c.set([-0.43,0,0], [0,0,-1], [0,1,0],[0.62,0,0], [0,0,-1], [0,1,0], 2)
 			#Door open
 			self.p1o = VR.Path()
-			self.p1o.set([0,0,0], [0,0,-1], [0.34,0,0], [0,0,-1], 2)
+			self.p1o.set([0,0,0], [0,0,-1], [1.02,0,0], [0,0,-1], 2)
 			self.p2o = VR.Path()
-			self.p2o.set([0.205,0,0], [0,0,-1], [-0.14,0,0], [0,0,-1], 2) 
+			self.p2o.set([0.62,0,0], [0,0,-1], [-0.43,0,0], [0,0,-1], 2) 
 	
 			self.doorOpen = True
 			self.debugdraw = None
@@ -207,7 +215,7 @@
 			rohling.setName("Rohling.Akutell")
 			rohling.switchParent(self.Base)
 			#rohling.setPose(VR.fraese_ablegepunkt,[0,1,0],[0,0,1])
-			VR.fraese_ablegepunkt = [0.322,0,0.3] # TODO nach oben
+			VR.fraese_ablegepunkt = [0.95,0,1.1] # TODO nach oben
 			rohling.setFrom(VR.fraese_ablegepunkt)
 			#rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
 			rohling.show()
@@ -596,8 +604,8 @@
 	import numpy
 	
 	#notwendeig damit der pfad auch am Fräskopf ist
-	debug = [-0.02,0.12,0.138]
-	#debug = [-0.02,-0.12,0.145]
+	#debug = [-0.02,0.12,0.138]
+	debug = [0.02,0,-1]
 	log = False
 	
 	#Path Scaling
@@ -608,9 +616,9 @@
 	_ZSCALE = _scale
 	
 	#_XOFFSET = -0.25
-	_XOFFSET = -0.31
+	_XOFFSET = 0.31
 	#_YOFFSET = -0.75
-	_YOFFSET = 1.25
+	_YOFFSET = 2.08
 	_ZOFFSET = -0.15
 	
 	#For line maching
