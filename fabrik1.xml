@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.7322 1.82356 6.30891" at="-7.93192 1.05634 4.33773" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-8.15934 7.87241 0.260051" at="-8.12701 1.05634 4.07359" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -63,12 +63,13 @@
 	light = VR.getRoot().find('Headlight')
 	
 	#halle
-	if hasattr(VR, 'halle'):
-		VR.halle.destroy()
-	VR.halle = VR.loadGeometry('halle.dae', reload)
-	light.addChild(VR.halle)
-	VR.halle.translate(2,1,20)
-	VR.halle.rotate(0,-1,0, -0.5 * math.pi)
+	if True:
+		if hasattr(VR, 'halle'):
+			VR.halle.destroy()
+		VR.halle = VR.loadGeometry('halle.dae', reload)
+		light.addChild(VR.halle)
+		VR.halle.translate(2,1,20)
+		VR.halle.rotate(0,-1,0, -0.5 * math.pi)
 
 	#fliessband
 	count = 4;
@@ -119,27 +120,30 @@
 	debugdraw = True
 	
 	generateHoles = True
-	substract = True
+	substract = False
 	
 	_animationTime = 50
 	_animationOffset = 0
+	
+	def sub(a,b):
+		return [a[0]-b[0],a[1]-b[1],a[2]-b[2]]
+	def add(a,b):
+		return [a[0]+b[0],a[1]+b[1],a[2]+b[2]]
+	def mult(a,b):
+		return [a*b[0],a*b[1],a*b[2]]
 	
 	class FraeseController:
 		def __init__(self,r):
 			print "initialisiere Fraesenklasse"
 			VR.speedup = 1 # 1 = kein speedup
 			
+			self.scale = 3
+			self.iscale = 1.0/self.scale
+			self.pose = [-7,1.3,3]
+			self.ablegepunkt_local = [0.329,-0.01,0.371]
 			
-			#rohling neu(aka mitlerweile alt)
-			VR.fraese_ablegepunkt = [0.322,-0.01,-0.366]
-			VR.fraese_scale = 0.017
-			
-			#rohling blender
-			
-			VR.fraese_ablegepunkt = [0.322,0.06,-0.64]
-			VR.fraese_ablegepunkt = [0.322,0.06,-0.1]
-			VR.fraese_scale = 0.5
-			
+			VR.fraese_ablegepunkt = add(self.pose,mult(self.scale,self.ablegepunkt_local))
+		
 			
 			#load Geometry
 			self.Base = VR.loadGeometry('Base.DAE')
@@ -158,9 +162,9 @@
 			self.Base.addChild(self.Motor)
 
 			
-			scale = 3
-			self.Base.setPose([-7,1.3,3],[1,0,0],[0,1,0])
-			self.Base.setScale(scale,scale,scale)
+			
+			self.Base.setPose(self.pose,[1,0,0],[0,1,0])
+			self.Base.setScale(self.scale,self.scale,self.scale)
 			r.addChild(self.Base)
 
 			#Door close (invert will nicht)
@@ -191,13 +195,9 @@
 			
 			#rohling positionieren
 			self.Base.addChild(rohling)
-			rohling = rohling.getChildren(True, 'Geometry')[0]
 			rohling.setName("Rohling.Akutell")
-			rohling.switchParent(self.Base)
-			#rohling.setPose(VR.fraese_ablegepunkt,[0,1,0],[0,0,1])
-			VR.fraese_ablegepunkt = [0.322,0,0.3] # TODO nach oben
-			rohling.setFrom(VR.fraese_ablegepunkt)
-			#rohling.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
+			rohling.setFrom(self.ablegepunkt_local)
+			rohling.setScale(self.iscale ,self.iscale,self.iscale )
 			rohling.show()
 			
 			self.rohling = rohling
@@ -644,6 +644,7 @@
 			self.plane = "Z"
 			self.lines = []
 			self.coordinates = []
+			self.paths =[]
 			
 			with open(path) as file: 
 				for line in file:
@@ -804,6 +805,23 @@
 			p3.compute(compute)
 			pd.compute(compute)
 			
+			if dirP1[1] &lt; 0:#rein
+				print "rein"
+				self.paths = []
+				loch = None
+			if dirP1[1] == 0:#fräast
+				print "path add"
+				self.paths.append(pd)#pd damit es genau da ist wo die debugpfade
+				loch = None
+			if dirP1[1] &gt; 0:#raus
+				print "raus"
+				loch = []
+				for path in self.paths:
+					for p in path.getPositions():
+						loch.append(p)
+				
+			
+			"""	
 			loch = None
 			if not  regexG00.match(line):
 				loch = []
@@ -814,6 +832,8 @@
 						loch.append(add(coords,debug))
 				if not found:
 					loch = None
+			"""
+					
 					
 			self.coordinates.append(new)
 			self.lastPos = new
@@ -1387,12 +1407,17 @@
 	VR.rohling.hide()
 	
 	
-	rohling = VR.loadGeometry('Rohling.dae')
+	
+	VR.FRrohling = VR.loadGeometry('Rohling.dae',True).getChildren(True,"Geometry")[0]
+	#VR.loadGeometry('Rohling.dae')
 	#rohling.setPose([0,0,0],[0,1,0],[1,0,0])
 	#rohling.setScale([0.04,0.04,0.04])
-	VR.FRrohling = VR.Transform('rohling')
-	VR.FRrohling.addChild(rohling)
-	root.addChild(VR.FRrohling)
+	#VR.FRrohling = VR.Transform('rohling')
+	#VR.FRrohling.addChild(rohling)
+	print "Rohling"
+	VR.FRrohling.setName("Rohling")
+	#VR.FRrohling.setFrom([-7,2,4])
+	#root.addChild(VR.FRrohling)
 	VR.FRrohling.hide()
 	
 
@@ -1412,10 +1437,6 @@
 	VR.FRfelge0.hide()
 	VR.FRfelge1.hide()
 
-
-	
-	
-	
 	test = VR.rohling.duplicate()
 	
 	
