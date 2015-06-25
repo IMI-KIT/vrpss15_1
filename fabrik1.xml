@@ -73,7 +73,7 @@
 			VR.halle.destroy()
 		VR.halle = VR.loadGeometry('halle.dae', reload)
 		light.addChild(VR.halle)
-	VR.halle.translate(2,0,20)
+		VR.halle.translate(2,0,20)
 		VR.halle.rotate(0,-1,0, -0.5 * math.pi)
 
 	#fliessband
