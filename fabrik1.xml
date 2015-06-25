@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-8.15934 7.87241 0.260051" at="-8.12701 1.05634 4.07359" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.19227 2.84101 -4.04487" at="0.797546 1.48479 0.0299997" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -40,17 +40,22 @@
     <Script name_suffix="0" base_name="AuftragWarteschlange" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
-	import Queue
+	import collections
+	
 	if not hasattr(VR,'auftragqueue'):
-		VR.auftragqueue = Queue.Queue() # Enthält Aufträge in der Form [Anzahl,Modell]
+		VR.auftragqueue = collections.deque() # Enthält Aufträge in der Form [Anzahl,Modell]
 	if not hasattr(VR, 'auftragFertig'):
 		VR.auftragFertig = True
 	
-	if (VR.auftragFertig and (not VR.auftragqueue.empty())):
+	if (VR.auftragFertig and (not (len(VR.auftragqueue) == 0))):
 		print "TODO starte auftrag."
 		VR.auftragFertig = False
-		auftragtupel = VR.auftragqueue.get()
+		
+		auftragtupel = VR.auftragqueue.pop()
 		VR.Auftrag(auftragtupel[0],auftragtupel[1])
+		VR.monitorStatusController.updateProductionQueue()
+		VR.monitorStatusController.setCurrentJob(auftragtupel)
+		
 </core>
       <trig type="on_timeout" dev="" state="Pressed" param="100" key="0" name_suffix="9" base_name="trigger" name_space="__global__"/>
     </Script>
@@ -68,7 +73,7 @@
 			VR.halle.destroy()
 		VR.halle = VR.loadGeometry('halle.dae', reload)
 		light.addChild(VR.halle)
-		VR.halle.translate(2,1,20)
+	VR.halle.translate(2,0,20)
 		VR.halle.rotate(0,-1,0, -0.5 * math.pi)
 
 	#fliessband
@@ -90,12 +95,19 @@
 			count = count -1;
 			
 			
-	#monitor
-	VR.monitorRechts = VR.loadGeometry('monitor.dae', reload)
-	VR.monitorRechts.setName('Toller Monitor rechts')
-	VR.monitorRechts.setPose([0,0.5,0.12],[0,-1,0],[0,0,1])
-	VR.monitorRechts.setScale([0.9,0.9,0.9])#0.9 fuer 4:3 Bildschirm
-	light.addChild(VR.monitorRechts)
+	#Kontrollmonitor
+	VR.monitorControl = VR.loadGeometry('monitor.dae', reload)
+	VR.monitorControl.setName('Kontrollmonitor')
+	VR.monitorControl.setPose([0,0.5,0.12],[0,-1,0],[0,0,1])
+	VR.monitorControl.setScale([0.9,0.9,0.9])#0.9 fuer 4:3 Bildschirm
+	light.addChild(VR.monitorControl)	
+	
+	#Statusmonitor
+	VR.monitorStatus = VR.loadGeometry('monitor.dae', reload)
+	VR.monitorStatus.setName('Statusmonitor')
+	VR.monitorStatus.setPose([2.5,0.5,0.12],[0,-1,0],[0,0,1])
+	VR.monitorStatus.setScale([0.9,0.9,0.9])#0.9 fuer 4:3 Bildschirm
+	light.addChild(VR.monitorStatus)
 </core>
     </Script>
     <Script name_suffix="0" base_name="FraeseAnimation" name_space="__script__" type="Python" mobile="">
@@ -546,32 +558,7 @@
 	if hasattr(VR, 'log'):
 		VR.log.update()
 		
-		# Aktualisiere Anzeigetafeln
-		#lager
-		VR.monitorStatusController.setLagerCapacity(VR.containers[0].getCapacity())
-		VR.monitorStatusController.setLagerStand(VR.containers[0].getCount())
-		#fertig
-		VR.monitorStatusController.setFertigCapacity(VR.containers[3].getCapacity())	
-		VR.monitorStatusController.setFertigStand(VR.containers[3].getCount())
 		
-		VR.monitorStatusController.setBufferCapacity(VR.containers[1].getCapacity())	
-		VR.monitorStatusController.setBufferStand(VR.containers[1].getCount())	
-	
-			
-			
-
-			
-			
-		
-		
-		
-		if hasattr(VR, 'neuerAuftragLabel'):
-			textAuftrag = 'Neuer Auftrag: ' + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
-			VR.neuerAuftragLabel.setText(textAuftrag)
-			VR.neuerAuftragLabel.setSize(len(textAuftrag)*0.15,0.3)
-			
-
-	
 	#=====Starte einen Roboter-Fräs-Durchlauf=====
 	if hasattr(VR, 'containers'):
 		if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
@@ -933,8 +920,18 @@
 			print "initialisiere Roboterklasse"
 			if hasattr(VR, 'robot'):
 				VR.robot.destroy()
-			VR.robot = VR.loadGeometry('AlleTeile_mitFarbe.dae', True)
+				
+			# Welcher Roboter soll geladen werden?
+			
+			# Ohne Farbe, ca 13k vertices
 			#VR.robot = VR.loadGeometry('Alle_teile.dae', True)
+			# Mit Farbe, ca 13k vertices
+			#VR.robot = VR.loadGeometry('AlleTeile_mitFarbe.dae', True)
+			# Mit Farbe, ca 8k vertices
+			#VR.robot = VR.loadGeometry('Roboter_8kV.dae', True)
+			# Mit Farbe, ca 5k vertices
+			VR.robot = VR.loadGeometry('Roboter_5kV.dae', True)
+			
 			light = VR.getRoot().find('Headlight')
 			light.addChild(VR.robot)
 			VR.robot.rotate(1,0,0, -0.5 * math.pi)
@@ -1519,7 +1516,8 @@
 		rimCount = int(split[0])
 		rimType = int(split[1])
 		print "Control: Starte Auftrag für " + str(split[0]) + " Felgen Typ " + str(split[1])
-		VR.auftragqueue.put([rimCount,rimType])
+		VR.auftragqueue.appendleft([rimCount,rimType])
+		VR.monitorStatusController.updateProductionQueue()
 	elif(k == 2):
 		msg = dev.getMessage()
 		split = msg.split("|")
@@ -1570,13 +1568,12 @@
 	
 	mat = VR.Material('gui')
 	mat.setLit(False)
-	
 	geo = VR.Geometry('gui')
 	#erste beiden zahlen: breite und höhe
 	geo.setPrimitive('Plane 2.34 1.31625 1 1')
 	geo.setMaterial(mat)
 	geo.setPose([0,-0.1,1.1],[0,-1,0],[0,0,-1])
-	VR.monitorRechts.addChild(geo)
+	VR.monitorControl.addChild(geo)
 	
 	cef = VR.CEF()
 	cef.setMaterial(mat)
@@ -1600,15 +1597,18 @@
 body{ 
 	background:#FFFFFF; 
 }
+h1{
+	font-size: 7.0vh;
+}
 h2 {
-	font-size: 3.0vw;
+	font-size: 2.5vw;
 	color: #718DA5;
 }
 #header{
 	background:#2A4F6E;   
 	color: #718DA5;  
 	font-size: 3.0vw; 
-	height:40px;
+	height:8vh;
 }
 #content{ 
 	color:#042037;
@@ -1621,7 +1621,7 @@ h2 {
 	position:fixed;
 	bottom:0vh;
 	width:100%;
-	height:5vh;
+	height:7vh;
 }
 input{
 	font-size: 2.5vw;
@@ -1751,6 +1751,7 @@ input{
 			print "initialisiere monitorStatusController"
 			# Data as json object 
 			self.StatusData = {
+				'CurrentJob': '',
 				'LagerCapacity': 0,
 				'LagerStand': 0,
 				'FertigCapacity': 0,
@@ -1758,44 +1759,46 @@ input{
 				'BufferCapacity': 0,
 				'BufferStand': 0,
 				'FraeseStatus': 'Steht still',
+				'ProductionQueue': ''
 				}
 			
 			self.updateHomepage()
 			
 		# Send data object to Homepage
-		def updateHomepage(self):
+		def updateHomepage(self):	
 			jsondata = json.dumps(self.StatusData)
 			jsondataasbytes = jsondata.encode('utf-8')
 			url = "http://localhost:5500/monitorStatusWebsite?data=" + jsondataasbytes
+			#print url
 			VR.monitorStatusWeb.open(url)
 			
 		def setFraeseStatus(self, status):
-			self.StatusData["FraeseStatus"] = status
-			self.updateHomepage()		
+			self.StatusData["FraeseStatus"] = status		
 			
 		def setLagerCapacity(self, amount):
 			self.StatusData["LagerCapacity"] = amount
-			self.updateHomepage()
+			
+		def setCurrentJob(self, job):
+			self.StatusData["CurrentJob"] = job
 			
 		def setLagerStand(self, amount):
 			self.StatusData["LagerStand"] = amount
-			self.updateHomepage()
 
 		def setFertigCapacity(self, amount):
 			self.StatusData["FertigCapacity"] = amount
-			self.updateHomepage()
 			
 		def setFertigStand(self, amount):
 			self.StatusData["FertigStand"] = amount
-			self.updateHomepage()
 
 		def setBufferCapacity(self, amount):
 			self.StatusData["BufferCapacity"] = amount
-			self.updateHomepage()
 			
 		def setBufferStand(self, amount):
 			self.StatusData["BufferStand"] = amount
-			self.updateHomepage()
+			
+		def updateProductionQueue(self):
+			self.StatusData["ProductionQueue"] = list(VR.auftragqueue)
+			#print self.StatusData["ProductionQueue"]
 			
 		def destroy(self):
 			return
@@ -1810,32 +1813,55 @@ input{
     <Script name_suffix="0" base_name="monitorStatusInit" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR	
-
+	
 	mat = VR.Material('gui')
 	mat.setLit(False)
 	geo = VR.Geometry('gui')
 	#erste beiden zahlen: breite und höhe
-	geo.setPrimitive('Plane 2 2 1 1')
+	geo.setPrimitive('Plane 2.34 1.31625 1 1')
 	geo.setMaterial(mat)
-	geo.setPose([2.5,1.5,0],[0,0,-1],[0,-1,0])
-	
-	r = VR.getRoot()
-	r.addChild(geo)
+	geo.setPose([0,-0.1,1.1],[0,-1,0],[0,0,-1])
+	VR.monitorStatus.addChild(geo)
 	
 	cef = VR.CEF()
 	cef.setMaterial(mat)
-	#self.cef.addMouse(mouse, self.geo, 0, 2, 3, 4)
-	#self.cef.addMouse(flystick, self.geo, 0, 2, 3, 4)
-	#self.cef.addKeyboard(keyboard)
-	cef.setAspectRatio(1)
+	cef.addMouse(mouse, geo, 0, 2, 3, 4)
+	cef.addMouse(flystick, geo, 0, 2, 3, 4)
+	cef.addKeyboard(keyboard)
+	cef.setResolution(800)
+	cef.setAspectRatio(16.0/9.0)
 	cef.open('http://localhost:5500/monitorStatusWebsite')
 		
 	VR.monitorStatusWeb = cef
 	VR.monitorStatusControls()
 	
-	
 </core>
+      <arg type="VRPyDeviceType" value="flystick" name_suffix="0" base_name="flystick" name_space="monitorStatusInit"/>
+      <arg type="VRPyDeviceType" value="keyboard" name_suffix="0" base_name="keyboard" name_space="monitorStatusInit"/>
+      <arg type="VRPyDeviceType" value="mouse" name_suffix="0" base_name="mouse" name_space="monitorStatusInit"/>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="10" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="monitorStatusUpdater" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	# Klasse für periodische Updates auf dem Statusmonitor
+	
+	# Lade Boxinhalte
+	# Aktualisiere Lager
+	VR.monitorStatusController.setLagerCapacity(VR.containers[0].getCapacity())	
+	VR.monitorStatusController.setLagerStand(VR.containers[0].getCount())
+	# Aktualisiere Buffer
+	VR.monitorStatusController.setBufferCapacity(VR.containers[1].getCapacity())	
+	VR.monitorStatusController.setBufferStand(VR.containers[1].getCount())
+	# Aktualisiere Fertig
+	VR.monitorStatusController.setFertigCapacity(VR.containers[3].getCapacity())	
+	VR.monitorStatusController.setFertigStand(VR.containers[3].getCount())
+	
+	#Update Homepage
+	VR.monitorStatusController.updateHomepage()
+		
+</core>
+      <trig type="on_timeout" dev="" state="Pressed" param="500" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="monitorStatusWebsite" name_space="__script__" type="HTML" mobile="mobile">
       <core>
@@ -1851,41 +1877,44 @@ body{
   background:#2A4F6E;   
   color: #718DA5;  
   font-size: 100%; 
-  height:40px;
+  height:8vh;
+}
+h1{
+	font-size:7vh;
 }
 #content{ 
 	color:#042037;
-	font-size: 150%;
-	padding-bottom:40px; 
+	font-size: 2.5vw;
+	padding-bottom:2vw;
 }
 #footer{
   background: #2A4F6E;
   color: #718DA5; 
   position:fixed;
-  bottom:0px;
+	bottom:0vh;
   width:100%;
-  height:40px;
+	height:7vh;
 }
 #progress{
 	float: left;
-	width: 50%;
-	height: 50%;
+	width: 45vw;
+	height: 40vh;
 	
 }
 #fraeseStatus{
 	float:right;
-	width: 50%;
-	height: 50%;
+	width: 45vw;
+	height: 40vh;
 }
 #roboterStatus{
 	float:left;
-	width: 50%;
-	height: 50%;
+	width: 45vw;
+	height: 40vh;
 }
 #auftragspipeline{
 	float:right;
-	width: 50%;
-	height: 50%;
+	width: 45vw;
+	height: 40vh;
 }
 &lt;/style&gt;
 &lt;/head&gt;
@@ -1917,19 +1946,35 @@ data = JSON.parse(json)
 &lt;div id="content"&gt;
 		&lt;div id="progress"&gt;
 			&lt;center&gt;
-			&lt;i&gt;Produktionsfortschritt:&lt;/i&gt;&lt;br&gt;
-			&lt;div id="lager"&gt;&lt;/div&gt;
+			&lt;i&gt;Aktueller Auftrag:&lt;/i&gt;&lt;br&gt;
+			&lt;div id="currentProduction"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
-				var div = document.getElementById("lager");
-				div.textContent = "Lagerstand: " + data.LagerStand + "/" + data.LagerCapacity;
+				var div = document.getElementById("currentProduction");
+				var menge = 0;
+				var typ = 0;
+				if(data.CurrentJob.length == 0){
+					menge = 0;
+					type = 0;
+				} else {
+						menge = data.CurrentJob[0];
+						typ = data.CurrentJob[1];
+				}
+				div.textContent = "Menge: " + menge + " Typ: " + typ;
 				var text = div.textContent;
 			&lt;/script&gt;
+			&lt;br&gt;
 			&lt;div id="fertig"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("fertig");
 				div.textContent = "Fertig: " + data.FertigStand + "/" + data.FertigCapacity;
 				var text = div.textContent;
 			&lt;/script&gt;
+			&lt;div id="lager"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("lager");
+				div.textContent = "Lagerstand: " + data.LagerStand + "/" + data.LagerCapacity;
+				var text = div.textContent;
+			&lt;/script&gt;	
 			&lt;div id="buffer"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("buffer");
@@ -1958,7 +2003,21 @@ data = JSON.parse(json)
 		&lt;div id="auftragspipeline"&gt;
 			&lt;center&gt;
 				&lt;i&gt;Auftragspipeline&lt;/i&gt; &lt;br&gt;
-				No status yet
+				&lt;div id="productionQueue"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+					var div = document.getElementById("productionQueue");
+					var s = "";
+					if(data.ProductionQueue.length == 0) {
+						s = "leer";
+					} else {
+						// Queue wird als Liste geschickt in JSON
+						// Naechstes Element steht ganz rechts
+						for (var i = data.ProductionQueue.length - 1; i &gt;= 0 ; i--) { 
+							s = s + "[Menge:" + data.ProductionQueue[i][0] + ", Typ:" + data.ProductionQueue[i][1] + "] \n";						
+						}
+					}
+					div.innerText = " " + s;			
+				&lt;/script&gt;
 			&lt;/center&gt;
 		&lt;/div&gt;
 		
