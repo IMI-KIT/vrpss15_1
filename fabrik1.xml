@@ -3,9 +3,24 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-8.39119 2.63299 4.28943" at="-8.07506 1.05634 3.8401" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.79425 1.4888 -3.57447" at="1.01635 1.34701 0.0300002" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
+        <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="4" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="5" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="6" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="7" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="8" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="9" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="10" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="11" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="12" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="13" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="14" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -1511,11 +1526,7 @@
     <Script name_suffix="0" base_name="monitorControlControls" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
-	if not hasattr(VR,'auftragqueue'):
-		VR.auftragqueue = Queue() # Enthält Aufträge in der Form [Anzahl,Modell]
-	
-	
-	
+
 	#Die Klasse hat einen Trigger für das Device mobile mit -1
 	#-1 bedeutet die Klasse reagiert auf alles was iwie mit der Webseite ist
 	#Wir können dann hier kucken, welcher Knopf gedrückt wurde
@@ -1553,30 +1564,10 @@
 	else:
 		print "Unknown button pressed"
 	
-	#if (k == 101):
-	#	#So den gedrückten Knopf finden
-	#	if (VR.neuerauftrag_model == 0): VR.neuerauftrag_model = 1
-	#	else: VR.neuerauftrag_model = 0
-	#	print "Wähle Modell " + str(VR.neuerauftrag_model)
-	#if (k == 102):
-	#	VR.neuerauftrag_count = VR.neuerauftrag_count + 1
-	#	msg = dev.getMessage()
-	#	print msg + " msg"
-	#	print "Anzahl: " + str(VR.neuerauftrag_count)
-	#if (k == 103):
-	#	if (VR.neuerauftrag_count &lt;= 1):
-	#		print "Ein Auftrag kann nicht weniger als eine Felge enthalten."
-	#	else:
-	#		VR.neuerauftrag_count = VR.neuerauftrag_count -1
-	#		print "Anzahl: " + str(VR.neuerauftrag_count)
-	#if (k == 104):
-	#	print "Reset Anzahl und Modell. TODO starte Auftrag für " + str(VR.neuerauftrag_count) + " Felgen Typ " + str(VR.neuerauftrag_model)
-	#	VR.auftragqueue.put([VR.neuerauftrag_count,VR.neuerauftrag_model])
-	#	VR.neuerauftrag_count = 1
-	#	VR.neuerauftrag_model = 0
 		
 </core>
-      <trig type="on_device" dev="mobile" state="Pressed" param="" key="-1" name_suffix="4" base_name="trigger" name_space="__global__"/>
+      <trig type="on_device" dev="mobile" state="Pressed" param="" key="2" name_suffix="13" base_name="trigger" name_space="__global__"/>
+      <trig type="on_device" dev="mobile" state="Pressed" param="" key="1" name_suffix="4" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="monitorControlInit" name_space="__script__" type="Python" mobile="">
       <core>
@@ -1599,6 +1590,8 @@
 	cef.setResolution(800)
 	cef.setAspectRatio(16.0/9.0)
 	cef.open('http://localhost:5500/monitorControlWebsite')
+	
+	VR.monitorControlWeb = cef
 </core>
       <arg type="VRPyDeviceType" value="flystick" name_suffix="0" base_name="flystick" name_space="monitorControlInit"/>
       <arg type="VRPyDeviceType" value="keyboard" name_suffix="0" base_name="keyboard" name_space="monitorControlInit"/>
@@ -1761,7 +1754,6 @@ input{
 	import math
 	import json
 	
-	
 	class monitorStatusController:
 		def __init__(self):
 			print "initialisiere monitorStatusController"
@@ -1784,7 +1776,7 @@ input{
 		def updateHomepage(self):	
 			jsondata = json.dumps(self.StatusData)
 			jsondataasbytes = jsondata.encode('utf-8')
-			url = "http://localhost:5500/monitorStatusWebsite?data=" + jsondataasbytes
+			url = VR.currentStatusURL + "?data=" + jsondataasbytes
 			#print url
 			VR.monitorStatusWeb.open(url)
 			
@@ -1829,6 +1821,7 @@ input{
     <Script name_suffix="0" base_name="monitorStatusInit" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR	
+	VR.currentStatusURL = 'http://localhost:5500/monitorStatusWebsiteOverview'
 	
 	mat = VR.Material('gui')
 	mat.setLit(False)
@@ -1846,16 +1839,44 @@ input{
 	cef.addKeyboard(keyboard)
 	cef.setResolution(800)
 	cef.setAspectRatio(16.0/9.0)
-	cef.open('http://localhost:5500/monitorStatusWebsite')
+	cef.open(VR.currentStatusURL)
 		
 	VR.monitorStatusWeb = cef
 	VR.monitorStatusControls()
 	
+		
 </core>
       <arg type="VRPyDeviceType" value="flystick" name_suffix="0" base_name="flystick" name_space="monitorStatusInit"/>
       <arg type="VRPyDeviceType" value="keyboard" name_suffix="0" base_name="keyboard" name_space="monitorStatusInit"/>
       <arg type="VRPyDeviceType" value="mouse" name_suffix="0" base_name="mouse" name_space="monitorStatusInit"/>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="10" base_name="trigger" name_space="__global__"/>
+    </Script>
+    <Script name_suffix="0" base_name="monitorStatusSwitcher" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	
+	
+	k = dev.getKey()
+	msg = dev.getMessage()
+	print "switch to " + msg
+
+	if k == 5:
+		if msg == 'auftrag':
+			VR.currentStatusURL = 'http://localhost:5500/monitorStatusWebsiteAuftrag'
+		elif msg == 'overview':
+			VR.currentStatusURL = 'http://localhost:5500/monitorStatusWebsiteOverview'
+		elif msg == 'fraese':
+			VR.currentStatusURL = 'http://localhost:5500/monitorStatusWebsiteFraese'
+		elif msg == 'roboter':
+			VR.currentStatusURL = 'http://localhost:5500/monitorStatusWebsiteRoboter'
+	else: 
+		print "Something unexpected happened with key 5"
+		
+	VR.monitorStatusController.updateHomepage()
+	
+</core>
+      <trig type="on_device" dev="mobile" state="Pressed" param="" key="5" name_suffix="14" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="monitorStatusUpdater" name_space="__script__" type="Python" mobile="">
       <core>
@@ -1877,9 +1898,9 @@ input{
 	VR.monitorStatusController.updateHomepage()
 		
 </core>
-      <trig type="on_timeout" dev="" state="Pressed" param="500" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
+      <trig type="on_timeout" dev="" state="Pressed" param="1000" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
     </Script>
-    <Script name_suffix="0" base_name="monitorStatusWebsite" name_space="__script__" type="HTML" mobile="mobile">
+    <Script name_suffix="0" base_name="monitorStatusWebsiteAuftrag" name_space="__script__" type="HTML" mobile="mobile">
       <core>
 &lt;html&gt;
 
@@ -1894,6 +1915,9 @@ body{
   color: #718DA5;  
   font-size: 100%; 
   height:8vh;
+}
+input[type=button] {
+    width: 13vw;  height: 6vh;;
 }
 h1{
 	font-size:7vh;
@@ -1910,6 +1934,7 @@ h1{
 	bottom:0vh;
   width:100%;
 	height:7vh;
+	padding-top: 0.5vh;
 }
 #progress{
 	float: left;
@@ -1950,7 +1975,298 @@ function getQueryVariable(variable) {
 
 json = getQueryVariable("data")
 data = JSON.parse(json)
+&lt;/script&gt;
+&lt;body&gt;
 
+&lt;div id="header"&gt;
+	&lt;center&gt;
+		&lt;h1&gt;Status&lt;/h1&gt;
+	&lt;/center&gt;
+&lt;/div&gt;
+&lt;div id="content"&gt;
+		&lt;div id="progress"&gt;
+			&lt;center&gt;
+			&lt;i&gt;Aktueller Auftrag:&lt;/i&gt;&lt;br&gt;
+			&lt;div id="currentProduction"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("currentProduction");
+				var menge = 0;
+				var typ = 0;
+				if(data.CurrentJob.length == 0){
+					menge = 0;
+					type = 0;
+				} else {
+						menge = data.CurrentJob[0];
+						typ = data.CurrentJob[1];
+				}
+				div.textContent = "Menge: " + menge + " Typ: " + typ;
+				var text = div.textContent;
+			&lt;/script&gt;
+			&lt;br&gt;
+			&lt;div id="fertig"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("fertig");
+				div.textContent = "Fertig: " + data.FertigStand + "/" + data.FertigCapacity;
+				var text = div.textContent;
+			&lt;/script&gt;
+			&lt;div id="lager"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("lager");
+				div.textContent = "Lagerstand: " + data.LagerStand + "/" + data.LagerCapacity;
+				var text = div.textContent;
+			&lt;/script&gt;	
+			&lt;div id="buffer"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("buffer");
+				div.textContent = "Pufferbox: " + data.BufferStand + "/" + data.BufferCapacity;
+				var text = div.textContent;
+			&lt;/script&gt;
+			&lt;/center&gt;
+		&lt;/div&gt;
+		&lt;div id="auftragspipeline"&gt;
+			&lt;center&gt;
+				&lt;i&gt;Auftragspipeline&lt;/i&gt; &lt;br&gt;
+				&lt;div id="productionQueue"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+					var div = document.getElementById("productionQueue");
+					var s = "";
+					if(data.ProductionQueue.length == 0) {
+						s = "leer";
+					} else {
+						// Queue wird als Liste geschickt in JSON
+						// Naechstes Element steht ganz rechts
+						for (var i = data.ProductionQueue.length - 1; i &gt;= 0 ; i--) { 
+							s = s + "[Menge:" + data.ProductionQueue[i][0] + ", Typ:" + data.ProductionQueue[i][1] + "] \n";						
+						}
+					}
+					div.innerText = " " + s;			
+				&lt;/script&gt;
+			&lt;/center&gt;
+		&lt;/div&gt;
+		
+		
+
+
+		
+
+&lt;/div&gt;
+&lt;script&gt;
+	// changePage uses key 5 to call monitorStatusSwitcher method
+	function changePage(target){	   
+		var uri = 'http://localhost:5500/mobile?button=5'+'&amp;state=1'+'&amp;message='+target;
+		var xmlHttp = new XMLHttpRequest();  
+		xmlHttp.open( "GET", uri, true );
+		xmlHttp.send( null );
+	}
+&lt;/script&gt;
+&lt;div id="footer"&gt;
+	&lt;center&gt;
+		&lt;!-- Hier müssen die korrekten Namen übergeben werden, 
+		die im Switcher abgefragt werden --&gt;
+		&lt;input type="button" onclick="changePage('overview')" value="Ueberblick" /&gt;
+		&lt;input type="button" onclick="changePage('auftrag')" value="Auftrag" /&gt;
+		&lt;input type="button" onclick="changePage('fraese')" value="Fraese" /&gt;
+		&lt;input type="button" onclick="changePage('roboter')" value="Roboter" /&gt;
+	&lt;/center&gt;
+&lt;/div&gt;
+
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="monitorStatusWebsiteFraese" name_space="__script__" type="HTML" mobile="mobile">
+      <core>
+&lt;html&gt;
+
+&lt;head&gt;
+&lt;style type="text/css"&gt;
+body{
+  background:#FFFFFF; 
+  
+}
+#header{
+  background:#2A4F6E;   
+  color: #718DA5;  
+  font-size: 100%; 
+  height:8vh;
+}
+input[type=button] {
+    width: 13vw;  height: 6vh;;
+}
+h1{
+	font-size:7vh;
+}
+#content{ 
+	color:#042037;
+	font-size: 2.5vw;
+	padding-bottom:2vw;
+}
+#footer{
+  background: #2A4F6E;
+  color: #718DA5; 
+  position:fixed;
+	bottom:0vh;
+  width:100%;
+	height:7vh;
+	padding-top: 0.5vh;
+}
+#fraeseStatus{
+	float:left;
+	width: 95vw;
+	height: 40vh;
+}
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;script&gt;
+// kudos to stack overflow
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&amp;');
+    for (var i = 0; i &lt; vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    console.log('Query variable %s not found', variable);
+}
+
+json = getQueryVariable("data")
+data = JSON.parse(json)
+&lt;/script&gt;
+&lt;body&gt;
+
+&lt;div id="header"&gt;
+	&lt;center&gt;
+		&lt;h1&gt;Status&lt;/h1&gt;
+	&lt;/center&gt;
+&lt;/div&gt;
+&lt;div id="content"&gt;
+		&lt;div id="fraeseStatus"&gt;
+			&lt;center&gt;
+			&lt;i&gt;Fraesenstatus:&lt;/i&gt; &lt;br&gt;
+			&lt;div id="fraeseStatusText"&gt;&lt;/div&gt;
+			&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("fraeseStatusText");
+				div.textContent = "Fraese: " + data.FraeseStatus;
+				var text = div.textContent;
+			&lt;/script&gt;
+			&lt;/center&gt;
+		&lt;/div&gt;
+
+		
+		
+
+
+		
+
+&lt;/div&gt;
+&lt;script&gt;
+	// changePage uses key 5 to call monitorStatusSwitcher method
+	function changePage(target){	   
+		var uri = 'http://localhost:5500/mobile?button=5'+'&amp;state=1'+'&amp;message='+target;
+		var xmlHttp = new XMLHttpRequest();  
+		xmlHttp.open( "GET", uri, true );
+		xmlHttp.send( null );
+	}
+&lt;/script&gt;
+&lt;div id="footer"&gt;
+	&lt;center&gt;
+		&lt;!-- Hier müssen die korrekten Namen übergeben werden, 
+		die im Switcher abgefragt werden --&gt;
+		&lt;input type="button" onclick="changePage('overview')" value="Ueberblick" /&gt;
+		&lt;input type="button" onclick="changePage('auftrag')" value="Auftrag" /&gt;
+		&lt;input type="button" onclick="changePage('fraese')" value="Fraese" /&gt;
+		&lt;input type="button" onclick="changePage('roboter')" value="Roboter" /&gt;
+	&lt;/center&gt;
+&lt;/div&gt;
+
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="monitorStatusWebsiteOverview" name_space="__script__" type="HTML" mobile="mobile">
+      <core>
+&lt;html&gt;
+
+&lt;head&gt;
+&lt;style type="text/css"&gt;
+body{
+  background:#FFFFFF; 
+  
+}
+#header{
+  background:#2A4F6E;   
+  color: #718DA5;  
+  font-size: 100%; 
+  height:8vh;
+}
+input[type=button] {
+    width: 13vw;  height: 6vh;;
+}
+h1{
+	font-size:7vh;
+}
+#content{ 
+	color:#042037;
+	font-size: 2.5vw;
+	padding-bottom:2vw;
+}
+#footer{
+  background: #2A4F6E;
+  color: #718DA5; 
+  position:fixed;
+	bottom:0vh;
+  width:100%;
+	height:7vh;
+	padding-top: 0.5vh;
+}
+#progress{
+	float: left;
+	width: 45vw;
+	height: 40vh;
+	
+}
+#fraeseStatus{
+	float:right;
+	width: 45vw;
+	height: 40vh;
+}
+#roboterStatus{
+	float:left;
+	width: 45vw;
+	height: 40vh;
+}
+#auftragspipeline{
+	float:right;
+	width: 45vw;
+	height: 40vh;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;script&gt;
+// kudos to stack overflow
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&amp;');
+    for (var i = 0; i &lt; vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    console.log('Query variable %s not found', variable);
+}
+
+json = getQueryVariable("data")
+data = JSON.parse(json)
 &lt;/script&gt;
 &lt;body&gt;
 
@@ -2043,9 +2359,129 @@ data = JSON.parse(json)
 		
 
 &lt;/div&gt;
+&lt;script&gt;
+	// changePage uses key 5 to call monitorStatusSwitcher method
+	function changePage(target){	   
+		var uri = 'http://localhost:5500/mobile?button=5'+'&amp;state=1'+'&amp;message='+target;
+		var xmlHttp = new XMLHttpRequest();  
+		xmlHttp.open( "GET", uri, true );
+		xmlHttp.send( null );
+	}
+&lt;/script&gt;
 &lt;div id="footer"&gt;
 	&lt;center&gt;
-	-
+		&lt;!-- Hier müssen die korrekten Namen übergeben werden, 
+		die im Switcher abgefragt werden --&gt;
+		&lt;input type="button" onclick="changePage('overview')" value="Ueberblick" /&gt;
+		&lt;input type="button" onclick="changePage('auftrag')" value="Auftrag" /&gt;
+		&lt;input type="button" onclick="changePage('fraese')" value="Fraese" /&gt;
+		&lt;input type="button" onclick="changePage('roboter')" value="Roboter" /&gt;
+	&lt;/center&gt;
+&lt;/div&gt;
+
+
+&lt;/body&gt;
+
+&lt;/html&gt;
+
+</core>
+    </Script>
+    <Script name_suffix="0" base_name="monitorStatusWebsiteRoboter" name_space="__script__" type="HTML" mobile="mobile">
+      <core>
+&lt;html&gt;
+
+&lt;head&gt;
+&lt;style type="text/css"&gt;
+body{
+  background:#FFFFFF; 
+  
+}
+#header{
+  background:#2A4F6E;   
+  color: #718DA5;  
+  font-size: 100%; 
+  height:8vh;
+}
+input[type=button] {
+    width: 13vw;  height: 6vh;;
+}
+h1{
+	font-size:7vh;
+}
+#content{ 
+	color:#042037;
+	font-size: 2.5vw;
+	padding-bottom:2vw;
+}
+#footer{
+  background: #2A4F6E;
+  color: #718DA5; 
+  position:fixed;
+	bottom:0vh;
+  width:100%;
+	height:7vh;
+	padding-top: 0.5vh;
+}
+#roboterStatus{
+	float:left;
+	width: 95vw;
+	height: 40vh;
+}
+
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;script&gt;
+// kudos to stack overflow
+function getQueryVariable(variable) {
+    var query = window.location.search.substring(1);
+    var vars = query.split('&amp;');
+    for (var i = 0; i &lt; vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (decodeURIComponent(pair[0]) == variable) {
+            return decodeURIComponent(pair[1]);
+        }
+    }
+    console.log('Query variable %s not found', variable);
+}
+
+json = getQueryVariable("data")
+data = JSON.parse(json)
+&lt;/script&gt;
+&lt;body&gt;
+
+&lt;div id="header"&gt;
+	&lt;center&gt;
+		&lt;h1&gt;Status&lt;/h1&gt;
+	&lt;/center&gt;
+&lt;/div&gt;
+&lt;div id="content"&gt;
+		
+		&lt;div id="roboterStatus"&gt;
+			&lt;center&gt;
+				&lt;i&gt;Roboter&lt;/i&gt; &lt;br&gt;
+				No status yet
+			&lt;/center&gt;
+		&lt;/div&gt;
+			
+
+&lt;/div&gt;
+&lt;script&gt;
+	// changePage uses key 5 to call monitorStatusSwitcher method
+	function changePage(target){	   
+		var uri = 'http://localhost:5500/mobile?button=5'+'&amp;state=1'+'&amp;message='+target;
+		var xmlHttp = new XMLHttpRequest();  
+		xmlHttp.open( "GET", uri, true );
+		xmlHttp.send( null );
+	}
+&lt;/script&gt;
+&lt;div id="footer"&gt;
+	&lt;center&gt;
+		&lt;!-- Hier müssen die korrekten Namen übergeben werden, 
+		die im Switcher abgefragt werden --&gt;
+		&lt;input type="button" onclick="changePage('overview')" value="Ueberblick" /&gt;
+		&lt;input type="button" onclick="changePage('auftrag')" value="Auftrag" /&gt;
+		&lt;input type="button" onclick="changePage('fraese')" value="Fraese" /&gt;
+		&lt;input type="button" onclick="changePage('roboter')" value="Roboter" /&gt;
 	&lt;/center&gt;
 &lt;/div&gt;
 
