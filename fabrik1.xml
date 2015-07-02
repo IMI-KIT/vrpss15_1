@@ -3,9 +3,11 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-8.39119 2.63299 4.28943" at="-8.07506 1.05634 3.8401" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.4342 2.50643 4.78868" at="-8.07506 1.05634 3.8401" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
+        <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -116,9 +118,9 @@
 	
 	VR.fraeseController.stop()
 	VR.FraeseControl(VR.getRoot().find('Headlight'))
-	VR.speedup = 0.1
+	VR.speedup = 0.3
 	
-	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),0)
+	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),1)
 
 </core>
       <trig type="on_device" dev="keyboard" state="Pressed" param="" key="102" name_suffix="11" base_name="trigger" name_space="__global__"/>
@@ -618,14 +620,14 @@
 	#notwendeig damit der pfad auch am Fräskopf ist
 	#debug = [-0.02,0.12,0.138]
 	debug = [+0.01,0.36,0.376]
-	log = False
+	log = True
 	
 	#Path Scaling
 	#_scale = 0.0055
 	
 	_XOFFSET = -1.1#größer weg von der Start Pos
 	_YOFFSET = 4.02# größer weg von der Tür
-	_ZOFFSET = -0.215#-0.15
+	_ZOFFSET = -0.16#-0.215
 	_scale = 0.019
 	
 	_XSCALE = _scale
