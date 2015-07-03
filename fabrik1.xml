@@ -1455,7 +1455,7 @@
       <core>
 	import VR
 
-	#
+	#Keys 1 and 2 are used for this script
 	
 	k = dev.getKey()
 	#print k
