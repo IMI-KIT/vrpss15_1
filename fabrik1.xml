@@ -1405,7 +1405,7 @@
 	VR.Environment()
 	#Sollte vor Roboter und Fraese kommen. Macht erstmal noch nichts.
 	VR.LogisticsControl()
-	#Am Ende.
+	#Am Ende
 	VR.RobotControl()
 	VR.triggerScript('FraeseControl')
 	VR.triggerScript('monitorControlInit')
