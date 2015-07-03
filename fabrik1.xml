@@ -23,6 +23,8 @@
         <Object name_suffix="14" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="15" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="16" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="17" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="18" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -1272,13 +1274,7 @@
 	tg.add('Bricks', 1, [0.4,0.4,0.4], [1,1,1])
 	mbricks.setTexture(tg.compose(0))
 	
-	mcarboard = VR.Material('mcarboard')
-	tg = VR.TextureGenerator()
-	tg.setSize(50,50,50)
-	tg.add('Perlin', 1, [0.5,0.3,0.1], [0.6,0.4,0.1])
-	tg.add('Perlin', 1.0/4, [0.5,0.3,0.1], [0.7,0.6,0.2])
-	mcarboard.setTexture(tg.compose(0))
-	
+
 	def setMetalic(mat, a,d,sp,sh):
 		mat.setDiffuse([d,d,d])
 		mat.setSpecular([sp,sp,sp])
@@ -1300,18 +1296,10 @@
 	
 	# geometries
 	
-	floor = VR.Geometry('floor')
-	floor.setPrimitive('Plane 20 20 20 20')
-	floor.setMaterial(mbricks)
-	floor.setTexCoords(floor.getPositions())
-	floor.setPose([0,0,0], [0,1,0], [1,0,0])
-	floor.setVisible(0);
 	root = VR.getRoot().find('Headlight')
-	root.addChild(floor)
 	
 	VR.cardbox = VR.Geometry('cardbox')
-	VR.cardbox.setPrimitive('Box 1 1 1 1')
-	VR.cardbox.setMaterial(mcarboard)
+	VR.cardbox.setPrimitive('Box 0 0 0 1')
 	VR.cardbox.hide()
 	
 		
