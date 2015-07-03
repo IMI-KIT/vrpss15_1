@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.787309 2.19625 -3.54432" at="1.01635 1.34701 0.0300002" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.46353 1.11843 -3.95631" at="1.01635 1.34701 0.0300002" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
@@ -370,7 +370,6 @@
 
 </core>
       <arg type="VRPyGeometryType" value="Headlight" name_suffix="0" base_name="root" name_space="FraeseControl"/>
-      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="8" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="LogisticsControl" name_space="__script__" type="Python" mobile="">
       <core>
@@ -439,7 +438,6 @@
 		
 
 </core>
-      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="5" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="LogisticsInit" name_space="__script__" type="Python" mobile="">
       <core>
@@ -1258,77 +1256,6 @@
 		
 	VR.robotController = RobotController()
 </core>
-      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="6" base_name="trigger" name_space="__global__"/>
-    </Script>
-    <Script name_suffix="0" base_name="initAnzeigetafeln" name_space="__script__" type="Python" mobile="">
-      <core>
-	import VR
-	
-	#die Nb: x - Anzeigen kommen noch weg.
-	
-	#r = VR.getRoot().find('Headlight')
-	# Füllstand Lager
-	#if not hasattr(VR, 'lagerlabel'):
-	#	r = VR.getRoot().find('Headlight')
-	#	VR.lagerlabel = VR.Sprite('lager-label')
-	#	mat1 = VR.Material('mymat1')
-	#	VR.lagerlabel.setMaterial(mat1)
-	#	r.addChild(VR.lagerlabel)
-	
-	#VR.lagerlabel.setFrom(7.5,2,1)
-	#VR.lagerlabel.setDir(1,0,0)
-	#VR.lagerlabel.setText('Voll')
-	#VR.lagerlabel.setSize(0.4,0.2)
-	
-	# Füllstand erste Box
-	#if not hasattr(VR, 'container1_label'):
-	#	VR.container1_label= VR.Sprite('fuellstand1')
-	#	mat2 = VR.Material('mymat2') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
-	#	VR.container1_label.setMaterial(mat2)
-	#	r.addChild(VR.container1_label)
-	
-	#VR.container1_label.setFrom(-4.5,2,1)
-	#VR.container1_label.setDir(1,0,0)
-	
-	
-	# Füllstand zweite Box - die sollte am ende immer ziemlich leer sein, da alles direkt weiter ins Lager läuft
-	#if not hasattr(VR, 'container2_label'):
-	#	VR.container2_label= VR.Sprite('fuellstand2')
-	#	mat22 = VR.Material('mymat22') # wenn die Sprites nicht ihr eigenes Material haben, steht überall das selbe.
-	#	VR.container2_label.setMaterial(mat22)
-	#	r.addChild(VR.container2_label)
-	
-	#VR.container2_label.setFrom(-4.5,2,7)
-	#VR.container2_label.setDir(1,0,0)
-	
-	
-	# Angekommen zur Weiterverarbeitung
-	#if not hasattr(VR, 'weiterverarbeitung_label'):
-	#	VR.fertiglabel = VR.Sprite('fertig')
-	#	mat3 = VR.Material('mymat3')
-	#	VR.fertiglabel.setMaterial(mat3)
-	#	r.addChild(VR.fertiglabel)
-		
-	#VR.fertiglabel.setFrom(7.5,2,7)
-	#VR.fertiglabel.setDir(1,0,0)
-	
-	
-	#Auftrag erstellen
-	#if not hasattr(VR, 'neuerAuftragLabel'):
-	#	VR.neuerAuftragLabel = VR.Sprite('neuerAuftrag')
-	#	mat4 = VR.Material('mymatAuftrag')
-	#	VR.neuerAuftragLabel.setMaterial(mat4)
-	#	r.addChild(VR.neuerAuftragLabel)
-	#VR.neuerAuftragLabel.setFrom(0,4.3,-0.5)
-	#VR.neuerAuftragLabel.setDir(0,0,1)
-	
-	
-	
-	
-	
-	
-</core>
-      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="0" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="initScene" name_space="__script__" type="Python" mobile="">
       <core>
@@ -1470,14 +1397,20 @@
     <Script name_suffix="1" base_name="init" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
+	#laedt einige wichtige Geometrien, zB die Felgen. Muss als erstes.
 	VR.initScene()
+	#Initialisiert die Logistik. Braucht initScene, muss vor LogisticsControl und allen anderen.
 	VR.LogisticsInit()
+	#Laedt die Halle und Monitorgeometrie. Sollte vor anderen monitor-skripten sein.
 	VR.Environment()
+	#Sollte vor Roboter und Fraese kommen. Macht erstmal noch nichts.
+	VR.LogisticsControl()
+	#Am Ende.
+	VR.RobotControl()
+	VR.triggerScript('FraeseControl')
 	VR.triggerScript('monitorControlInit')
-	#TODO von Alisa (29.5.): Wir könnten überlegen, alle Initialisierungsskripte
-	#hierüber zu starten, sodass nur dieses Skript den on_scene_load-Trigger hat.
-	#Dann hätten wir ne bisschen bessere Kontrolle über die Reihenfolge.
-	#Kann aber für unser Projekt auch überflüssig sein.
+	VR.triggerScript('monitorStatusInit')
+
 </core>
       <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="7" base_name="trigger" name_space="__global__"/>
     </Script>
@@ -1522,10 +1455,7 @@
       <core>
 	import VR
 
-	#Die Klasse hat einen Trigger für das Device mobile mit -1
-	#-1 bedeutet die Klasse reagiert auf alles was iwie mit der Webseite ist
-	#Wir können dann hier kucken, welcher Knopf gedrückt wurde
-	#und entsprechend Sachen tun.
+	#
 	
 	k = dev.getKey()
 	#print k
@@ -1745,6 +1675,13 @@ input{
     </Script>
     <Script name_suffix="0" base_name="monitorStatusControls" name_space="__script__" type="Python" mobile="">
       <core>
+	# Handles all information used for status in a json Object
+	# this object is then pushed to the currently viewed homepage 
+	# via url
+	# all scripts can call updates and then updateHomepage() 
+	# refreshes the homepage
+	# If it is not called manually the refresh is done by the Status updater
+	
 	import VR
 	import math
 	import json
@@ -1768,6 +1705,9 @@ input{
 			self.updateHomepage()
 			
 		# Send data object to Homepage
+		# used for refresh
+		# can be called from all scripts and gets called 
+		# periodicaly by the statusUpdate script
 		def updateHomepage(self):	
 			jsondata = json.dumps(self.StatusData)
 			jsondataasbytes = jsondata.encode('utf-8')
@@ -1775,6 +1715,8 @@ input{
 			#print url
 			VR.monitorStatusWeb.open(url)
 			
+			
+		# Setters for the JSON data	
 		def setFraeseStatus(self, status):
 			self.StatusData["FraeseStatus"] = status		
 			
@@ -1844,18 +1786,20 @@ input{
       <arg type="VRPyDeviceType" value="flystick" name_suffix="0" base_name="flystick" name_space="monitorStatusInit"/>
       <arg type="VRPyDeviceType" value="keyboard" name_suffix="0" base_name="keyboard" name_space="monitorStatusInit"/>
       <arg type="VRPyDeviceType" value="mouse" name_suffix="0" base_name="mouse" name_space="monitorStatusInit"/>
-      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="10" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="monitorStatusSwitcher" name_space="__script__" type="Python" mobile="">
       <core>
+	# This is used to switch between the different status displays
+	# since all job information is pushed via URL it is needed to support
+	# different urls and continouus updates out of python scripts
+
 	import VR
-	
-	
-	
+		
 	k = dev.getKey()
 	msg = dev.getMessage()
 	print "switch to " + msg
 
+	# key 5 is used for this script
 	if k == 5:
 		if msg == 'auftrag':
 			VR.currentStatusURL = 'http://localhost:5500/monitorStatusWebsiteAuftrag'
@@ -1876,7 +1820,8 @@ input{
     <Script name_suffix="0" base_name="monitorStatusUpdater" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
-	# Klasse für periodische Updates auf dem Statusmonitor
+	# Updates changing values from the logistic simulation boxes and refreshes
+	# the status homepage afterwards
 	
 	# Lade Boxinhalte
 	# Aktualisiere Lager
