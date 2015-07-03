@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.79425 1.4888 -3.57447" at="1.01635 1.34701 0.0300002" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.787309 2.19625 -3.54432" at="1.01635 1.34701 0.0300002" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
@@ -22,6 +22,7 @@
         <Object name_suffix="13" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="14" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="15" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="16" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -1916,6 +1917,9 @@ input[type=button] {
 h1{
 	font-size:7vh;
 }
+h2{
+	font-size:5vh;
+}
 #content{ 
 	color:#042037;
 	font-size: 2.5vw;
@@ -1974,13 +1978,13 @@ data = JSON.parse(json)
 
 &lt;div id="header"&gt;
 	&lt;center&gt;
-		&lt;h1&gt;Status&lt;/h1&gt;
+		&lt;h1&gt;Auftragsstatus&lt;/h1&gt;
 	&lt;/center&gt;
 &lt;/div&gt;
 &lt;div id="content"&gt;
 		&lt;div id="progress"&gt;
 			&lt;center&gt;
-			&lt;i&gt;Aktueller Auftrag:&lt;/i&gt;&lt;br&gt;
+			&lt;h2&gt;Aktueller Auftrag:&lt;/h2&gt;
 			&lt;div id="currentProduction"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("currentProduction");
@@ -2019,7 +2023,7 @@ data = JSON.parse(json)
 		&lt;/div&gt;
 		&lt;div id="auftragspipeline"&gt;
 			&lt;center&gt;
-				&lt;i&gt;Auftragspipeline&lt;/i&gt; &lt;br&gt;
+				&lt;h2&gt;Auftragspipeline&lt;/h2&gt;
 				&lt;div id="productionQueue"&gt;&lt;/div&gt;
 				&lt;script type="text/javascript"&gt;
 					var div = document.getElementById("productionQueue");
@@ -2093,6 +2097,9 @@ input[type=button] {
 h1{
 	font-size:7vh;
 }
+h2{
+	font-size:5vh;
+}
 #content{ 
 	color:#042037;
 	font-size: 2.5vw;
@@ -2136,17 +2143,17 @@ data = JSON.parse(json)
 
 &lt;div id="header"&gt;
 	&lt;center&gt;
-		&lt;h1&gt;Status&lt;/h1&gt;
+		&lt;h1&gt;Fraesenstatus&lt;/h1&gt;
 	&lt;/center&gt;
 &lt;/div&gt;
 &lt;div id="content"&gt;
 		&lt;div id="fraeseStatus"&gt;
 			&lt;center&gt;
-			&lt;i&gt;Fraesenstatus:&lt;/i&gt; &lt;br&gt;
+			&lt;h2&gt;Zustand&lt;/h2&gt;
 			&lt;div id="fraeseStatusText"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("fraeseStatusText");
-				div.textContent = "Fraese: " + data.FraeseStatus;
+				div.textContent = "" + data.FraeseStatus;
 				var text = div.textContent;
 			&lt;/script&gt;
 			&lt;/center&gt;
@@ -2402,6 +2409,9 @@ input[type=button] {
 h1{
 	font-size:7vh;
 }
+h2{
+	font-size:5vh;
+}
 #content{ 
 	color:#042037;
 	font-size: 2.5vw;
@@ -2445,14 +2455,14 @@ data = JSON.parse(json)
 
 &lt;div id="header"&gt;
 	&lt;center&gt;
-		&lt;h1&gt;Status&lt;/h1&gt;
+		&lt;h1&gt;Roboterstatus&lt;/h1&gt;
 	&lt;/center&gt;
 &lt;/div&gt;
 &lt;div id="content"&gt;
 		
 		&lt;div id="roboterStatus"&gt;
 			&lt;center&gt;
-				&lt;i&gt;Roboter&lt;/i&gt; &lt;br&gt;
+				&lt;h2&gt;Roboter&lt;/h2&gt; 
 				No status yet
 			&lt;/center&gt;
 		&lt;/div&gt;
