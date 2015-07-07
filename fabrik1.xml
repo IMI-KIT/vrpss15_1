@@ -3,13 +3,10 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.68202 5.53261 4.24396" at="-7.8677 1.45237 4.30116" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.23115 4.72319 6.93272" at="-6.42383 0.203595 -0.0940211" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
-        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
-        <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
-        <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -145,7 +142,7 @@
 	VR.FraeseControl(VR.getRoot().find('Headlight'))
 	VR.speedup = 1 #0.3
 	
-	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),0)
+	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),1)
 
 </core>
       <trig type="on_device" dev="keyboard" state="Pressed" param="" key="102" name_suffix="11" base_name="trigger" name_space="__global__"/>
@@ -345,14 +342,11 @@
 				objekt = VR.FRfelge0.duplicate()
 			else :
 				objekt = VR.FRfelge1.duplicate()
-			
-			#objekt.switchParent(self.Base)	
-			#objekt.setPose(VR.fraese_ablegepunkt,[0,0,-1],[0,1,0])
-			#objekt.setScale(VR.fraese_scale,VR.fraese_scale,VR.fraese_scale)
+			objekt.setFrom(self.ablegepunkt_local)
 			objekt.show()
 			
-			#self.rohling.destroy()
-			#self.Base.addChild(objekt)
+			self.rohling.destroy()
+			self.Base.addChild(objekt)
 			
 			print "Fraesevorgang done, call back Logistik"
 			VR.monitorStatusController.setFraeseStatus("Steht still")
@@ -424,7 +418,7 @@
 				VR.currentState = VR.states_MoveFelgeToBand
 				startpunkt = VR.fraese_ablegepunkt
 				endpunkt = VR.pfad2_startpunkt
-				startrichtung = [-1,0,0]#TODO das ist grade nur waagrecht rein. Vllt muss das noch bisschen von Oben oder so.
+				startrichtung = [-1,0,0]#TODO das ist grade nur waagrendpunktecht rein. Vllt muss das noch bisschen von Oben oder so.
 				endrichtung = [0,1,0]
 				VR.robotController.move(startpunkt,startrichtung,endpunkt,endrichtung,objekt)
 			else:
@@ -1348,29 +1342,15 @@
 	
 	
 	VR.FRrohling = VR.loadGeometry('Rohling.dae',True).getChildren(True,"Geometry")[0]
-	#VR.loadGeometry('Rohling.dae')
-	#rohling.setPose([0,0,0],[0,1,0],[1,0,0])
-	#rohling.setScale([0.04,0.04,0.04])
-	#VR.FRrohling = VR.Transform('rohling')
-	#VR.FRrohling.addChild(rohling)
-	print "Rohling"
 	VR.FRrohling.setName("Rohling")
-	#VR.FRrohling.setFrom([-7,2,4])
+	#VR.FRrohling.setFrom([-7,2,4]) # bei fraese
 	#root.addChild(VR.FRrohling)
 	VR.FRrohling.hide()
 	
 
-	FRfelge0 = VR.loadGeometry('Felge1.dae')
-	FRfelge1 = VR.loadGeometry('Felge2.dae')
-	FRfelge0.setPose([0,0,0],[0,1,0],[1,0,0])
-	FRfelge0.setScale([0.04,0.04,0.04])
-	FRfelge1.setPose([0,0,0],[0,1,0],[1,0,0])
-	FRfelge1.setScale([0.04,0.04,0.04])
-	
-	VR.FRfelge0 = VR.Transform('felge0')
-	VR.FRfelge1 = VR.Transform('felge1')
-	VR.FRfelge0.addChild(FRfelge0)
-	VR.FRfelge1.addChild(FRfelge1)
+	VR.FRfelge0 = VR.loadGeometry('Felge1.dae')
+	VR.FRfelge1 = VR.loadGeometry('Felge2.dae')
+
 	root.addChild(VR.FRfelge0)
 	root.addChild(VR.FRfelge1)
 	VR.FRfelge0.hide()
