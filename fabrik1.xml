@@ -3,10 +3,13 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-3.80219 1.10141 -1.22641" at="-5.00098 0.108761 0.581037" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.68202 5.53261 4.24396" at="-7.8677 1.45237 4.30116" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
-      
+        <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -140,7 +143,7 @@
 	
 	VR.fraeseController.stop()
 	VR.FraeseControl(VR.getRoot().find('Headlight'))
-	VR.speedup = 0.3
+	VR.speedup = 1 #0.3
 	
 	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),0)
 
@@ -237,7 +240,7 @@
 	
 			
 		def startFraese(self,rohling,modell):
-			print "Starte Fräsvorgang",rohling.getName()
+			print "Starte Fräsvorgang",rohling.getName(),"Speedup",VR.speedup
 			VR.monitorStatusController.setFraeseStatus("fraest")
 			self.isActive = True
 			
@@ -297,7 +300,6 @@
 		
 		def abtrag(self,path):
 			if  generateHoles and path is not None:
-				print "Abtrag"
 				#Profile
 				center =path[0];
 				prof2 = [[+p[2]-center[2],p[0]-center[0], 0 ] for p in path ]					
@@ -320,7 +322,8 @@
 					# CSG
 					csg = VR.CSGGeometry('csg')
 					self.rohling.switchParent(csg)
-					#csg.setMaterial(self.rohling.getMaterial())
+					csg.setThreshold(1e-4, 1e-8)
+					csg.setMaterial(self.rohling.getMaterial())
 					csg.addChild(s)
 					self.Base.addChild(csg)	
 					csg.setOperation('subtract')
@@ -640,12 +643,14 @@
 	#notwendeig damit der pfad auch am Fräskopf ist
 	#debug = [-0.02,0.12,0.138]
 	debug = [+0.01,0.36,0.376]
-	log = True
+	log = False
 	
-	#Path Scaling
+	#Path Scalingf
 	#_scale = 0.0055
 	
-	_XOFFSET = -1.1#größer weg von der Start Pos
+	_XOFFSET = -1.1#größer weg von der Start Pos #felge 1
+	if filepath == "NewModell2.nc":
+		_XOFFSET = -0.97#größer weg von der Start Pos#felge 1
 	_YOFFSET = 4.02# größer weg von der Tür
 	_ZOFFSET = -0.16#-0.215
 	_scale = 0.019
@@ -680,13 +685,15 @@
 						self.lines.append(line)
 					elif regexOther.match(line):
 						newLine = self.lines[(len(self.lines) - 1)][:4] + line
-						print "Replaced",newLine.rstrip()
+						if log:	
+							print "Replaced",newLine.rstrip()
 						self.lines.append(newLine)
 					else:
-						print "Left out",line.rstrip()
+						if log:	
+							print "Left out",line.rstrip()
 			
 		def hasNext(self):
-			if self.currentLine &gt; len(self.lines) or self.currentLine &gt; 20:
+			if self.currentLine &gt; len(self.lines) :# or self.currentLine &gt; 20:
 				return False
 			return True
 			
