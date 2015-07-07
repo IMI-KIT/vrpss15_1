@@ -87,14 +87,26 @@
 	reload = False
 	light = VR.getRoot().find('Headlight')
 	
+	
+
 	#halle
 	if True:
 		if hasattr(VR, 'halle'):
 			VR.halle.destroy()
 		VR.halle = VR.loadGeometry('halle.dae', reload)
 		light.addChild(VR.halle)
-		VR.halle.translate(2,0,20)
+		VR.halle.translate(0,0,20)
 		VR.halle.rotate(0,-1,0, -0.5 * math.pi)
+
+	#yellow stripes
+	if True:
+		if hasattr(VR, 'stripes'):
+			VR.stripes.destroy()
+		VR.stripes = VR.loadGeometry('yellow_stripes.dae', reload)
+		light.addChild(VR.stripes)
+		VR.stripes.translate(-4,0.22,4)
+		VR.stripes.rotate(0,-1,0, -0.5 * math.pi)
+
 
 	#fliessband
 	count = 4;
