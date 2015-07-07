@@ -3,9 +3,14 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.28869 5.27299 -0.259572" at="-6.42383 0.203595 -0.0940211" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.42093 5.9018 3.94763" at="-8.08947 1.05635 3.86668" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
+        <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="6" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -155,8 +160,11 @@
 	VR.fraeseController.stop()
 	VR.FraeseControl(VR.getRoot().find('Headlight'))
 	VR.speedup = 1 #0.3
+	d = VR.FRrohling.duplicate()
+	#print "M1",VR.FRrohling.getMaterial().getName(),"M2",d.getMaterial().getName()
 	
-	VR.fraeseController.startFraese(VR.FRrohling.duplicate(),1)
+	
+	VR.fraeseController.startFraese(d,1)
 
 </core>
       <trig type="on_device" dev="keyboard" state="Pressed" param="" key="102" name_suffix="11" base_name="trigger" name_space="__global__"/>
@@ -334,11 +342,14 @@
 					csg = VR.CSGGeometry('csg')
 					self.rohling.switchParent(csg)
 					csg.setThreshold(1e-4, 1e-8)
-					csg.setMaterial(self.rohling.getMaterial())
+					mat = self.rohling.getMaterial()
+					#print "Material",mat,mat.getName()
+					csg.setMaterial(mat)
 					csg.addChild(s)
 					self.Base.addChild(csg)	
 					csg.setOperation('subtract')
 					csg.setEditMode(False)
+					csg.setMaterial(mat)
 					self.rohling = csg
 				else: 
 					self.Base.addChild(s)
@@ -348,7 +359,6 @@
 				print "Sopping but not active"
 				return
 
-			
 			#tür auf
 			self.useDoor()
 			#Felge erzeugen
