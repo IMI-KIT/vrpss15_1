@@ -3,10 +3,17 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.23115 4.72319 6.93272" at="-6.42383 0.203595 -0.0940211" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.595528 5.1899 5.78099" at="-0.694674 4.02227 4.07607" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="4" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="5" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="6" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="7" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -872,63 +879,33 @@
 	import math
 
 
-	#VR.robotController.move_a1(180)
-	#VR.robotController.move_a2(-10)
-	#VR.robotController.move_a3(-10)
-	#VR.robotController.move_a4(180)
-	#VR.robotController.move_a5(-5)
-	#VR.robotController.greifen()
-	
-	#if not VR.robotAnimationStep == 15 :
-	#   VR.robotController.reset()
-	#VR.robotAnimationStep = 15
-	#return
-	
-	
-	#Tobias: return, dass manuelle steuerung moeglich ist
-	# einfach wieder auskommentieren, dann geht die Animation wieder
+	VR.robotController.greifen()
 	return
 	
-	if not hasattr(VR, 'robotAnimationStep'):
-		VR.robotAnimationStep = 0
-	else :
-		VR.robotAnimationStep += 1
-		VR.robotAnimationStep %= 8
+	#Ziel x, y, z,
+	x = 0.0
+	y = -4.2
+	z = 1.5
 	
-	#print VR.robotAnimationStep
 	
-	if VR.robotAnimationStep == 0:
-		#print "Schritt 1!"
-		VR.robotController.move_a1(-90)
-		VR.robotController.move_a2(-25)
-		VR.robotController.move_a3(-50)
-		VR.robotController.move_a5(75)
-	if VR.robotAnimationStep == 1:
-		#print "Schritt 2!"
-		VR.robotController.greifen()
-	if VR.robotAnimationStep == 2:
-		#print "Schritt 3!"
-		VR.robotController.move_a2(25)
-		VR.robotController.move_a3(50)
-	if VR.robotAnimationStep == 3:
-		#print "Schritt 4!"
-		VR.robotController.move_a1(-93)
-	if VR.robotAnimationStep == 4:
-		#print "Schritt 5!"
-		VR.robotController.move_a2(-50)
-		VR.robotController.move_a3(-20)
-		VR.robotController.move_a5(-5)
-	if VR.robotAnimationStep == 5:
-		#print "Schritt 6!"
-		VR.robotController.greifen()
-	if VR.robotAnimationStep == 6:
-		#print "Schritt 7!"
-		VR.robotController.move_a2(50)
-		VR.robotController.move_a3(20)
-		VR.robotController.move_a5(-70)
-	if VR.robotAnimationStep == 7:
-		print "Teil eingelegt"
+	baDeg = VR.base.calcBaseDegrees(x,y)
+	e_x, e_y, e_z = VR.base.translateCoordinates(x, y, z)
+	
+	#print "e_x:", e_x, " e_z:", e_z
+	
+	w_a2, w_a3, w_a5 = VR.arm.calculateArmDegrees(e_x, e_z)
+
+	#print "baDeg:", baDeg, "w2:", w_a2, " w_a3:", w_a3, " w5:", w_a5
+	
+	VR.robotController.move_a1_to(baDeg)
+	VR.robotController.move_a2_to(w_a2)
+	VR.robotController.move_a3_to(w_a3 )
+	#VR.robotController.move_a4(180)
+	VR.robotController.move_a5_to(w_a5)
+	#VR.robotController.greifen()
+
 </core>
+      <trig type="on_device" dev="keyboard" state="Pressed" param="" key="103" name_suffix="3" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="RobotControl" name_space="__script__" type="Python" mobile="">
       <core>
@@ -940,6 +917,8 @@
 	class RobotController:
 		#colorVector Konstante für die Animation
 		c = [0,0,0]
+		
+
 		
 	
 		def __init__(self):
@@ -954,17 +933,16 @@
 			# Ohne Farbe, ca 13k vertices
 			#VR.robot = VR.loadGeometry('Alle_teile.dae', True)
 			# Mit Farbe, ca 13k vertices
-			#VR.robot = VR.loadGeometry('AlleTeile_mitFarbe.dae', True)
+			VR.robot = VR.loadGeometry('AlleTeile_mitFarbe.dae', True)
 			# Mit Farbe, ca 8k vertices
 			#VR.robot = VR.loadGeometry('Roboter_8kV.dae', True)
 			# Mit Farbe, ca 5k vertices
-			VR.robot = VR.loadGeometry('Roboter_5kV.dae', True)
+			#VR.robot = VR.loadGeometry('Roboter_5kV.dae', True)
 			
 			light = VR.getRoot().find('Headlight')
 			light.addChild(VR.robot)
 			VR.robot.rotate(1,0,0, -0.5 * math.pi)
 			VR.robot.translate(-4,0,4)
-			VR.robot.setScale(0.3,0.3,0.3)
 			#RobotController.kalkuliereGreifPfad(self)
 			
 			#Winkel initalisieren
@@ -973,14 +951,14 @@
 			self.winkelA3 = 0
 			self.winkelA4 = 0
 			self.winkelA5 = 0
-			
 			self.movingArms = [0, 0, 0, 0, 0, 0]
-			
+			self.opened = True
 
 		#Punkte: In mm relativ zu Roboter-Ursprung Format [x,y,z]
 		#Richtung: Von da aus den Punkt anfahren
 		#Objekt: Rohling / Felge
 		def move(self,startpunkt,startrichtung,endpunkt,endrichtung,objekt):
+			self.ObjectToMove = objekt
 			print "move called"
 			# Bewegung
 		
@@ -1019,7 +997,9 @@
 			arm.animate(path,anTime,0,True)
 			VR.stackCall(self.endAnimation, anTime, [0]) 
 			del arm, f, u, d, path, anTime
-
+		#absolute gradzahl
+		def move_a1_to(self, winkel_deg):
+			self.move_a1(winkel_deg - self.winkelA1)
 		
 		#Arm2 bewegen
 		def move_a2(self, winkel_deg):
@@ -1043,6 +1023,10 @@
 			VR.stackCall(self.endAnimation, anTime, [1]) 
 			del arm, f, u, d, path, anTime
 			
+		#absolute gradzahl
+		def move_a2_to(self, winkel_deg):
+			self.move_a2(winkel_deg - self.winkelA2)
+			
 		#Arm3 bewegen
 		def move_a3(self, winkel_deg):
 			arm = VR.robot.find('r_Motor_oben')
@@ -1064,6 +1048,10 @@
 			arm.animate(path,anTime,0,True)
 			VR.stackCall(self.endAnimation, anTime, [2]) 
 			del arm, f, u, d, path, anTime
+			
+		#absolute gradzahl
+		def move_a3_to(self, winkel_deg):
+			self.move_a3(winkel_deg - self.winkelA3)
 		
 		#Arm4 bewegen
 		def move_a4(self, winkel_deg):
@@ -1094,6 +1082,10 @@
 			VR.stackCall(self.endAnimation, anTime, [3]) 
 			del arm, f, u, d, path, anTime
 			
+		#absolute gradzahl
+		def move_a4_to(self, winkel_deg):
+			self.move_a4(winkel_deg - self.winkelA4)
+			
 		#Arm5 bewegen
 		def move_a5(self, winkel_deg):
 			arm = VR.robot.find('r_Arm5')
@@ -1117,6 +1109,9 @@
 			VR.stackCall(self.endAnimation, anTime, [4]) 
 			del arm, f, u, d, path, anTime
 			
+		#absolute gradzahl
+		def move_a5_to(self, winkel_deg):
+			self.move_a5(winkel_deg - self.winkelA5)
 			
 		#Greifen
 		def greifen(self):
@@ -1125,6 +1120,9 @@
 				RobotController.rpath.invert()
 				
 			else :
+				#Position bekommen
+				links = VR.getRoot().find('Arm_links')
+				rechts = VR.getRoot().find('Arm_rechts')
 				#feste Positionen für Hinweg
 				lf = [0.24, 0.79, -0.00]
 				lu = [0,0,1]
@@ -1133,17 +1131,20 @@
 				rf = [0.24, -0.80, 0.00]
 				ru = [0,0,1]
 				rd = [0,1,0]
+				
+				lf = links.getFrom()
+				rf = rechts.getFrom()
 	
 				lpath = VR.Path()
 				rpath = VR.Path()
 				#Punkte hinzufügen
 				new_lf = lf[:]
-				new_lf[1] -= 0.2
+				new_lf[1] -= 0.17
 				lpath.addPoint(lf,ld,VR.robotController.c,lu)
 				lpath.addPoint(new_lf,ld,VR.robotController.c,lu)
 	
 				new_rf = rf[:]
-				new_rf[1] += 0.2
+				new_rf[1] += 0.17
 				rpath.addPoint(rf,rd,VR.robotController.c,ru)
 				rpath.addPoint(new_rf,rd,VR.robotController.c,ru)
 				#Pfade erstellen
@@ -1151,8 +1152,23 @@
 				rpath.compute(80)
 				RobotController.lpath = lpath
 				RobotController.rpath = rpath
+				
 		
+			#Debug
+			felge = VR.getRoot().find('ShapeIndexedFaceSet0.5')
+			print "Felfe:" , felge.getFrom()
+			self.ObjectToMove = felge
+		
+			#Object anhängen
+			if self.opened:
+				greifer = VR.getRoot().find('r_Greifer')
+				greifer.addChild(self.ObjectToMove)
+				self.ObjectToMove.setFrom(0.555,0,0)
+				
 			
+			self.opened = not self.opened
+						
+	
 			arm_l = VR.robot.find('Arm_links')
 			arm_r = VR.robot.find('Arm_rechts')
 	
@@ -1160,21 +1176,7 @@
 			arm_l.animate(RobotController.lpath,1,0.1,False)
 			arm_r.animate(RobotController.rpath,1,0.1,False)
 			VR.stackCall(self.endAnimation, 1.1, [5]) 
-		
-		#öffnen
-		#def oeffnen(self):
-		#	if hasattr(RobotController, 'lpath'):
-		#		RobotController.lpath.invert()
-		#		RobotController.rpath.invert()
-		#	
-		#		arm_l = VR.robot.find('Arm_links')
-		#		arm_r = VR.robot.find('Arm_rechts')
-		#
-		#	
-		#		arm_l.animate(RobotController.lpath,1,0.1,False)
-		#		arm_r.animate(RobotController.rpath,1,0.1,False)
-		#	else:
-		#		return
+
 				
 		# Pfad für Drehung in der y-Achse
 		def y_rotatePath(self, f, u, d, winkel_deg, zielWinkel_rad):
@@ -1220,22 +1222,27 @@
 			
 		# Zeit für animation berechnen
 		def animationTime(self, roationSpeed, winkel_deg):
-			anTime = math.fabs(roationSpeed * (winkel_deg/360.0))
+			if math.fabs(winkel_deg) &gt; 180:
+				winkel_deg = winkel_deg % 180
+			anTime = math.fabs((roationSpeed / 2) * (winkel_deg/360.0))
 			if anTime &lt; 1 :
 				anTime = 1
 			return anTime
 			
 		# Bewungsarray beenden und Benachrtigungs funktionen aufrufen
+		
 		def endAnimation(self, armIndex):
 			self.movingArms[armIndex] = 0
 			#print "Arm", armIndex  ," bewegung Beendet"
 			allArms = 0
 			for arm in self.movingArms:
 				allArms += arm
-			if allArms &lt;= 0:
-				#Alle notify Funktionen hier aufrufen!
-				#print "Roboter steht"
-				VR.RobotAnimation()
+				
+			#Alle notify Funktionen hier aufrufen!
+			# Falls keien Aufgerufen wird if auskommentieren
+			#if allArms &lt;= 0:
+				#VR.RobotAnimation()
+			return
 		
 		# Bringt den Roboter in Ausgangstellung
 		def reset(self):
@@ -1244,6 +1251,13 @@
 			self.move_a3(-self.winkelA3)
 			self.move_a4(-self.winkelA4)
 			self.move_a5(-self.winkelA5)
+		
+		#Fährt den Roboter nach oben, dreht ihn aber nicht
+		def UpBack_to_base(self):
+			self.move_a2_to(0)
+			self.move_a3_to(0)
+			self.move_a4_to(0)
+			self.move_a5_to(0)
 					
 		
 		
@@ -1253,6 +1267,108 @@
 		
 	VR.robotController = RobotController()
 </core>
+    </Script>
+    <Script name_suffix="0" base_name="RobotKinematik" name_space="__script__" type="Python" mobile="">
+      <core>
+	import math
+	import VR
+	
+	"""
+	Roboter Längen
+	
+	Arm1: x: 0.78044 z:2.02554
+	Arm2: 2.03995 z ab: 4.06549
+	Arm3: 2.00356 x ab: 2.784
+	Arm4: 1.066
+	
+	"""
+	
+	#Die Klasse für die Bodenplatte
+	class Base:
+		def __init__(self, diameter, height):
+			self.Diameter = diameter
+			self.Height = height	
+
+		# Calculates to which position the Base has to turn
+		def calcBaseDegrees(self, x, y):
+			degrees = 0
+			if (y == 0):
+				if (x &gt;= 0):
+					degrees = 90
+				else:
+					degrees = -90
+			else:
+				degrees = math.degrees(math.atan(x/y))
+				if (x &lt; 0 and y &gt; 0):
+					#oberer Linker Quadrant
+					degrees += 360
+				elif (y &lt; 0):
+					#untere Quadranten
+					degrees += 180
+			return degrees
+	
+		# Translates the absolute X Y Z Coordinates into the Relative X and Z Coordinates for the arm calculations
+		def translateCoordinates(self, x, y, z):#
+			#Remove Height
+			z -= self.Height
+			# X, Y span the ground plane
+			# calculate the length of the groundLine
+			groundLine = math.sqrt(x ** 2 + y ** 2)
+			# calculate Length and Degree (to groundPlane) of the room diagonal
+			roomDiagonal = math.sqrt(groundLine ** 2 + z ** 2)
+			roomDegrees = math.degrees(math.atan(z/groundLine))
+			groundLine = groundLine - self.Diameter
+			return groundLine, 0, z
+	
+	#Klasse für die Arme
+	class Arm:
+		def __init__(self, l1, l2, l3):
+			self.L1 = l1
+			self.L2 = l2
+			self.L3 = l3
+
+		def calculateArmDegrees(self, X, Y):
+			#print "armx: " , X ," army:", Y
+			X = X - self.L3	
+			X = X * -1
+		
+			C2 = (X*X + Y*Y - self.L1*self.L1 - self.L2*self.L2)/(2 * self.L1 * self.L2)
+			A1 = math.fabs(1 - (C2 * C2))
+			S2 = math.sqrt(A1)
+	
+			K1 = self.L1 + self.L2 * C2
+			K2 = self.L2 * S2
+
+			theta = math.atan2( Y, X ) - math.atan2( K2 , K1)  #angle: theta * 180/pi  (fur alpha 180 - theta)
+	
+			psi = math.atan2( S2, C2)    #angle: psi * 180/pi  (fur Beta 180 - psi)
+		
+			alpha = 180 - (theta * 180 / math.pi)
+			beta = 180 - ( psi * 180 / math.pi)
+			#print 'theta: ', theta, 'psi: ', psi, 'K1: ', K1, 'K2: ', K2
+			delta = -alpha - beta + 180
+			alpha = alpha - 90
+			beta = beta - 90
+			return alpha, beta, delta
+
+	
+		def calculateArmXY(self, alpha, beta):
+			J1X =cos(alpha * math.pi /180)* self.L1
+			J1Y =sin(alpha * math.pi /180)* self.L1
+	
+			J2X =cos((beta + alpha) * math.pi/180)* self.L2 + J1X
+			J2Y =sin((beta + alpha)* math.pi/180)* self.L2 + J1Y
+	
+			return J2X, J2Y
+		
+			
+			
+	VR.arm = Arm(2.03995, 2.00356, 1.066)
+	VR.base = Base(0.78044, 2.02554)
+			
+			
+</core>
+      <trig type="on_scene_load" dev="" state="Pressed" param="" key="0" name_suffix="0" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="initScene" name_space="__script__" type="Python" mobile="">
       <core>
