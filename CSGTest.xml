@@ -3,9 +3,10 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.418396 1.2375 0.50403" at="-0.0315165 0.289994 -0.197132" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-0.314704 0.238858 1.21738" at="0.0724818 0.101593 -0.123769" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.0001" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="0" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
+        <Object name_suffix="0" base_name="ShapeIndexedFaceSet0" name_space="__global__" type="Geometry" pickable="0" visible="1" from="0 0 0" at="0 -1 0" up="0 0 -1" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -27,9 +28,9 @@
 	#Path def
 	VR.points = [
 	[-0.5,bohrtiefe,0],
-	[-0.3,bohrtiefe,-0.05],[-0.05,bohrtiefe,-0.2],[-0.1,bohrtiefe,-0.05], #flosse
+	#[-0.3,bohrtiefe,-0.05],[-0.05,bohrtiefe,-0.2],[-0.1,bohrtiefe,-0.05], #flosse
 	[0,bohrtiefe,0],[0.25,bohrtiefe,0.2],
-	[0.5,bohrtiefe,-0.1],[0.7,bohrtiefe,0.7],[0.25,bohrtiefe,0.3], #schwanz
+	#[0.5,bohrtiefe,-0.1],[0.7,bohrtiefe,0.7],[0.25,bohrtiefe,0.3], #schwanz
 	[0,bohrtiefe,0.5],[-0.5,bohrtiefe,0.5],[-0.75,bohrtiefe,0.25]]
 	
 	VR.directions = [[1,0,0],[1,0,0],[0,0,1],[-1,0,0],[-1,0,0],[0,0,-1],[1,0,0],[1,0,0],[0,0,1],[-1,0,0],[-1,0,0],[0,0,-1]]
@@ -107,8 +108,8 @@
 	
 	#Path
 	p = VR.Path()
-	p.addPoint([0,-0.5,0.3,],[0,1,0],VR.color,[0,0,1])
-	p.addPoint([0,0.5,0.3],[0,1,0],VR.color,[0,0,1])
+	p.addPoint([0,0.3,-0.5],[0,0,1],VR.color,[0,1,0])
+	p.addPoint([0,0.3,0.5],[0,0,1],VR.color,[0,1,0])
 	p.compute(10)	
 	
 	
@@ -121,16 +122,21 @@
 	
 	#Rohling
 	b = VR.loadGeometry('Rohling.dae', True).getChildren(True,"Geometry")[0]#.find('Felge.1')
+	b.rotate(1,0,0, -Pi*0.5)
 	
 	
 	if VR.sub:
 		#new CSG
 		c = VR.CSGGeometry('csg')
+		c.setThreshold(1e-4, 1e-8)
 		c.addChild(b)
 		c.addChild(s)
 		r.addChild(c)	
 		c.setOperation('subtract')
 		c.setEditMode(False)
+		#c.markEdges([[754, 755]])
+		c.getMaterial().setWireFrame(False)
+		c.getMaterial().setLit(True)
 	else:
 		r.addChild(b)
 		r.addChild(s)
@@ -144,7 +150,7 @@
     </Script>
   </Scripts>
   <Sockets/>
-  <Background color="0.6 0.6 0.6" path="" type="0"/>
+  <Background color="0 0 0" path="" type="0"/>
   <Navigation active="Orbit"/>
   <Materials/>
 </Scene>
