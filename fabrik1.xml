@@ -3,10 +3,13 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.23115 4.72319 6.93272" at="-6.42383 0.203595 -0.0940211" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="1.28869 5.27299 -0.259572" at="-6.42383 0.203595 -0.0940211" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -24,6 +27,8 @@
 		if(VR.containers[0].isEmpty()): #Alisa sagt: da müssen wir nochmal überlegen wie viel sinn das macht.
 			print "Starte Auftrag für " + str(anzahl) + " Felgen Typ " + str(modell)
 			VR.auftragFertig = False # Ja ich weiß dass das noch woanders gemacht wird. sicher ist sicher.
+			VR.auftragModell = modell
+			
 			VR.containers[0].setCapacity(anzahl)
 			VR.containers[3].clear()
 			VR.containers[3].setCapacity(anzahl)
@@ -397,7 +402,8 @@
 			print "moveDone called, state: " + str(VR.currentState)
 			if (VR.currentState == VR.states_MoveRohlingToFraese):
 				VR.currentState = VR.states_RohlingInFraese
-				modell = 0
+				modell = VR.auftragModell
+				print "Modell:",modell
 				VR.fraeseController.startFraese(objekt,modell)
 			elif (VR.currentState == VR.states_MoveFelgeToBand):
 				VR.currentState = VR.states_WaitForRohling
