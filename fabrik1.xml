@@ -73,21 +73,33 @@
 	reload = False
 	light = VR.getRoot().find('Headlight')
 	
+	
+
 	#halle
 	if True:
 		if hasattr(VR, 'halle'):
 			VR.halle.destroy()
 		VR.halle = VR.loadGeometry('halle.dae', reload)
 		light.addChild(VR.halle)
-		VR.halle.translate(2,0,20)
+		VR.halle.translate(0,0,20)
 		VR.halle.rotate(0,-1,0, -0.5 * math.pi)
+
+	#yellow stripes
+	if True:
+		if hasattr(VR, 'stripes'):
+			VR.stripes.destroy()
+		VR.stripes = VR.loadGeometry('yellow_stripes.dae', reload)
+		light.addChild(VR.stripes)
+		VR.stripes.translate(-4,0.22,4)
+		VR.stripes.rotate(0,-1,0, -0.5 * math.pi)
+
 
 	#fliessband
 	count = 4;
 	while count &gt;0:
 		VR.fliessband = VR.loadGeometry('fliessband.dae', reload)
 		light.addChild(VR.fliessband)
-		VR.fliessband.translate(8.25-3.001*count,-0.5,1.4)
+		VR.fliessband.translate(8.25-3.001*count,-0.6,1.4)
 		VR.fliessband.setScale(0.3,0.3,0.3);
 		VR.fliessband.rotate(1,0,0, -0.5 * math.pi)
 		count = count -1;
@@ -95,7 +107,7 @@
 	while count &gt;0:
 			VR.fliessband = VR.loadGeometry('fliessband.dae', reload)
 			light.addChild(VR.fliessband)
-			VR.fliessband.translate(8.25-3.001*count,-0.5,7.4)
+			VR.fliessband.translate(8.25-3.001*count,-0.6,7.4)
 			VR.fliessband.setScale(0.3,0.3,0.3);
 			VR.fliessband.rotate(1,0,0, -0.5 * math.pi)
 			count = count -1;
@@ -134,9 +146,10 @@
 	VR.platte = VR.loadGeometry('Tisch.dae',reload)
 	VR.platte.setName('Ablageplatte')
 	p1 = VR.pfad1_endpunkt
-	VR.platte.setPose([p1[0]-0.43,p1[1]-0.86,p1[2]],[0,-1,0],[0,0,1])
+	VR.platte.setPose([p1[0]-0.43,p1[1]-0.96,p1[2]],[0,-1,0],[0,0,1])
 	VR.platte.setScale([0.5,0.5,0.5])
 	light.addChild(VR.platte)
+
 </core>
     </Script>
     <Script name_suffix="0" base_name="FraeseAnimation" name_space="__script__" type="Python" mobile="">
