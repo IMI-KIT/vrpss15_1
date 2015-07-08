@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.42093 5.9018 3.94763" at="-8.08947 1.05635 3.86668" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-11.8989 6.51642 6.11394" at="-3.57562 1.65726 4.24251" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
@@ -11,6 +11,18 @@
         <Object name_suffix="6" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="4" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="5" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="7" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="8" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="9" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="10" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="11" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="12" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="13" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="14" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="15" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="16" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -893,35 +905,27 @@
     <Script name_suffix="0" base_name="RobotAnimation" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
-	import time
-	import math
 
 
-	VR.robotController.greifen()
-	return
-	
-	#Ziel x, y, z,
-	x = 0.0
-	y = -4.2
-	z = 1.5
-	
-	
-	baDeg = VR.base.calcBaseDegrees(x,y)
-	e_x, e_y, e_z = VR.base.translateCoordinates(x, y, z)
-	
-	#print "e_x:", e_x, " e_z:", e_z
-	
-	w_a2, w_a3, w_a5 = VR.arm.calculateArmDegrees(e_x, e_z)
+	def fertig():
+		print "fertig"
 
-	#print "baDeg:", baDeg, "w2:", w_a2, " w_a3:", w_a3, " w5:", w_a5
+	#VR.robotController.goTo([0, 4, 4], None)
 	
-	VR.robotController.move_a1_to(baDeg)
-	VR.robotController.move_a2_to(w_a2)
-	VR.robotController.move_a3_to(w_a3 )
-	#VR.robotController.move_a4(180)
-	VR.robotController.move_a5_to(w_a5)
+	if hasattr(VR, 'roh'):
+				VR.roh.destroy()
+	VR.roh = VR.loadGeometry('Rohling.dae',True)
+	VR.getRoot().find('Headlight').addChild(VR.roh)
+	VR.roh.translate(-4.5, 1, 1)
+
+	
+	#return
+	path = [[-4.1, 1.1, 1.3],[-4.5, 1, 1], [-4.5, 4, 1], [-6, 4, 4],[-7.5, 2, 4],[-8.18, 1.5, 4],[-6.5, 1.5, 4],[-6.5, 5, 4],[0, 4, 4]]
+	path2 = [[-4.1, 1.1, 1.3],[-4.5, 1, 1],[0, 4, 4]]
+	#VR.robotController.movePath(path2, 2, 3, VR.roh, fertig)
+	VR.robotController.movePath(path, 2, 6, VR.roh, fertig)
+	
 	#VR.robotController.greifen()
-
 </core>
       <trig type="on_device" dev="keyboard" state="Pressed" param="" key="103" name_suffix="3" base_name="trigger" name_space="__global__"/>
     </Script>
@@ -969,25 +973,124 @@
 			self.winkelA3 = 0
 			self.winkelA4 = 0
 			self.winkelA5 = 0
+			
+			#Position zur späteren Unrechnung in relative Koordinaten
+			self.StandPos = VR.getRoot().find('Stand').getWorldFrom()
+			
+			#Kein Arm bewegt sich
 			self.movingArms = [0, 0, 0, 0, 0, 0]
+			#Greifer ist geöffnet
 			self.opened = True
-
-		#Punkte: In mm relativ zu Roboter-Ursprung Format [x,y,z]
-		#Richtung: Von da aus den Punkt anfahren
-		#Objekt: Rohling / Felge
-		def move(self,startpunkt,startrichtung,endpunkt,endrichtung,objekt):
-			self.ObjectToMove = objekt
-			print "move called"
-			# Bewegung
+			#kein greif oder loslass Punkt
+			self.grab = 0
+			self.drop = 0
+			#keien Benarichtigungsmehtode
+			self.notify = None
+			#Kein Bewegungs Pfad gesetzt
+			self.path = []
+			#Kein Object zum Bewegen
+			self.ObjectToMove = None
 		
-			# Felge nehmen
+		#Einen Pfad Abfahren und an einem Punkt greifen und wieder Ablegen
+		# path: liste von punkten mit [x , y, z] in Weltkoordinaten
+		# grab: nummer des Punktes an dem "object" gegriffen wird, der erste Punkt ist 1
+		#		wenn grab &lt;1 wird nichts gegriffen
+		# drop: nummer des Punktes an dem "object" losgelassen wird, der erste Punkt ist 1
+		#		wenn drop &lt;1 wird das Object nicht losgelassen
+		# objekt: das Object, das bewegt werden soll, kann aber auch "none" gelassen werden
+		# notify: Methode die Ausgeführt wird, wenn der Roboter wieder steht
+		#		  Falls nichts aufgerufen werden soll "None" setzen                                           
+		def movePath(self, path, grab, drop, objekt, notify):
+			# falls Path leer ist
+			if len(path) &gt; 0:
+				self.path = path
+			else :
+				return
+				
+			#Object setzen 
+			if objekt is not None:
+				self.ObjectToMove = objekt
+			
+			#drag and drop setzen
+			if grab &lt;= len(self.path):
+				self.grab = grab
+			else :
+				print "ungültige Grap position"
+				return
+			if drop &lt;= len(self.path):
+				self.drop = drop
+			else :
+				print "ungültige Drop position"
+				return
+			
+			#Zur ersten Position fahren
+			firstPos = self.path[0]
+			del self.path[0]
+			self.goTo(firstPos, notify)
+			
+			
+		#Roboter zu eine Punkt mit Weltkoordinaten schicken
+		# point: [x , y, z] in Weltkoordinaten
+		# notify: mehthode die Aufgerufen wird wenn der Roboter wieder steht
+		#		  Falls nichts aufgerufen werden soll "None" setzen
+		def goTo(self, point, notify):
+			x = point[2] - self.StandPos[2] 
+			y = point[0] - self.StandPos[0]
+			z = point[1] - self.StandPos[1]
+			
+			self.notify = notify
+			
+			#BasisWinkel berechen
+			baDeg = VR.base.calcBaseDegrees(x,y)
+			#Neuen Koodinaten im 2D(x und y) für die Arme berechnen
+			e_x, e_y, e_z = VR.base.translateCoordinates(x, y, z)
+	
+			#Mit neuen Koordinaten Arm Winkel berechnen
+			w_a2, w_a3, w_a5 = VR.arm.calculateArmDegrees(e_x, e_z)
+	
+			#Winkel einstellen
+			self.move_a1_to(baDeg)
+			self.move_a2_to(w_a2)
+			self.move_a3_to(w_a3 )
+			#Gelenk 4 wird noch nicht unterstütz
+			#self.move_a4(0)
+			self.move_a5_to(w_a5)
 		
-		# Felge ablegen
-			# In neutrale Ausgangsstellung zurück
+		#Nächster Schritt einer Animation machen
+		def nextStep(self):
+			#Test ob gegriffen oder lossgelassen werden muss
+			if self.grab == 1 and self.opened == True:
+				self.greifen()
+				return
+			elif self.drop == 1 and self.opened == False:
+				self.greifen()
+				return
+			
+			#grap und drop Dekrementieren
+			self.grab -= 1
+			self.drop -= 1
+			
+			if len(self.path) &gt; 0:
+				self.goTo(self.path[0], self.notify)
+				del self.path[0]
+			else :
+				self.grap = 0
+				self.drop = 0
+				if self.notify is not None:
+					self.notify()
+					self.notify = None			
 		
-			#fertig
-			print "Move done, callback Logistik"
-			VR.logisticController.moveDone(objekt)
+		# Benachrtigungs funktionen aufrufen, wenn Roboter steht
+		def endAnimation(self, armIndex):
+			self.movingArms[armIndex] = 0
+			allArms = 0
+			for arm in self.movingArms:
+				allArms += arm
+				
+			#Alle notify Funktionen hier aufrufen!
+			# Falls keien Aufgerufen wird if auskommentieren
+			if allArms &lt;= 0:
+				self.nextStep()		
 		
 		#Zum löschen
 		def destroy(self):
@@ -1013,11 +1116,14 @@
 			anTime = self.animationTime(6, winkel_deg)
 			self.movingArms[0] = 1
 			arm.animate(path,anTime,0,True)
-			VR.stackCall(self.endAnimation, anTime, [0]) 
-			del arm, f, u, d, path, anTime
+			VR.stackCall(self.endAnimation, anTime, [0])
 		#absolute gradzahl
 		def move_a1_to(self, winkel_deg):
 			self.move_a1(winkel_deg - self.winkelA1)
+			
+		#Degbug
+		def hier(self):
+			print "hier"
 		
 		#Arm2 bewegen
 		def move_a2(self, winkel_deg):
@@ -1039,7 +1145,6 @@
 			self.movingArms[1] = 1
 			arm.animate(path,anTime,0,True)
 			VR.stackCall(self.endAnimation, anTime, [1]) 
-			del arm, f, u, d, path, anTime
 			
 		#absolute gradzahl
 		def move_a2_to(self, winkel_deg):
@@ -1065,7 +1170,6 @@
 			self.movingArms[2] = 1
 			arm.animate(path,anTime,0,True)
 			VR.stackCall(self.endAnimation, anTime, [2]) 
-			del arm, f, u, d, path, anTime
 			
 		#absolute gradzahl
 		def move_a3_to(self, winkel_deg):
@@ -1098,7 +1202,6 @@
 			self.movingArms[3] = 1
 			arm.animate(path,anTime,0,True)
 			VR.stackCall(self.endAnimation, anTime, [3]) 
-			del arm, f, u, d, path, anTime
 			
 		#absolute gradzahl
 		def move_a4_to(self, winkel_deg):
@@ -1125,7 +1228,6 @@
 			self.movingArms[4] = 1
 			arm.animate(path,anTime,0,True)
 			VR.stackCall(self.endAnimation, anTime, [4]) 
-			del arm, f, u, d, path, anTime
 			
 		#absolute gradzahl
 		def move_a5_to(self, winkel_deg):
@@ -1172,17 +1274,30 @@
 				RobotController.rpath = rpath
 				
 		
-			#Debug
-			felge = VR.getRoot().find('ShapeIndexedFaceSet0.5')
-			print "Felfe:" , felge.getFrom()
-			self.ObjectToMove = felge
-		
 			#Object anhängen
-			if self.opened:
+			if self.opened and self.ObjectToMove is not None:
 				greifer = VR.getRoot().find('r_Greifer')
+				objWorldF = self.ObjectToMove.getWorldFrom()
+				objWorldD = self.ObjectToMove.getWorldDir()
+				objU = self.ObjectToMove.getUp()
+
 				greifer.addChild(self.ObjectToMove)
-				self.ObjectToMove.setFrom(0.555,0,0)
 				
+				self.ObjectToMove.setWorldFrom(objWorldF[0], objWorldF[1], objWorldF[2])
+				self.ObjectToMove.setWorldOrientation(objWorldD, objU)
+			
+			#Object abhängen
+			elif self.ObjectToMove is not None:
+				objWorldFrom = self.ObjectToMove.getWorldFrom()
+				objWorldD = self.ObjectToMove.getWorldDir()
+				objU = self.ObjectToMove.getUp()
+				
+				VR.getRoot().find('Headlight').addChild(self.ObjectToMove)
+				
+				self.ObjectToMove.setWorldFrom(objWorldFrom)
+				self.ObjectToMove.setWorldOrientation(objU, objWorldD)
+				self.ObjectToMove.rotate(0,0,1, -0.5 * math.pi)
+				self.ObjectToMove = None
 			
 			self.opened = not self.opened
 						
@@ -1204,7 +1319,7 @@
 			if (winkel_deg == 180) | (winkel_deg == -180) :
 				zwischenVec = [math.sin(zielWinkel_rad - (winkel_deg/2)),0,-math.cos(zielWinkel_rad - (winkel_deg/2))]
 				path.addPoint(f,zwischenVec,RobotController.c,u)
-				del zwischenVec
+				#del zwischenVec
 			path.addPoint(f,zielVector,RobotController.c,u)
 			path.compute(80)
 			return path
@@ -1217,7 +1332,6 @@
 			if (winkel_deg == 180) | (winkel_deg == -180) :
 				zwischenVec = [math.sin(zielWinkel_rad - (winkel_deg/2)),math.cos(zielWinkel_rad - (winkel_deg/2)),0]
 				path.addPoint(f,d,RobotController.c,zwischenVec)#
-				del zwischenVec
 			path.addPoint(f,d,RobotController.c,zielVector)
 			path.compute(80)
 			return path
@@ -1233,7 +1347,6 @@
 				up_zwischenVec = [0, math.cos(zwischenWinkel), math.sin(zwischenWinkel)]
 				dir_zwischenVec =[0, math.sin(zwischenWinkel), -math.cos(zwischenWinkel)]
 				path.addPoint(f, dir_zwischenVec,RobotController.c, up_zwischenVec)
-				del zwischenWinkel, up_zwischenVec, dir_zwischenVec
 			path.addPoint(f,dir_zielVector,RobotController.c,up_zielVector)
 			path.compute(80)
 			return path
@@ -1242,25 +1355,11 @@
 		def animationTime(self, roationSpeed, winkel_deg):
 			if math.fabs(winkel_deg) &gt; 180:
 				winkel_deg = winkel_deg % 180
-			anTime = math.fabs((roationSpeed / 2) * (winkel_deg/360.0))
-			if anTime &lt; 1 :
-				anTime = 1
+			anTime = math.fabs((roationSpeed / 2.0) * (winkel_deg/360.0))
+			if anTime &lt; 1.0 :
+				anTime = 1.0
 			return anTime
 			
-		# Bewungsarray beenden und Benachrtigungs funktionen aufrufen
-		
-		def endAnimation(self, armIndex):
-			self.movingArms[armIndex] = 0
-			#print "Arm", armIndex  ," bewegung Beendet"
-			allArms = 0
-			for arm in self.movingArms:
-				allArms += arm
-				
-			#Alle notify Funktionen hier aufrufen!
-			# Falls keien Aufgerufen wird if auskommentieren
-			#if allArms &lt;= 0:
-				#VR.RobotAnimation()
-			return
 		
 		# Bringt den Roboter in Ausgangstellung
 		def reset(self):
@@ -1333,8 +1432,8 @@
 			# calculate the length of the groundLine
 			groundLine = math.sqrt(x ** 2 + y ** 2)
 			# calculate Length and Degree (to groundPlane) of the room diagonal
-			roomDiagonal = math.sqrt(groundLine ** 2 + z ** 2)
-			roomDegrees = math.degrees(math.atan(z/groundLine))
+			#roomDiagonal = math.sqrt(groundLine ** 2 + z ** 2)
+			#roomDegrees = math.degrees(math.atan(z/groundLine))
 			groundLine = groundLine - self.Diameter
 			return groundLine, 0, z
 	
@@ -2544,6 +2643,32 @@ data = JSON.parse(json)
 &lt;/html&gt;
 
 </core>
+    </Script>
+    <Script name_suffix="0" base_name="robotTeachIn" name_space="__script__" type="Python" mobile="">
+      <core>
+	import VR
+	
+	i = dev.getIntersected()
+	
+	if i.getName() in ['Greifer_haupt', 'Cube.2', 'Cube.5']:
+		VR.robotController.greifen()
+		return
+		
+	
+	#Roboter an den geklickten Punkt schicken
+	p = dev.getIntersection()
+	VR.robotController.goTo(p, None)
+	
+	return 
+	def movePath(path):
+		self.path = path
+		
+	def onNext():
+		if len(self.path) &gt; 0:
+			goto(path[0])
+			del path[0]
+</core>
+      <trig type="on_device" dev="mouse" state="Pressed" param="" key="0" name_suffix="5" base_name="trigger" name_space="__global__"/>
     </Script>
   </Scripts>
   <Sockets/>
