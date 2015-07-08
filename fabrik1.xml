@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-8.8186 7.43112 -3.97027" at="-4.50032 0.738883 6.70931" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="3.32444 2.41634 -3.96234" at="-4.50032 0.738883 6.70931" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
       </Object>
@@ -55,11 +55,12 @@
 		
 		auftragtupel = VR.auftragqueue.pop()
 		VR.Auftrag(auftragtupel[0],auftragtupel[1])
+		# Status update
 		VR.monitorStatusController.updateProductionQueue()
 		VR.monitorStatusController.setCurrentJob(auftragtupel)
 		
 </core>
-      <trig type="on_timeout" dev="" state="Pressed" param="100" key="0" name_suffix="9" base_name="trigger" name_space="__global__"/>
+      <trig type="on_timeout" dev="" state="Pressed" param="500" key="0" name_suffix="9" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="Environment" name_space="__script__" type="Python" mobile="">
       <core>
@@ -174,7 +175,7 @@
 	debugdraw = True
 	
 	generateHoles = True
-	substract = True
+	substract = False
 	
 	_animationTime = 50
 	_animationOffset = 0
@@ -258,7 +259,7 @@
 			
 			#rohling positionieren
 			self.Base.addChild(rohling)
-			rohling.setName("Rohling.Akutell")
+			rohling.setName("Rohling.Aktuell")
 			rohling.setFrom(self.ablegepunkt_local)
 			rohling.setScale(self.iscale ,self.iscale,self.iscale )
 			rohling.show()
@@ -512,7 +513,7 @@
 	p2_length = 10 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
 
 	speed0 = 3.8 # Geschwindigkeit erstes Fließband
-	speed2 = 0.8 # Geschwindigkeit zweites Fließband
+	speed2 = 2.0 # Geschwindigkeit zweites Fließband
 
 	p0_startx = 8.0
 	p0_endx = -4.0
@@ -540,6 +541,7 @@
 		node.setDir(0.1,0,0)
 		pathNodes.addChild(node)
 		nodes1.append(node)
+		
 
 	# Pfad von zweiter Kiste ins Lager
 	nodes2 = []
@@ -647,7 +649,6 @@
 		if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
 			c1 = VR.containers[1]
 			product = c1.get()
-			bla = 1
 			VR.logisticController.start(product)
 	
 	
@@ -1066,6 +1067,10 @@
 			y = point[0] - self.StandPos[0]
 			z = point[1] - self.StandPos[1]
 			
+			#Statusmeldung
+			VR.monitorStatusController.setRoboterStatus("Fährt zu (" + str(x) + "," + str(y) + "," + str(z) + ")")
+			VR.monitorStatusController.updateHomepage()
+			
 			self.notify = notify
 			self.notifyArgument = notifyArgument
 			
@@ -1377,6 +1382,9 @@
 			self.move_a3(-self.winkelA3)
 			self.move_a4(-self.winkelA4)
 			self.move_a5(-self.winkelA5)
+			#Statusmeldung
+			VR.monitorStatusController.setRoboterStatus("Steht in Ausgangsstellung")
+			VR.monitorStatusController.updateHomepage()
 		
 		#Fährt den Roboter nach oben, dreht ihn aber nicht
 		def UpBack_to_base(self):
@@ -1913,6 +1921,7 @@ input{
 				'BufferCapacity': 0,
 				'BufferStand': 0,
 				'FraeseStatus': 'Steht still',
+				'RoboterStatus': 'Steht in Startposition',
 				'ProductionQueue': ''
 				}
 			
@@ -1932,7 +1941,10 @@ input{
 			
 		# Setters for the JSON data	
 		def setFraeseStatus(self, status):
-			self.StatusData["FraeseStatus"] = status		
+			self.StatusData["FraeseStatus"] = status	
+			
+		def setRoboterStatus(self, status):
+			self.StatusData["RoboterStatus"] = status		
 			
 		def setLagerCapacity(self, amount):
 			self.StatusData["LagerCapacity"] = amount
@@ -2496,7 +2508,12 @@ data = JSON.parse(json)
 		&lt;div id="roboterStatus"&gt;
 			&lt;center&gt;
 				&lt;i&gt;Roboter&lt;/i&gt; &lt;br&gt;
-				No status yet
+				&lt;div id="roboterStatusText"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("roboterStatusText");
+				div.textContent = "" + data.RoboterStatus;
+				var text = div.textContent;
+				&lt;/script&gt;
 			&lt;/center&gt;
 		&lt;/div&gt;
 		&lt;div id="auftragspipeline"&gt;
@@ -2630,7 +2647,12 @@ data = JSON.parse(json)
 		&lt;div id="roboterStatus"&gt;
 			&lt;center&gt;
 				&lt;h2&gt;Roboter&lt;/h2&gt; 
-				No status yet
+				&lt;div id="roboterStatusText"&gt;&lt;/div&gt;
+				&lt;script type="text/javascript"&gt;
+				var div = document.getElementById("roboterStatusText");
+				div.textContent = "" + data.RoboterStatus;
+				var text = div.textContent;
+				&lt;/script&gt;
 			&lt;/center&gt;
 		&lt;/div&gt;
 			
