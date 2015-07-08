@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="4.11187 2.13951 -2.55014" at="2.40807 1.62704 0.0299988" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.97885 5.5958 5.85133" at="-7.6579 1.05635 4.78006" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
@@ -12,6 +12,10 @@
         <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="4" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="5" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="7" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="8" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="9" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -160,7 +164,7 @@
 	
 	VR.fraeseController.stop()
 	VR.FraeseControl(VR.getRoot().find('Headlight'))
-	VR.speedup = 1 #0.3
+	VR.speedup = 0.2
 	d = VR.FRrohling.duplicate()
 	#print "M1",VR.FRrohling.getMaterial().getName(),"M2",d.getMaterial().getName()
 	
@@ -273,9 +277,9 @@
 			self.rohling = rohling
 			self.modell = modell
 			
-			if self.debugdraw is not None:
-				self.debugdraw.destroy()
+			self.deleteDebugdraw()
 			self.debugdraw = VR.Transform("debugdraws")
+			
 			self.Base.addChild(self.debugdraw)
 
 			
@@ -354,8 +358,8 @@
 					csg.setEditMode(False)
 					csg.setMaterial(mat)
 					self.rohling = csg
-				else: 
-					self.Base.addChild(s)
+				else : 
+					self.debugdraw.addChild(s)
 
 		def stop(self):#fertig - callback an Logistik
 			if not self.isActive:
@@ -384,8 +388,13 @@
 			
 			self.isActive = False
 			
+			self.deleteDebugdraw()
 			#VR.logisticController.fraeseDone(objektback)
 			VR.logisticController.fraeseDone(objekt)
+			
+		def deleteDebugdraw(self):
+			if self.debugdraw is not None:
+				self.debugdraw.destroy()
 					
 		def useDoor(self):
 			if self.doorOpen and not debugDoor:	
@@ -889,11 +898,11 @@
 				for path in self.paths:
 					for p in path.getPositions():
 						loch.append(p)
-				
 					
 			self.coordinates.append(new)
 			self.lastPos = new
-			return [p1, p2, p3, pd, loch, time]
+			#time * distance
+			return [p1, p2, p3, pd, loch, time*lenght(sub(dirP2,self.lastPos))]
 			
 	
 		
