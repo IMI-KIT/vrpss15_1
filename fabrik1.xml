@@ -23,6 +23,10 @@
         <Object name_suffix="14" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="15" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="16" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="17" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="18" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="19" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="20" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -120,7 +124,7 @@
 	while count &gt;0:
 			VR.fliessband = VR.loadGeometry('fliessband.dae', reload)
 			light.addChild(VR.fliessband)
-			VR.fliessband.translate(8.25-3.001*count,-0.6,7.4)
+			VR.fliessband.translate(7.25-3.001*count,-0.6,7.4)
 			VR.fliessband.setScale(0.3,0.3,0.3);
 			VR.fliessband.rotate(1,0,0, -0.5 * math.pi)
 			count = count -1;
@@ -272,7 +276,6 @@
 			
 		def startFraese(self,rohling,modell):
 			print "Starte Fräsvorgang",rohling.getName(),"Speedup",VR.speedup
-			VR.monitorStatusController.setFraeseStatus("fraest")
 			self.isActive = True
 			
 			#rohling positionieren
@@ -293,6 +296,9 @@
 			
 			#fräsen
 			self.useDoor()
+			#Statusmeldung
+			VR.monitorStatusController.setFraeseStatus("fraest")
+			VR.monitorStatusController.updateHomepage()
 			if modell == 0:
 				self.nextGCode(VR.ParseGCode("NewModell1.nc"))
 			else:
@@ -373,6 +379,8 @@
 
 			#tür auf
 			self.useDoor()
+			
+			
 			#Felge erzeugen
 			if self.modell == 0:
 				objekt = VR.FRfelge0.duplicate()
@@ -385,7 +393,10 @@
 			self.Base.addChild(objekt)
 			
 			print "Fraesevorgang done, call back Logistik"
-			VR.monitorStatusController.setFraeseStatus("Steht still")
+			#Statusmeldung
+			VR.monitorStatusController.setFraeseStatus("Fraesvorgang beendet")
+			VR.monitorStatusController.updateHomepage()
+			
 			self.isActive = False
 			
 			#VR.logisticController.fraeseDone(objektback)
@@ -393,9 +404,17 @@
 					
 		def useDoor(self):
 			if self.doorOpen and not debugDoor:	
+				#Statusmeldung
+				VR.monitorStatusController.setFraeseStatus("schliesse Tuer")
+				VR.monitorStatusController.updateHomepage()
+				
 				self.LeftDoor.animate(self.p1c, 1, 0, True)
 				self.RightDoor.animate(self.p2c, 1, 0, True)
 			else:
+				#Statusmeldung
+				VR.monitorStatusController.setFraeseStatus("oeffne Tuer")
+				VR.monitorStatusController.updateHomepage()
+				
 				self.LeftDoor.animate(self.p1o, 1, 0, True)
 				self.RightDoor.animate(self.p2o, 1, 0, True)
 			self.doorOpen = not self.doorOpen
@@ -485,6 +504,8 @@
 	import VR
 	
 	r = VR.getRoot().find('Headlight')
+	pathNodes = VR.Object('pathsNodes')
+	r.addChild(pathNodes)
 
 	
 	# ------------ paths -----------------
@@ -510,39 +531,30 @@
 	p0_z = 1
 	p2_z = 7
 	
-	
-	VR.pfad2_startpunkt = [p2_startx,p_y,p2_z]
-	VR.fraese_ablegepunkt = [-8.0,3,3.5]
+	#Positionen für Roboteranimation:
 	VR.pfad1_endpunkt = [p0_endx,p_y,p0_z]
-
-
-
-	if not hasattr(VR, 'ptool'): 
-		VR.ptool = VR.Pathtool()	
-		VR.paths = [p0_length,p2_length] # min 2
-		for i,N in enumerate(VR.paths):
-			VR.paths[i] = VR.ptool.newPath(None, r)
-			for j in range(N-2):
-				VR.ptool.extrude(None, VR.paths[i])
+	VR.fraese_ablegepunkt = [-8.0,3,3.5]
+	VR.pfad2_startpunkt = [p2_startx+0.3,p_y,p2_z]
 			
 	# Pfad vom Lager zur ersten Kiste
-	handles = VR.ptool.getHandles(VR.paths[0])
+	nodes1 = []
 	p0_geolength = p0_endx - p0_startx
 	for x in range (0,p0_length):		# Verteile gleichmäßig Stationen auf dem Fließband. Falls die unregelmäßig sind kommt der Fluss ins Stocken, und im schlimmsten Fall kommen die Produkte gar nicht erst am Ende an.
-		handles[x].setFrom(p0_startx + p0_geolength*x/(p0_length-1),p_y,p0_z)
-		handles[x].setDir(0.1,0,0)
-
+		node = VR.Transform('node')
+		node.setFrom(p0_startx + p0_geolength*x/(p0_length-1),p_y,p0_z)
+		node.setDir(0.1,0,0)
+		pathNodes.addChild(node)
+		nodes1.append(node)
 
 	# Pfad von zweiter Kiste ins Lager
-	handles = VR.ptool.getHandles(VR.paths[1])
+	nodes2 = []
 	p2_geolength = p2_endx - p2_startx
 	for x in range (0,p2_length):
-		handles[x].setFrom(p2_startx + p2_geolength*x/(p2_length-1),p_y,p2_z)
-		handles[x].setDir(-1,0,0)
-	
-	
-	VR.ptool.update()
-	
+		node = VR.Transform('node')
+		node.setFrom(p2_startx + p2_geolength*x/(p2_length-1),p_y,p2_z)
+		node.setDir(-1,0,0)
+		pathNodes.addChild(node)
+		nodes2.append(node)
 
 	# Bis hierher werden nur die Wege mit den Haltepunkten erstellt, die Container sind noch nicht da.
 
@@ -578,12 +590,11 @@
 	
 
 	# Pfad 0:
-	p0 = VR.paths[0]
 	lp = VR.log.addPath()
 	n0 = None
 	nodes = []
 	
-	for h in VR.ptool.getHandles(p0):
+	for h in nodes1:
 		n = VR.lnet.addNodes(1,n0)
 		nodes.append(n)
 		n.setTransform(h)
@@ -600,12 +611,11 @@
 
 
 	#Pfad 2:
-	p2 = VR.paths[1]
 	lp = VR.log.addPath()
 	n2 = None
 	nodes = []
 	
-	for h in VR.ptool.getHandles(p2):
+	for h in nodes2:
 		n = VR.lnet.addNodes(1,n2)
 		nodes.append(n)
 		n.setTransform(h)
@@ -636,7 +646,9 @@
 		
 		
 	#=====Starte einen Roboter-Fräs-Durchlauf=====
-	if hasattr(VR, 'containers'):
+	if hasattr(VR, 'containers') and hasattr(VR, 'currentState'):
+		if not VR.containers[1].isEmpty():
+			VR.containers[1].peek().getGeometry().show()
 		if (VR.currentState == VR.states_WaitForRohling and (not VR.containers[1].isEmpty())):
 			c1 = VR.containers[1]
 			product = c1.get()
@@ -1589,7 +1601,6 @@
 	VR.FRfelge0.hide()
 	VR.FRfelge1.hide()
 
-	test = VR.rohling.duplicate()
 	
 	
 	
@@ -1999,7 +2010,7 @@ input{
 	
 	k = dev.getKey()
 	msg = dev.getMessage()
-	print "switch to " + msg
+	#print "switch to " + msg
 
 	# key 5 is used for this script
 	if k == 5:
@@ -2022,6 +2033,9 @@ input{
     <Script name_suffix="0" base_name="monitorStatusUpdater" name_space="__script__" type="Python" mobile="">
       <core>
 	import VR
+	if not hasattr(VR, 'monitorStatusController'):
+		return
+	
 	# Updates changing values from the logistic simulation boxes and refreshes
 	# the status homepage afterwards
 	
@@ -2303,6 +2317,10 @@ data = JSON.parse(json)
 				div.textContent = "" + data.FraeseStatus;
 				var text = div.textContent;
 			&lt;/script&gt;
+			&lt;h2&gt;Kontrollwerte&lt;/h2&gt;
+			-- Hier koennten Kontrollwerte wie &lt;br&gt;
+			Temperatur, Fehlercodes, Wartungsmeldungen &lt;br&gt;
+			ausgegeben werden --
 			&lt;/center&gt;
 		&lt;/div&gt;
 
