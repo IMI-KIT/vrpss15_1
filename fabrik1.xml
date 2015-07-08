@@ -1054,15 +1054,9 @@
 			#Zur ersten Position fahren
 			firstPos = self.path[0]
 			del self.path[0]
-<<<<<<< HEAD
+			
 			self.goTo(firstPos, notify, notifyArgument)
-			
-			
-=======
-			self.goTo(firstPos, notify)
-		
-		
->>>>>>> a877482ca9c82e625086239ef1f5a8645b0e9b4f
+
 		#Roboter zu eine Punkt mit Weltkoordinaten schicken
 		# point: [x , y, z] in Weltkoordinaten
 		# notify: mehthode die Aufgerufen wird wenn der Roboter wieder steht
