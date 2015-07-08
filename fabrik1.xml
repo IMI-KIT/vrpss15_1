@@ -154,7 +154,7 @@
 	
 	VR.fraeseController.stop()
 	VR.FraeseControl(VR.getRoot().find('Headlight'))
-	VR.speedup = 1 #0.3
+	VR.speedup = 0.2
 	d = VR.FRrohling.duplicate()
 	#print "M1",VR.FRrohling.getMaterial().getName(),"M2",d.getMaterial().getName()
 	
@@ -266,9 +266,9 @@
 			self.rohling = rohling
 			self.modell = modell
 			
-			if self.debugdraw is not None:
-				self.debugdraw.destroy()
+			self.deleteDebugdraw()
 			self.debugdraw = VR.Transform("debugdraws")
+			
 			self.Base.addChild(self.debugdraw)
 
 			
@@ -347,8 +347,8 @@
 					csg.setEditMode(False)
 					csg.setMaterial(mat)
 					self.rohling = csg
-				else: 
-					self.Base.addChild(s)
+				else : 
+					self.debugdraw.addChild(s)
 
 		def stop(self):#fertig - callback an Logistik
 			if not self.isActive:
@@ -377,8 +377,13 @@
 			
 			self.isActive = False
 			
+			self.deleteDebugdraw()
 			#VR.logisticController.fraeseDone(objektback)
 			VR.logisticController.fraeseDone(objekt)
+			
+		def deleteDebugdraw(self):
+			if self.debugdraw is not None:
+				self.debugdraw.destroy()
 					
 		def useDoor(self):
 			if self.doorOpen and not debugDoor:	
@@ -887,11 +892,11 @@
 				for path in self.paths:
 					for p in path.getPositions():
 						loch.append(p)
-				
 					
 			self.coordinates.append(new)
 			self.lastPos = new
-			return [p1, p2, p3, pd, loch, time]
+			#time * distance
+			return [p1, p2, p3, pd, loch, time*lenght(sub(dirP2,self.lastPos))]
 			
 	
 		
@@ -1033,7 +1038,7 @@
 			#Object setzen 
 			if objekt is not None:
 				self.ObjectToMove = objekt
-			
+		
 			#drag and drop setzen
 			if grab &lt;= len(self.path):
 				self.grab = grab
@@ -1045,13 +1050,19 @@
 			else :
 				print "ungültige Drop position"
 				return
-			
+		
 			#Zur ersten Position fahren
 			firstPos = self.path[0]
 			del self.path[0]
+<<<<<<< HEAD
 			self.goTo(firstPos, notify, notifyArgument)
 			
 			
+=======
+			self.goTo(firstPos, notify)
+		
+		
+>>>>>>> a877482ca9c82e625086239ef1f5a8645b0e9b4f
 		#Roboter zu eine Punkt mit Weltkoordinaten schicken
 		# point: [x , y, z] in Weltkoordinaten
 		# notify: mehthode die Aufgerufen wird wenn der Roboter wieder steht
@@ -1147,7 +1158,7 @@
 		#absolute gradzahl
 		def move_a1_to(self, winkel_deg):
 			self.move_a1(winkel_deg - self.winkelA1)
-			
+		
 		#Degbug
 		def hier(self):
 			print "hier"
