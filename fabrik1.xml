@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-7.42093 5.9018 3.94763" at="-8.08947 1.05635 3.86668" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="4.11187 2.13951 -2.55014" at="2.40807 1.62704 0.0299988" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
@@ -11,6 +11,7 @@
         <Object name_suffix="6" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="4" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -179,7 +180,7 @@
 	debugdraw = True
 	
 	generateHoles = True
-	substract = True
+	substract = False
 	
 	_animationTime = 50
 	_animationOffset = 0
@@ -260,7 +261,6 @@
 			
 		def startFraese(self,rohling,modell):
 			print "Starte Fräsvorgang",rohling.getName(),"Speedup",VR.speedup
-			VR.monitorStatusController.setFraeseStatus("fraest")
 			self.isActive = True
 			
 			#rohling positionieren
@@ -281,6 +281,9 @@
 			
 			#fräsen
 			self.useDoor()
+			#Statusmeldung
+			VR.monitorStatusController.setFraeseStatus("fraest")
+			VR.monitorStatusController.updateHomepage()
 			if modell == 0:
 				self.nextGCode(VR.ParseGCode("NewModell1.nc"))
 			else:
@@ -361,6 +364,8 @@
 
 			#tür auf
 			self.useDoor()
+			
+			
 			#Felge erzeugen
 			if self.modell == 0:
 				objekt = VR.FRfelge0.duplicate()
@@ -373,7 +378,10 @@
 			self.Base.addChild(objekt)
 			
 			print "Fraesevorgang done, call back Logistik"
-			VR.monitorStatusController.setFraeseStatus("Steht still")
+			#Statusmeldung
+			VR.monitorStatusController.setFraeseStatus("Fraesvorgang beendet")
+			VR.monitorStatusController.updateHomepage()
+			
 			self.isActive = False
 			
 			#VR.logisticController.fraeseDone(objektback)
@@ -381,9 +389,17 @@
 					
 		def useDoor(self):
 			if self.doorOpen and not debugDoor:	
+				#Statusmeldung
+				VR.monitorStatusController.setFraeseStatus("schliesse Tuer")
+				VR.monitorStatusController.updateHomepage()
+				
 				self.LeftDoor.animate(self.p1c, 1, 0, True)
 				self.RightDoor.animate(self.p2c, 1, 0, True)
 			else:
+				#Statusmeldung
+				VR.monitorStatusController.setFraeseStatus("oeffne Tuer")
+				VR.monitorStatusController.updateHomepage()
+				
 				self.LeftDoor.animate(self.p1o, 1, 0, True)
 				self.RightDoor.animate(self.p2o, 1, 0, True)
 			self.doorOpen = not self.doorOpen
@@ -1900,7 +1916,7 @@ input{
 	
 	k = dev.getKey()
 	msg = dev.getMessage()
-	print "switch to " + msg
+	#print "switch to " + msg
 
 	# key 5 is used for this script
 	if k == 5:
@@ -2204,6 +2220,10 @@ data = JSON.parse(json)
 				div.textContent = "" + data.FraeseStatus;
 				var text = div.textContent;
 			&lt;/script&gt;
+			&lt;h2&gt;Kontrollwerte&lt;/h2&gt;
+			-- Hier koennten Kontrollwerte wie &lt;br&gt;
+			Temperatur, Fehlercodes, Wartungsmeldungen &lt;br&gt;
+			ausgegeben werden --
 			&lt;/center&gt;
 		&lt;/div&gt;
 
