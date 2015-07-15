@@ -3,9 +3,11 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-8.57485 7.81617 -3.8375" at="-4.50032 0.738883 6.70931" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="3.05523 3.29192 1.46452" at="-3.92978 1.10641 3.35519" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
+        <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -568,11 +570,11 @@
 		#r.addChild(VR.FRfelge1)
 		r.addChild(VR.FRrohling)
 	
-	capacity0 = 1000 # ins Lager passt viel
+	capacity0 = 0 # ins Lager passt viel
 	capacity1 = 1	# ist grade erstmal weniger, damit alles übersichtlich bleibt. Kann später gern mehr werden
 	capacity2 = 10 # Hier steht am Ende eh keine Box, es wird alles direkt aufs Fließband gelegt. Kapazität sollte egal sein.
 	capacity3 = 1000 # Endlager
-
+	
 	c0 = VR.log.addContainer(VR.cardbox)
 	c0.setCapacity(capacity0)
 	c1 = VR.log.addContainer(VR.cardbox)
@@ -1095,16 +1097,22 @@
 			#Test ob gegriffen oder lossgelassen werden muss
 			if self.grab == 1 and self.opened == True:
 				self.greifen()
-				return
+				if len(self.path) &gt; 0:
+					return
 			elif self.drop == 1 and self.opened == False:
 				self.greifen()
-				return
+				if len(self.path) &gt; 0:
+					return
 			
-			#grap und drop Dekrementieren
-			self.grab -= 1
-			self.drop -= 1
+			#Falls das Gelenk manuell gedreht wurde
+			if self.grab == 2 or self.drop == 2:
+				self.move_a4_to(0)
+			
 			
 			if len(self.path) &gt; 0:
+			#grap und drop Dekrementieren
+				self.grab -= 1
+				self.drop -= 1
 				self.goTo(self.path[0], self.notify, self.notifyArgument)
 				del self.path[0]
 			else :
@@ -1939,6 +1947,11 @@ input{
 			VR.monitorStatusWeb.open(url)
 			
 			
+		def updateProductionQueue(self):
+			self.StatusData["ProductionQueue"] = list(VR.auftragqueue)
+			self.updateHomepage()
+			#print self.StatusData["ProductionQueue"]
+				
 		# Setters for the JSON data	
 		def setFraeseStatus(self, status):
 			self.StatusData["FraeseStatus"] = status		
@@ -1965,12 +1978,27 @@ input{
 			self.StatusData["BufferCapacity"] = amount
 			
 		def setBufferStand(self, amount):
-			self.StatusData["BufferStand"] = amount
+			self.StatusData["BufferStand"] = amount			
 			
-		def updateProductionQueue(self):
-			self.StatusData["ProductionQueue"] = list(VR.auftragqueue)
-			#print self.StatusData["ProductionQueue"]
+		#getters
+		def getLagerStand(self):
+			return self.StatusData["LagerStand"]
 			
+		def getLagerCapacity(self):
+			return self.StatusData["LagerCapacity"]
+		
+		def getFertigStand(self):
+			return self.StatusData["FertigStand"]
+			
+		def getFertigCapacity(self):
+			return self.StatusData["FertigCapacity"]			
+		
+		def getBufferStand(self):
+			return self.StatusData["BufferStand"]
+			
+		def getBufferCapacity(self):
+			return self.StatusData["BufferCapacity"]		
+		
 		def destroy(self):
 			return
 		
@@ -2007,6 +2035,7 @@ input{
 	VR.monitorStatusWeb = cef
 	VR.monitorStatusControls()
 	
+		
 		
 </core>
       <arg type="VRPyDeviceType" value="flystick" name_suffix="0" base_name="flystick" name_space="monitorStatusInit"/>
@@ -2051,23 +2080,49 @@ input{
 	
 	# Updates changing values from the logistic simulation boxes and refreshes
 	# the status homepage afterwards
-	
+
 	# Lade Boxinhalte
 	# Aktualisiere Lager
-	VR.monitorStatusController.setLagerCapacity(VR.containers[0].getCapacity())	
-	VR.monitorStatusController.setLagerStand(VR.containers[0].getCount())
-	# Aktualisiere Buffer
-	VR.monitorStatusController.setBufferCapacity(VR.containers[1].getCapacity())	
-	VR.monitorStatusController.setBufferStand(VR.containers[1].getCount())
-	# Aktualisiere Fertig
-	VR.monitorStatusController.setFertigCapacity(VR.containers[3].getCapacity())	
-	VR.monitorStatusController.setFertigStand(VR.containers[3].getCount())
+	currentLagerCapacity = VR.containers[0].getCapacity()	
+	currentLagerStand = VR.containers[0].getCount()
 	
-	#Update Homepage
+	# Aktualisiere Buffer
+	currentBufferCapacity = VR.containers[1].getCapacity()
+	currentBufferStand = VR.containers[1].getCount()
+	
+	# Aktualisiere Fertig
+	currentFertigCapacity = VR.containers[3].getCapacity()
+	currentFertigStand = VR.containers[3].getCount()
+	
+	
+	# Update Homepage only if change occured
+	# workaround due to no calls possible from logistic to python
+	if(VR.monitorStatusController.getLagerCapacity() != currentLagerCapacity):
+		VR.monitorStatusController.setLagerCapacity(currentLagerCapacity)
+		VR.monitorStatusController.updateHomepage()		
+	
+	if(VR.monitorStatusController.getLagerStand() != currentLagerStand):
+		VR.monitorStatusController.setLagerStand(currentLagerStand)
 	VR.monitorStatusController.updateHomepage()
 		
+	if(VR.monitorStatusController.getBufferCapacity() != currentBufferCapacity):
+		VR.monitorStatusController.setBufferCapacity(currentBufferCapacity)	
+		VR.monitorStatusController.updateHomepage()
+		
+	if(VR.monitorStatusController.getBufferStand() != currentBufferStand):
+		VR.monitorStatusController.setBufferStand(currentBufferStand)
+		VR.monitorStatusController.updateHomepage()
+		
+	if(VR.monitorStatusController.getFertigCapacity() != currentFertigCapacity):
+		VR.monitorStatusController.setFertigCapacity(currentFertigCapacity)	
+		VR.monitorStatusController.updateHomepage()
+		
+	if(VR.monitorStatusController.getFertigStand() != currentFertigStand):
+		VR.monitorStatusController.setFertigStand(currentFertigStand)
+		VR.monitorStatusController.updateHomepage()
+		
 </core>
-      <trig type="on_timeout" dev="" state="Pressed" param="1000" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
+      <trig type="on_timeout" dev="" state="Pressed" param="100" key="0" name_suffix="2" base_name="trigger" name_space="__global__"/>
     </Script>
     <Script name_suffix="0" base_name="monitorStatusWebsiteAuftrag" name_space="__script__" type="HTML" mobile="mobile">
       <core>
@@ -2529,7 +2584,13 @@ data = JSON.parse(json)
 						// Queue wird als Liste geschickt in JSON
 						// Naechstes Element steht ganz rechts
 						var reversedQueue = data.ProductionQueue.reverse();
-						for (var i = 0; i &lt; 6 ; i++) { 
+						var len = 0
+						if (reversedQueue.length &lt;= 6){
+							len = reversedQueue.length
+						} else {
+							len = 6
+						}
+						for (var i = 0; i &lt; len ; i++) { 
 							s = s + "[Menge:" + data.ProductionQueue[i][0] + ", Typ:" + data.ProductionQueue[i][1] + "] \n";						
 						}
 					}
