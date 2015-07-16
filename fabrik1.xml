@@ -3,10 +3,12 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-2.02685 5.21629 -4.50766" at="-3.92978 1.10641 3.35519" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-1.26569 4.9169 -4.43708" at="-3.92978 1.10641 3.35519" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="1" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="2" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -97,7 +99,7 @@
 	while count &gt;0:
 		VR.fliessband = VR.loadGeometry('fliessband.dae', reload)
 		light.addChild(VR.fliessband)
-		VR.fliessband.translate(8.25-3.001*count,-0.6,1.4)
+		VR.fliessband.translate(8.45-3.001*count,-0.6,1.4)
 		VR.fliessband.setScale(0.3,0.3,0.3);
 		VR.fliessband.rotate(1,0,0, -0.5 * math.pi)
 		count = count -1;
@@ -144,7 +146,7 @@
 	VR.platte = VR.loadGeometry('Tisch.dae',reload)
 	VR.platte.setName('Ablageplatte')
 	p1 = VR.pfad1_endpunkt
-	VR.platte.setPose([p1[0]-0.43,p1[1]-0.96,p1[2]],[0,-1,0],[0,0,1])
+	VR.platte.setPose([p1[0]-0.23,p1[1]-0.96,p1[2]],[0,-1,0],[0,0,1])
 	VR.platte.setScale([0.5,0.5,0.5])
 	light.addChild(VR.platte)
 
