@@ -3,9 +3,10 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-10.7298 4.40605 3.47055" at="-3.92978 1.10641 3.35519" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-2.02685 5.21629 -4.50766" at="-3.92978 1.10641 3.35519" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
+        <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -439,6 +440,7 @@
 				modell = VR.auftragModell
 				print "Modell:",modell
 				VR.fraeseController.startFraese(objekt,modell)
+				VR.fliessband1.setSpeed(VR.speed0)
 			elif (VR.currentState == VR.states_MoveFelgeToBand):
 				VR.currentState = VR.states_WaitForRohling
 				# Achtung, nicht direkt wieder roboter rohling aufnehmen lassen,
@@ -473,6 +475,7 @@
 		def start(self,product):
 			print "Starte neuen Beweg-und-Fräs-Vorgang"
 			VR.currentState =  VR.states_MoveRohlingToFraese
+			VR.fliessband1.setSpeed(0)
 			startpunkt = VR.pfad1_endpunkt
 			endpunkt = VR.fraese_ablegepunkt
 			geo = product.getGeometry()
@@ -512,7 +515,7 @@
 	p0_length = 10 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
 	p2_length = 10 #Muss mindestens 3 sein, Beeinflusst den Abstand der Produkte auf dem Band. Bei nur 2 Punkten (Start und Ende) spinnt der Container.
 
-	speed0 = 3.8 # Geschwindigkeit erstes Fließband
+	VR.speed0 = 3.8 # Geschwindigkeit erstes Fließband
 	speed2 = 2.0 # Geschwindigkeit zweites Fließband
 
 	p0_startx = 8.0
@@ -604,7 +607,8 @@
 
 	t1 = VR.log.addTransporter('Transporter_Rohling')
 	t1.setPath(lp)
-	t1.setSpeed(speed0)
+	t1.setSpeed(VR.speed0)
+	VR.fliessband1 = t1
 
 
 	#Pfad 2:
