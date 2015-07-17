@@ -3,7 +3,7 @@
   <Objects>
     <Object name_suffix="0" base_name="Root" name_space="__global__" type="Object" pickable="0" visible="1">
       <Object name_suffix="0" base_name="Headlight" name_space="__global__" type="Light" pickable="0" visible="1" ambient="0.3 0.3 0.3 1" beacon="Headlight_beacon" diffuse="1 1 1 1" lightType="point" on="1" shadow="0" shadowColor="0.1 0.1 0.1 1" shadowType="4096" specular="0.1 0.1 0.1 1">
-        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="-2.1741 2.6322 5.67751" at="-4.18489 2.6322 -3.58568" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
+        <Object name_suffix="0" base_name="Default" name_space="__global__" type="Camera" pickable="0" visible="1" from="0.642414 2.11965 -4.05223" at="0.321792 1.43408 0.0299983" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="0" accept_root="1" near="0.1" far="250" aspect="1" fov="1.0472">
           <Object name_suffix="-1" base_name="Headlight_beacon" name_space="__global__" type="LightBeacon" pickable="0" visible="1" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" light="Headlight"/>
         </Object>
         <Object name_suffix="0" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
@@ -12,6 +12,9 @@
         <Object name_suffix="3" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="4" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
         <Object name_suffix="5" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="6" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="7" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
+        <Object name_suffix="8" base_name="Rohling" name_space="__global__" type="Geometry" pickable="0" visible="0" from="0 0 0" at="0 0 -1" up="0 1 0" scale="1 1 1" cT="0 1 0" cR="0 0 0" do_cT="0" do_cR="0" cT_mode="1" at_dir="1" sourcetype="2" sourceparam="Rohling.dae ShapeIndexedFaceSet0"/>
       </Object>
     </Object>
   </Objects>
@@ -1749,7 +1752,7 @@
 	cef.addMouse(mouse, geo, 0, 2, 3, 4)
 	cef.addMouse(flystick, geo, 0, 2, 3, 4)
 	cef.addKeyboard(keyboard)
-	cef.setResolution(800)
+	cef.setResolution(256)
 	cef.setAspectRatio(16.0/9.0)
 	cef.open('http://localhost:5500/monitorControlWebsite')
 	
@@ -1767,24 +1770,26 @@
 &lt;style type="text/css"&gt;
 body{ 
 	background:#FFFFFF; 
-}
-h1{
-	font-size: 7.0vh;
-}
-h2 {
-	font-size: 2.5vw;
-	color: #718DA5;
+	margin:0;
 }
 #header{
 	background:#2A4F6E;   
-	color: #718DA5;  
-	font-size: 3.0vw; 
-	height:8vh;
+	color: #718DA5; 
+	height:12vh;
+}
+h1{
+	font-size: 10vh;
+}
+h2 {
+	font-size: 5vw;
+	color: #718DA5;
+}
+#RimCount{
+	width:25vw;
 }
 #content{ 
 	color:#042037;
-	font-size: 2.5vw;
-	padding-bottom:2vw; 
+	font-size: 5vw;
 }
 #footer{
 	background: #2A4F6E;
@@ -1795,7 +1800,23 @@ h2 {
 	height:7vh;
 }
 input{
-	font-size: 2.5vw;
+	font-size: 5vw;
+	margin:0.5vw;
+	padding-top:0;
+	padding-bottom:0;
+}
+#content input[type="radio"] {
+    display:none; 
+}
+#content label {
+    display:inline-block;
+    background-color:#ddd;
+    padding:0.5vw;
+    font-family:Arial;
+    font-size:5vw;
+}
+#content input[type="radio"]:checked + label { 
+    background-color:#bbb;
 }
 &lt;/style&gt;
 &lt;/head&gt;
@@ -1858,8 +1879,7 @@ input{
 	&lt;/center&gt;
 &lt;/div&gt;
 &lt;div id="content"&gt;
-    &lt;p&gt;
-		&lt;center&gt;
+	&lt;center&gt;
 		&lt;form&gt;
 			Teilmenge:
 			&lt;input type="text" id="RimCount" value="1"/&gt;
@@ -1867,34 +1887,34 @@ input{
 			&lt;input type="button" onclick="decrementRimCount()" value="Less" /&gt;
 			&lt;br /&gt;
 			Felgentyp: 
-			 &lt;input type="radio" id="r0" name="RimType" value="0" checked&gt;&lt;label for="mc"&gt; 0&lt;/label&gt; 
-			 &lt;input type="radio" id="r1" name="RimType" value="1"&gt;&lt;label for="vi"&gt; 1&lt;/label&gt;&lt;br&gt; 
-			 &lt;br /&gt;
+			 &lt;input type="radio" id="r0" name="RimType" value="0" checked&gt; 
+			 &lt;label for="r0"&gt;0&lt;/label&gt;
+			 &lt;input type="radio" id="r1" name="RimType" value="1"&gt;
+			 &lt;label for="r1"&gt;1&lt;/label&gt;
 			 &lt;input type="button" onclick="start()" value="Auftrag starten" /&gt;	 	 
 		&lt;/form&gt;
-		&lt;/center&gt;
-	&lt;/p&gt;
+	&lt;/center&gt;
 	
-	&lt;p&gt;
 	&lt;center&gt;
-		&lt;h2&gt; Manual Robot control &lt;/h2&gt;
+		Manual Robot control:
 		Joint 1:
 		&lt;input type="button" onclick="moveRobot(1,10)" value="+" /&gt;
-		&lt;input type="button" onclick="moveRobot(1,-10)" value="-" /&gt; &lt;br&gt;
+		&lt;input type="button" onclick="moveRobot(1,-10)" value="-" /&gt;
+		&lt;br&gt;
 		Joint 2:
 		&lt;input type="button" onclick="moveRobot(2,10)" value="+" /&gt;
-		&lt;input type="button" onclick="moveRobot(2,-10)" value="-" /&gt; &lt;br&gt;
+		&lt;input type="button" onclick="moveRobot(2,-10)" value="-" /&gt;
 		Joint 3:
 		&lt;input type="button" onclick="moveRobot(3,10)" value="+" /&gt;
-		&lt;input type="button" onclick="moveRobot(3,-10)" value="-" /&gt; &lt;br&gt;
+		&lt;input type="button" onclick="moveRobot(3,-10)" value="-" /&gt;
+		&lt;br&gt;
 		Joint 4:
 		&lt;input type="button" onclick="moveRobot(4,10)" value="+" /&gt;
-		&lt;input type="button" onclick="moveRobot(4,-10)" value="-" /&gt; &lt;br&gt;
+		&lt;input type="button" onclick="moveRobot(4,-10)" value="-" /&gt;
 		Joint 5:
 		&lt;input type="button" onclick="moveRobot(5,10)" value="+" /&gt;
-		&lt;input type="button" onclick="moveRobot(5,-10)" value="-" /&gt; &lt;br&gt;
-	&lt;/center&gt;	
-	&lt;/p&gt;
+		&lt;input type="button" onclick="moveRobot(5,-10)" value="-" /&gt;
+	&lt;/center&gt;
 	
 &lt;/div&gt;
 &lt;div id="footer"&gt;
@@ -2035,7 +2055,7 @@ input{
 	cef.addMouse(mouse, geo, 0, 2, 3, 4)
 	cef.addMouse(flystick, geo, 0, 2, 3, 4)
 	cef.addKeyboard(keyboard)
-	cef.setResolution(800)
+	cef.setResolution(256)
 	cef.setAspectRatio(16.0/9.0)
 	cef.open(VR.currentStatusURL)
 		
@@ -2101,7 +2121,6 @@ input{
 	currentFertigCapacity = VR.containers[3].getCapacity()
 	currentFertigStand = VR.containers[3].getCount()
 	
-	
 	# Update Homepage only if change occured
 	# workaround due to no calls possible from logistic to python
 	if(VR.monitorStatusController.getLagerCapacity() != currentLagerCapacity):
@@ -2139,36 +2158,34 @@ input{
 &lt;style type="text/css"&gt;
 body{
   background:#FFFFFF; 
-  
+  margin: 0;
 }
 #header{
   background:#2A4F6E;   
-  color: #718DA5;  
-  font-size: 100%; 
-  height:8vh;
-}
-input[type=button] {
-    width: 13vw;  height: 6vh;;
+  color: #718DA5;
+  height:12vh;
 }
 h1{
-	font-size:7vh;
+	font-size:10vh;
 }
 h2{
-	font-size:5vh;
+	font-size:9vh;
 }
 #content{ 
 	color:#042037;
-	font-size: 2.5vw;
+	font-size: 5vw;
 	padding-bottom:2vw;
 }
 #footer{
-  background: #2A4F6E;
-  color: #718DA5; 
-  position:fixed;
+	background: #2A4F6E;
+	color: #718DA5; 
+	position:fixed;
 	bottom:0vh;
-  width:100%;
-	height:7vh;
-	padding-top: 0.5vh;
+	width:100%;
+	height:14vh;
+}
+#footer input[type=button] {
+	font-size:8vh;
 }
 #progress{
 	float: left;
@@ -2236,7 +2253,6 @@ data = JSON.parse(json)
 				div.textContent = "Menge: " + menge + " Typ: " + typ;
 				var text = div.textContent;
 			&lt;/script&gt;
-			&lt;br&gt;
 			&lt;div id="fertig"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("fertig");
@@ -2319,41 +2335,39 @@ data = JSON.parse(json)
 &lt;style type="text/css"&gt;
 body{
   background:#FFFFFF; 
-  
+  margin: 0;
 }
 #header{
   background:#2A4F6E;   
-  color: #718DA5;  
-  font-size: 100%; 
-  height:8vh;
-}
-input[type=button] {
-    width: 13vw;  height: 6vh;;
+  color: #718DA5;
+  height:12vh;
 }
 h1{
-	font-size:7vh;
+	font-size:10vh;
 }
 h2{
-	font-size:5vh;
+	font-size:9vh;
 }
 #content{ 
 	color:#042037;
-	font-size: 2.5vw;
+	font-size: 5vw;
 	padding-bottom:2vw;
 }
 #footer{
-  background: #2A4F6E;
-  color: #718DA5; 
-  position:fixed;
+	background: #2A4F6E;
+	color: #718DA5; 
+	position:fixed;
 	bottom:0vh;
-  width:100%;
-	height:7vh;
-	padding-top: 0.5vh;
+	width:100%;
+	height:14vh;
+}
+#footer input[type=button] {
+	font-size:8vh;
 }
 #fraeseStatus{
 	float:left;
 	width: 95vw;
-	height: 40vh;
+	height: 30vh;
 }
 
 &lt;/style&gt;
@@ -2393,9 +2407,7 @@ data = JSON.parse(json)
 				var text = div.textContent;
 			&lt;/script&gt;
 			&lt;h2&gt;Kontrollwerte&lt;/h2&gt;
-			-- Hier koennten Kontrollwerte wie &lt;br&gt;
-			Temperatur, Fehlercodes, Wartungsmeldungen &lt;br&gt;
-			ausgegeben werden --
+			-- Kontrollwerte Temperatur, Fehlercodes... --
 			&lt;/center&gt;
 		&lt;/div&gt;
 
@@ -2441,54 +2453,52 @@ data = JSON.parse(json)
 &lt;style type="text/css"&gt;
 body{
   background:#FFFFFF; 
-  
+  margin: 0;
 }
 #header{
   background:#2A4F6E;   
-  color: #718DA5;  
-  font-size: 100%; 
-  height:8vh;
-}
-input[type=button] {
-    width: 13vw;  height: 6vh;;
+  color: #718DA5;
+  height:12vh;
 }
 h1{
-	font-size:7vh;
+	font-size:10vh;
 }
 #content{ 
 	color:#042037;
-	font-size: 2.5vw;
+	font-size: 5vw;
 	padding-bottom:2vw;
 }
 #footer{
-  background: #2A4F6E;
-  color: #718DA5; 
-  position:fixed;
+	background: #2A4F6E;
+	color: #718DA5; 
+	position:fixed;
 	bottom:0vh;
-  width:100%;
-	height:7vh;
-	padding-top: 0.5vh;
+	width:100%;
+	height:14vh;
+}
+#footer input[type=button] {
+	font-size:8vh;
 }
 #progress{
 	float: left;
 	width: 45vw;
-	height: 40vh;
+	height: 80vh;
 	
 }
 #fraeseStatus{
 	float:right;
 	width: 45vw;
-	height: 40vh;
+	height: 25vh;
 }
 #roboterStatus{
-	float:left;
+	float:right;
 	width: 45vw;
-	height: 40vh;
+	height: 25vh;
 }
 #auftragspipeline{
 	float:right;
 	width: 45vw;
-	height: 40vh;
+	height: 25vh;
 }
 &lt;/style&gt;
 &lt;/head&gt;
@@ -2535,7 +2545,6 @@ data = JSON.parse(json)
 				div.textContent = "Menge: " + menge + " Typ: " + typ;
 				var text = div.textContent;
 			&lt;/script&gt;
-			&lt;br&gt;
 			&lt;div id="fertig"&gt;&lt;/div&gt;
 			&lt;script type="text/javascript"&gt;
 				var div = document.getElementById("fertig");
@@ -2647,36 +2656,34 @@ data = JSON.parse(json)
 &lt;style type="text/css"&gt;
 body{
   background:#FFFFFF; 
-  
+  margin: 0;
 }
 #header{
   background:#2A4F6E;   
-  color: #718DA5;  
-  font-size: 100%; 
-  height:8vh;
-}
-input[type=button] {
-    width: 13vw;  height: 6vh;;
+  color: #718DA5;
+  height:12vh;
 }
 h1{
-	font-size:7vh;
+	font-size:10vh;
 }
 h2{
-	font-size:5vh;
+	font-size:10vh;
 }
 #content{ 
 	color:#042037;
-	font-size: 2.5vw;
+	font-size: 5vw;
 	padding-bottom:2vw;
 }
 #footer{
-  background: #2A4F6E;
-  color: #718DA5; 
-  position:fixed;
+	background: #2A4F6E;
+	color: #718DA5; 
+	position:fixed;
 	bottom:0vh;
-  width:100%;
-	height:7vh;
-	padding-top: 0.5vh;
+	width:100%;
+	height:14vh;
+}
+#footer input[type=button] {
+	font-size:8vh;
 }
 #roboterStatus{
 	float:left;
